@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Created-By: Apache Maven 3.8.1
+Built-By: jenkins
+Build-Jdk: 11.0.15
+Specification-Title: KIE :: Internal
+Specification-Version: 7.74
+Specification-Vendor: JBoss by Red Hat
+Implementation-Title: KIE :: Internal
+Implementation-Version: 7.74.1.Final
+Implementation-Vendor-Id: org.kie
+Implementation-Vendor: JBoss by Red Hat
+Implementation-URL: http://www.kiegroup.org/kie-api-parent/kie-internal
+Java-Vendor: OpenLogic
+Java-Version: 11.0.15
+Os-Arch: amd64
+Os-Name: Linux
+Os-Version: 3.10.0-1160.90.1.el7.x86_64
+Scm-Connection: scm:git:https://github.com/kiegroup/droolsjbpm-knowledge
+ .git/kie-internal
+Scm-Revision: be593c0cdcb5601b11d4d0f84acf26feb696e899
+Scm-Url: https://github.com/kiegroup/droolsjbpm-knowledge/kie-internal
+

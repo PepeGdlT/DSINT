@@ -1,0 +1,94 @@
+package rules;
+
+import main.java.dsin.Objeto.*;
+import main.java.dsin.Accion.*;
+import main.java.dsin.Personaje.*;
+import main.java.dsin.Estado.*;
+
+
+// Creación de personajes sin estado
+rule "0.01 Creación de Personajes Principales"
+agenda-group  "iniciales"
+then
+    insert(new Heroe("Perseo"));
+    
+    insert(new Humano("Andromeda"));
+    
+    insert(new Dios("Poseidon"));
+    insert(new Dios("Hades"));
+    insert(new Dios("Atenea"));
+    insert(new Dios("Hermes"));
+    insert(new Dios("Hefesto"));
+    insert(new Dios("Grayas"));
+    
+    insert(new Humano("Casiopea"));
+    
+    insert(new Criatura("Medusa"));
+    insert(new Criatura("Ninfas"));
+    insert(new Criatura("Ceto"));
+
+end
+
+// Creación de objetos sin asignación de posesión
+rule "0.02 Creación de Objetos Especiales"
+agenda-group  "iniciales"
+then
+    insert(new Objeto("Escudo de Bronce", "Reflexion"));
+    insert(new Objeto("Hoz de Acero", "Matar"));
+    insert(new Objeto("Casco de Hades", "Invisibilidad"));
+    insert(new Objeto("Zurron Magico", "Guardar cabeza Medusa"));
+    insert(new Objeto("Sandalias Aladas", "Vuelo"));
+    insert(new Objeto("Espada Indestructible",  "Matar"));
+    insert(new Objeto("Bridas de Oro",  "Atrapar Pegaso"));
+end
+
+// Asignación de estados iniciales a personajes
+rule "0.03 Estado inicial: Ceto Preso y Andromeda Libre"
+agenda-group  "iniciales"
+when
+    $ceto : Criatura(nombre == "Ceto")
+    $andromeda : Humano(nombre == "Andromeda")
+then
+    insert(new Preso($ceto));        
+    insert(new Libre($andromeda)); 
+end
+
+rule "0.04 Estado inicial: Perseo y Casiopea Libres"
+agenda-group  "iniciales"
+when
+    $perseo : Heroe(nombre == "Perseo")
+    $casiopea : Humano(nombre == "Casiopea")
+then
+    insert(new Libre($perseo));      
+    insert(new Libre($casiopea));    
+end
+
+// Relaciones iniciales de posesión
+rule "0.05 Relaciones Iniciales de Posesión"
+agenda-group  "iniciales"
+when
+    $hades : Dios(nombre == "Hades")
+    $atenea : Dios(nombre == "Atenea")
+    $hermes : Dios(nombre == "Hermes")
+    $hefesto : Dios(nombre == "Hefesto")        
+    $grayas : Dios(nombre == "Grayas")  
+    
+    
+    $escudoBronce : Objeto(nombre == "Escudo de Bronce")
+    $cascoHades : Objeto(nombre == "Casco de Hades")
+    $hozAcero : Objeto(nombre == "Hoz de Acero")
+    $espadaIndestructible : Objeto(nombre == "Espada Indestructible")
+    $bridasOro : Objeto(nombre == "Bridas de Oro")
+    
+    
+    
+    
+then
+    insert(new Poseer($hades, $cascoHades));   
+    insert(new Poseer($hermes, $hozAcero));   
+    insert(new Poseer($hefesto, $espadaIndestructible)); 
+    insert(new Poseer($atenea, $escudoBronce));
+    insert(new Poseer($hefesto, $bridasOro));
+    
+
+end
