@@ -1,0 +1,232 @@
+package rules;
+
+// Importación de clases
+import java.util.List;
+import main.java.dsin.Objeto.*;
+import main.java.dsin.Accion.*;
+import main.java.dsin.Personaje.*;
+import main.java.dsin.Estado.*;
+
+// Variable global para mensajes de salida
+global List<String> mensajes;
+
+// REGLAS GENERALES
+
+
+//LOS ESTADOS Y ACCIONES DEBEN IR CON INSTANCIAS DE PERSONAJES
+
+// Regla para quitar objetos de personajes
+rule "Quitar Objeto"
+when
+    $s : Personaje()
+    $o : Objeto()
+    $posee : Poseer(sujeto == $s, poseido == $o)
+    $quita : Quitar(sujeto == $s, quitado == $o)
+then
+    retract($posee);
+    retract($quita);
+end
+
+// Ejemplo de reglas específicas
+rule "Enojo de Poseidon hacia Casiopea"
+when
+    $poseidon : Dios(nombre == "Poseidon")
+    $casiopea : Humano(nombre == "Casiopea")
+    $ceto : Criatura(nombre == "Ceto")
+    $cetoPreso : Preso(afectado == $ceto) 
+
+    TieneEnojoCon(sujeto == $poseidon, enojado == $casiopea)
+then
+    mensajes.add("Ceto queda libre debido al enojo de Poseidon hacia Casiopea.");
+    retract($cetoPreso);
+    insert(new Libre($ceto));
+end
+
+rule "Andromeda capturada por Ceto"
+when
+    $andromeda : Humano(nombre == "Andromeda")
+    $ceto : Criatura(nombre == "Ceto")
+    $andromedaLibre : Libre(afectado == $andromeda)
+	$cetoLibre : Libre(afectado == $ceto)
+then
+    mensajes.add("Andrómeda queda presa debido a que Ceto está libre.");
+    retract($andromedaLibre);
+    insert(new Preso($andromeda));
+end
+
+rule "Personaje obtiene capacidad de Reflexion con el Escudo-Espejo"
+when
+    $s : Personaje()
+    $o : Objeto(nombre == "Escudo Espejo", capacidadDe == "Reflexion")
+    Poseer(sujeto == $s, poseido == $o)
+then
+    mensajes.add($s.getNombre() + " obtiene la capacidad de Reflexion debido a tener el Escudo Espejo.");
+end
+
+rule "Liberar a Andromeda con Cabeza de Medusa matando a Ceto"
+when
+    $perseo : Heroe(nombre == "Perseo")
+    $ceto : Criatura(nombre == "Ceto")
+    $andromeda : Humano(nombre == "Andromeda")
+    $andromedaPresa : Preso(afectado == $andromeda)
+
+    $cabezaMedusa : Objeto(nombre == "Cabeza de medusa", capacidadDe == "Petrificacion")
+    Poseer(sujeto == $perseo, poseido == $cabezaMedusa)
+then
+    mensajes.add("Perseo libera a Andromeda usando la Cabeza de Medusa matando a Ceto.");
+    insert(new Muerto($ceto));
+    insert(new Libre($andromeda));
+    retract($ceto);
+    retract($andromeda);
+end
+
+
+
+
+
+/**
+rule "Liberar Andromeda"
+when
+    $cond1: Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Atenea")
+    $cond2: Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Hermes")
+    $cond3: Condicion(sujeto == "Casiopea", tipoCondicion == "enojo", objetivo == "Poseidon")
+then
+    mensajes.add("Si, Perseo puede liberar a Andromeda debido a tener el favor de Atenea, Hermes, y el enojo de Poseidon.");
+end
+
+rule "Favor de Atenea"
+when
+    Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Atenea")
+then
+    mensajes.add("Perseo tiene el favor de Atenea.");
+    // Insertar lógica adicional si el favor de Atenea concede algún objeto o ventaja
+end
+
+rule "Favor de Hermes"
+when
+    Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Hermes")
+then
+    mensajes.add("Perseo tiene el favor de Hermes.");
+    // Lógica para conceder objetos o capacidades si Hermes está a favor de Perseo
+end
+
+rule "Favor de Hades"
+when
+    Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Hades")
+then
+    mensajes.add("Perseo tiene el favor de Hades.");
+    // Hades podría proporcionar el casco de invisibilidad
+end
+
+rule "Enojo de Poseidón hacia Casiopea"
+when
+    Condicion(sujeto == "Casiopea", tipoCondicion == "enojo", objetivo == "Poseidon")
+then
+    mensajes.add("Poseidón está enojado con Casiopea y libera a Ceto.");
+    // Liberar a Ceto como consecuencia
+end
+
+// Reglas para obtención de objetos
+rule "Perseo obtiene Escudo de Bronce"
+when
+    Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Atenea")
+then
+    mensajes.add("Perseo obtiene el Escudo de Bronce de Atenea.");
+    // Lógica para añadir el Escudo de Bronce a los objetos de Perseo
+end
+
+rule "Perseo obtiene Hoz de Acero de Hermes"
+when
+    Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Hermes")
+then
+    mensajes.add("Perseo obtiene la Hoz de Acero de Hermes.");
+    // Lógica para añadir la Hoz de Acero a Perseo
+end
+
+rule "Perseo obtiene Casco de Invisibilidad de Hades"
+when
+    Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Hades")
+then
+    mensajes.add("Perseo obtiene el Casco de Invisibilidad de Hades.");
+    // Lógica para añadir el Casco de Invisibilidad a Perseo
+end
+
+// Regla para definir capacidades basadas en objetos
+rule "Perseo obtiene Capacidad Invisibilidad"
+when
+    $condicion: Condicion(sujeto == "Perseo", tipoCondicion == "posee", objetivo == "Casco de Invisibilidad")
+then
+    mensajes.add("Perseo obtiene la capacidad de Invisibilidad gracias al Casco de Hades.");
+end
+
+rule "Perseo obtiene Capacidad Vuelo"
+when
+    $condicion: Condicion(sujeto == "Perseo", tipoCondicion == "posee", objetivo == "Sandalias Aladas")
+then
+    mensajes.add("Perseo obtiene la capacidad de Volar gracias a las Sandalias Aladas.");
+end
+
+// Reglas para liberar a Andrómeda
+rule "Liberar a Andromeda - Perseo con Cabeza de Medusa y Ceto libre"
+when
+    Condicion(sujeto == "Perseo", tipoCondicion == "posee", objetivo == "Cabeza de Medusa")
+    Condicion(sujeto == "Ceto", tipoCondicion == "estado", objetivo == "libre")
+then
+    mensajes.add("Perseo puede liberar a Andrómeda al petrificar a Ceto con la Cabeza de Medusa.");
+    // Lógica para liberar a Andrómeda
+end
+
+// Ejemplo de regla alternativa si el héroe posee otra capacidad o medio de vuelo
+rule "Perseo usa Pegaso para volar"
+when
+    Condicion(sujeto == "Perseo", tipoCondicion == "posee", objetivo == "Pegaso")
+then
+    mensajes.add("Perseo puede volar gracias a Pegaso.");
+    // Perseo obtiene la capacidad de vuelo
+end
+
+// Regla para matar a Medusa (con condiciones de vuelo, invisibilidad y arma)
+rule "Matar a Medusa"
+when
+    Condicion(sujeto == "Perseo", tipoCondicion == "capacidad", objetivo == "Invisibilidad")
+    Condicion(sujeto == "Perseo", tipoCondicion == "capacidad", objetivo == "Vuelo")
+    Condicion(sujeto == "Perseo", tipoCondicion == "posee", objetivo == "Hoz de Acero")
+then
+    mensajes.add("Perseo puede matar a Medusa usando la Hoz de Acero, vuelo e invisibilidad.");
+    // Añadir lógica para cambiar el estado de Medusa a muerta
+end
+
+// Regla para obtener Cabeza de Medusa tras matar a Medusa
+rule "Obtener Cabeza de Medusa"
+when
+    Condicion(sujeto == "Medusa", tipoCondicion == "estado", objetivo == "muerta")
+    Condicion(sujeto == "Perseo", tipoCondicion == "capacidad", objetivo == "Vuelo")
+then
+    mensajes.add("Perseo obtiene la Cabeza de Medusa después de matar a Medusa.");
+    // Añadir la Cabeza de Medusa a los objetos de Perseo
+end
+
+// Regla general para liberar a un personaje si su captor ha sido vencido
+rule "Liberar personaje capturado"
+when
+    $captor: Condicion(sujeto == "Ceto", tipoCondicion == "estado", objetivo == "muerto")
+then
+    mensajes.add("Andrómeda es liberada porque Ceto ha sido derrotado.");
+    // Cambiar el estado de Andrómeda a libre
+end
+
+**/
+
+
+
+
+
+
+// Queries to find specific Personajes and Objetos using helper methods
+query "getPersonajeByName" (String name)
+    $p : Personaje( nombre == name )
+end
+
+query "getObjetoByName" (String name)
+    $o : Objeto( nombre == name )
+end
