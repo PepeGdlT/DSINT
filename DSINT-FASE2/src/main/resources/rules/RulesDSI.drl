@@ -22,6 +22,7 @@ global List<String> mensajes;
 
 
 // Regla para quitar objetos de personajes
+//
 rule "Quitar Objeto"
 when
     $s : Personaje()
@@ -157,10 +158,6 @@ then
 end
 
 
-
-
-
-
 rule "Localización de las Grayas por favores de Hermes y Atenea"
 when
     $perseo : Heroe(nombre == "Perseo")
@@ -178,22 +175,37 @@ then
 end
 
 
-rule "Obtiene Ojo/Diente de las Grayas usando invisibilidad"
+// CAMBIADA / DIVIDIDA para poder reutilizar
+rule "Chantaje a las grayas para localizar a las ninfas"
 when
-    $perseo : Heroe(nombre == "Perseo")
-    $ninfas : Criatura(nombre == "Ninfas")
+    $heroe : Heroe()
     $grayas : Dios(nombre == "Grayas")
-    $ojoGrayas : Objeto(nombre == "Ojo de Grayas")
-    $poseeGrayas : Poseer(sujeto == $grayas, poseido == $ojoGrayas)
-    $cascoHades : Objeto(nombre == "Casco de Hades")
-    Localizar(sujeto == $perseo, persLocalizado  == $grayas)
-	$perseoInvi : Poseer(sujeto == $perseo, poseido == $cascoHades)
+    $ojoGrayas : Objeto(nombre == "Ojo Grayas")
+    $poseeOjo : Poseer(sujeto == $heroe, poseido == $ojoGrayas )
+    $ninfas : Semidios(nombre == "Ninfas")
 then
-    mensajes.add("Perseo obtiene (roba) el Ojo/Diente de las Grayas debido a tener invisibilidad.");
-    retract($poseeGrayas);
-    insert(new Localizar($perseo, $ninfas));
-    insert(new Poseer($perseo, $ojoGrayas));
+    mensajes.add($heroe.getNombre()+" localiza a las Ninfas tras chantajear a las Grayas");
+    //Posible implementacion de intercambio???
+    retract($poseeOjo);
+    insert(new Poseer($grayas, $ojoGrayas));
+    // 
+    insert(new Localizar($heroe, $ninfas));
 end
+
+rule "Obtener ojo grayas"
+when
+	$heroe : Heroe()
+	$grayas : Dios(nombre == "Grayas")
+    $ojoGrayas : Objeto(nombre == "Ojo Grayas")
+    $poseeOjo : Poseer(sujeto == $grayas, poseido == $ojoGrayas )
+    $poseeInvvis : Poseer(sujeto == $heroe, poseido.CapacidadDe == "Invisibilidad")
+then
+	//Posible implementacion de nueva acción robar??
+	insert( new Quitar($grayas, $ojoGrayas));
+	insert(new Poseer($heroe, $ojoGrayas));
+end
+	
+    
 
 
 
