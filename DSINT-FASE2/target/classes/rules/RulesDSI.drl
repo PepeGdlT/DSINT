@@ -10,10 +10,11 @@ import main.java.dsin.Estado.*;
 // Variable global para mensajes de salida
 global List<String> mensajes;
 
-// REGLAS GENERALES
+// REGLAS GENERALES---------------------------------------------------------------------------------------------------------------------
 
 
 //LOS ESTADOS Y ACCIONES DEBEN IR CON INSTANCIAS DE PERSONAJES
+
 
 // Regla para quitar objetos de personajes
 rule "Quitar Objeto"
@@ -27,7 +28,87 @@ then
     retract($quita);
 end
 
-// Ejemplo de reglas específicas
+
+rule "Lootear al asesinado" 
+when 
+	$sujeto : Personaje()
+	$asesinado : Personaje()
+	$asesina : Asesinar(sujeto == $sujeto, asesinado == $asesinado)
+	$o : Poseer(sujeto==$asesinado)
+	
+then 
+	List<Objeto> objetos = $o;
+	for(Objeto obj : objetos){
+		insert ( new Poseer($sujeto, obj));
+		
+		
+		
+
+end
+
+rule "Personaje asesina a otro" 
+when 
+	$sujeto : Personaje()
+	$asesinado : Personaje()
+	$asesina : Asesinar(sujeto == $sujeto, asesinado == $asesinado)
+	
+then 
+	mensajes.add($asesinado.getNombre() +" ha muerto a manos de " + $asesinado.getNombre());
+	insert(new Muerto($asesinado));
+	retract($asesinado);
+end
+
+//Para generalizar Personaje obtiene capacidad ...
+/*
+rule "Personaje obtiene x capacidad"
+when
+    $s : Personaje()
+    $o : Objeto()
+    Poseer(sujeto == $s, poseido == $o)
+then
+    mensajes.add($s.getNombre() + " obtiene la capacidad de "+ $o.getCapacidadDe()+ " debido a tener el/la " $o.getNombre());
+end
+*/
+
+rule "Obtiene objeto por el favor de un dios"
+when
+    $heroe : Heroe()
+    $dios : Dios()
+    $objeto : Objeto()
+    $poseeDios : Poseer(sujeto == $dios, poseido == $objeto)
+    FavoreceA(sujeto == $dios, favorecido == $heroe)
+then
+    mensajes.add($heroe.getNombre() +" obtiene "+ $objeto.getNombre() +" debido al favor de "+ $dios.getNombre());
+    retract($poseeDios)
+    insert(new Poseer($heroe, $objeto));
+    
+end
+
+//REGLAS SEMIESPECIFICAS---------------------------------------------------------------------------------------------------------------------
+
+rule "Liberar a Andromeda con objeto de petrificación matando a Ceto"
+when
+    $perseo : Heroe(nombre == "Perseo")
+    $ceto : Criatura(nombre == "Ceto")
+    $andromeda : Humano(nombre == "Andromeda")
+    $andromedaPresa : Preso(afectado == $andromeda)
+
+    $objPetrificar : Objeto(capacidadDe == "Petrificacion")
+    Poseer(sujeto == $perseo, poseido == $objPetrificar)
+then
+    mensajes.add("Perseo libera a Andromeda usando el/la "+$objPetrificar.getNombre()+" matando a Ceto.");
+    insert(new Muerto($ceto));
+    insert(new Libre($andromeda));
+    retract($ceto);
+    retract($andromeda);
+end
+
+
+
+
+
+// REGLAS ESPECIFICAS ---------------------------------------------------------------------------------------------------------------------
+
 rule "Enojo de Poseidon hacia Casiopea"
 when
     $poseidon : Dios(nombre == "Poseidon")
@@ -54,6 +135,8 @@ then
     insert(new Preso($andromeda));
 end
 
+ //ELIMINAR??
+ /*
 rule "Personaje obtiene capacidad de Reflexion con el Escudo-Espejo"
 when
     $s : Personaje()
@@ -63,6 +146,7 @@ then
     mensajes.add($s.getNombre() + " obtiene la capacidad de Reflexion debido a tener el Escudo Espejo.");
 end
 
+//ELIMINAR??
 rule "Liberar a Andromeda con Cabeza de Medusa matando a Ceto"
 when
     $perseo : Heroe(nombre == "Perseo")
@@ -80,11 +164,7 @@ then
     retract($andromeda);
 end
 
-
-
-
-
-
+//ELIMINAR??
 rule "Obtiene Escudo de Bronce por favor de Atenea"
 when
     $perseo : Heroe(nombre == "Perseo")
@@ -99,6 +179,7 @@ then
     
 end
 
+//ELIMINAR??
 rule "Obtiene Hoz de Acero por favor de Hermes"
 when
     $perseo : Heroe(nombre == "Perseo")
@@ -111,7 +192,7 @@ then
     retract($poseeHermes)
     insert(new Poseer($perseo, $hozAcero));
 end
-
+//ELIMINAR??
 rule "Obtiene Casco de Hades por favor de Hades"
 when
     $perseo : Heroe(nombre == "Perseo")
@@ -124,6 +205,8 @@ then
     retract($poseeHades)
     insert(new Poseer($perseo, $cascoHades));
 end
+*/
+
 /*
 rule "Obtiene Capacidad de Reflexión con Escudo Espejo"
 when
@@ -206,10 +289,6 @@ then
 end
 
 
-
-
-
-
 rule "Mata a Medusa usando Hoz de Acero, Espejo, Invisibilidad y Vuelo"
 when
 	$medusa : Criatura(nombre == "Medusa")
@@ -224,9 +303,25 @@ when
     Poseer(sujeto == $perseo, poseido == $sandaliasAladas)
 then
     mensajes.add("Perseo mata a Medusa usando Hoz de Acero, Espejo, Invisibilidad y Vuelo.");
-    insert(new Muerto($medusa));
+    insert(new Asesinar($perseo, $medusa));
     insert(new Poseer($perseo, new Objeto("Cabeza de Medusa", "Petrificacion")));
 end
+
+rule "Perseo mata a Medusa"
+when
+    $p : Heroe(nombre == "Perseo")
+    $m : Criatura(nombre == "Medusa")
+    $obj1 : Poseer(sujeto == $p, poseido.capacidadDe == "Invisibilidad")
+    $obj2 : Poseer(sujeto == $p, poseido.capacidadDe == "Vuelo")
+    $obj3 : Poseer(sujeto == $p, poseido.capacidadDe == "Espejo")
+    $obj4 : Poseer(sujeto == $p, poseido.nombre == "Matar")
+    Localizar(sujeto == $p, persLocalizado == $m) // ---> Esta condición creo que os faltaba
+    not Muerto(afectado == $m) // Para evitar que la maten dos veces, por si en el futuro se generaliza la regla
+then
+    mensajes.add("Perseo mata a Medusa debido a tener Hoz de Acero, Espejo, Invisibilidad y Vuelo.");
+end
+
+
 
 
 rule "Muere debido a que no tiene el Zurron Magico"

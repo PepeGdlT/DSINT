@@ -50,7 +50,7 @@ public class DroolsTest {
                 
                 // Ejecutar reglas después de insertar hechos
                 kSession.fireAllRules();
-                System.out.println("Mensajes collected: " + String.join(", ", mensajes));
+                System.out.println("Mensajes collected: " + String.join(", \n", mensajes));
 
                 // Crear respuesta a partir de los mensajes
                 String respuesta = String.join("\n", mensajes);

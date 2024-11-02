@@ -18,4 +18,14 @@ public class Asesinar extends Accion {
                 "asesinado=" + asesinado +
                 '}';
     }
+
+	public Personaje getAsesinado() {
+		return asesinado;
+	}
+
+	public void setAsesinado(Personaje asesinado) {
+		this.asesinado = asesinado;
+	}
+    
+    
 }
