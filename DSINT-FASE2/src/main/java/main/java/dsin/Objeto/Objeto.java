@@ -1,6 +1,5 @@
 package main.java.dsin.Objeto;
 
-import main.java.dsin.Capacidad.*;
 
 public class Objeto{
 	

@@ -8,6 +8,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="con" path="DROOLS/Drools"/>
-	<classpathentry kind="lib" path="src/main/resources/slf4j-simple-1.7.26.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/slf4j-simple-1.7.26.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

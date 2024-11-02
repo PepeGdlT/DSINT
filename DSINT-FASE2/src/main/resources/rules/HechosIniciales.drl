@@ -40,6 +40,8 @@ then
     insert(new Objeto("Sandalias Aladas", "Vuelo"));
     insert(new Objeto("Espada Indestructible",  "Matar"));
     insert(new Objeto("Bridas de Oro",  "Atrapar Pegaso"));
+    insert(new Objeto("Ojo de Grayas",  "Intercambiar por informacion"));
+    
 end
 
 // Asignación de estados iniciales a personajes
