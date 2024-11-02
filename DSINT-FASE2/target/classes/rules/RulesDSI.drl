@@ -11,7 +11,12 @@ import main.java.dsin.Estado.*;
 global List<String> mensajes;
 
 // REGLAS GENERALES---------------------------------------------------------------------------------------------------------------------
-
+	
+	//CAMBIOS:
+		/*
+		 - Cambiar ninfas a semidiosas  - 
+		 - Los personajes no se hacen retract, se meten en Muerto y se comprueba con no
+		*/
 
 //LOS ESTADOS Y ACCIONES DEBEN IR CON INSTANCIAS DE PERSONAJES
 
@@ -37,13 +42,7 @@ when
 	$o : Poseer(sujeto==$asesinado)
 	
 then 
-	List<Objeto> objetos = $o;
-	for(Objeto obj : objetos){
-		insert ( new Poseer($sujeto, obj));
-		
-		
-		
-
+	//REGLAS PARA LOOTEAR
 end
 
 rule "Personaje asesina a otro" 
@@ -58,17 +57,7 @@ then
 	retract($asesinado);
 end
 
-//Para generalizar Personaje obtiene capacidad ...
-/*
-rule "Personaje obtiene x capacidad"
-when
-    $s : Personaje()
-    $o : Objeto()
-    Poseer(sujeto == $s, poseido == $o)
-then
-    mensajes.add($s.getNombre() + " obtiene la capacidad de "+ $o.getCapacidadDe()+ " debido a tener el/la " $o.getNombre());
-end
-*/
+
 
 rule "Obtiene objeto por el favor de un dios"
 when
@@ -99,7 +88,6 @@ then
     mensajes.add("Perseo libera a Andromeda usando el/la "+$objPetrificar.getNombre()+" matando a Ceto.");
     insert(new Muerto($ceto));
     insert(new Libre($andromeda));
-    retract($ceto);
     retract($andromeda);
 end
 
@@ -135,18 +123,7 @@ then
     insert(new Preso($andromeda));
 end
 
- //ELIMINAR??
- /*
-rule "Personaje obtiene capacidad de Reflexion con el Escudo-Espejo"
-when
-    $s : Personaje()
-    $o : Objeto(nombre == "Escudo Espejo", capacidadDe == "Reflexion")
-    Poseer(sujeto == $s, poseido == $o)
-then
-    mensajes.add($s.getNombre() + " obtiene la capacidad de Reflexion debido a tener el Escudo Espejo.");
-end
 
-//ELIMINAR??
 rule "Liberar a Andromeda con Cabeza de Medusa matando a Ceto"
 when
     $perseo : Heroe(nombre == "Perseo")
@@ -160,83 +137,28 @@ then
     mensajes.add("Perseo libera a Andromeda usando la Cabeza de Medusa matando a Ceto.");
     insert(new Muerto($ceto));
     insert(new Libre($andromeda));
-    retract($ceto);
-    retract($andromeda);
 end
 
-//ELIMINAR??
-rule "Obtiene Escudo de Bronce por favor de Atenea"
-when
-    $perseo : Heroe(nombre == "Perseo")
-    $atenea : Dios(nombre == "Atenea")
-    $escudoBronce : Objeto(nombre == "Escudo de Bronce")
-    $poseeAtenea : Poseer(sujeto == $atenea, poseido == $escudoBronce)
-    FavoreceA(sujeto == $atenea, favorecido == $perseo)
-then
-    mensajes.add("Perseo obtiene Escudo de Bronce debido al favor de Atenea.");
-    retract($poseeAtenea)
-    insert(new Poseer($perseo, $escudoBronce));
-    
-end
 
-//ELIMINAR??
-rule "Obtiene Hoz de Acero por favor de Hermes"
-when
-    $perseo : Heroe(nombre == "Perseo")
-    $hermes : Dios(nombre == "Hermes")
-    $hozAcero : Objeto(nombre == "Hoz de Acero")
-    $poseeHermes : Poseer(sujeto == $hermes, poseido == $hozAcero)
-    FavoreceA(sujeto == $hermes, favorecido == $perseo)
-then
-    mensajes.add("Perseo obtiene Hoz de Acero debido al favor de Hermes.");
-    retract($poseeHermes)
-    insert(new Poseer($perseo, $hozAcero));
-end
-//ELIMINAR??
-rule "Obtiene Casco de Hades por favor de Hades"
-when
-    $perseo : Heroe(nombre == "Perseo")
-    $hades : Dios(nombre == "Hades") 
-    $cascoHades : Objeto(nombre == "Casco de Hades")
-    $poseeHades : Poseer(sujeto == $hades, poseido == $cascoHades)
-    FavoreceA(sujeto == $hades, favorecido == $perseo)
-then
-    mensajes.add("Perseo obtiene Casco de Hades debido al favor de Hades.");
-    retract($poseeHades)
-    insert(new Poseer($perseo, $cascoHades));
-end
-*/
 
-/*
 rule "Obtiene Capacidad de Reflexión con Escudo Espejo"
 when
     $perseo : Heroe(nombre == "Perseo")
-    $escudoEspejo : Objeto(nombre == "Escudo de Bronce", capacidadDe == "Reflexion")
-    Poseer(sujeto == $perseo, poseido == $escudoEspejo)
+    $hefesto : Dios(nombre == "Hefesto")
+    $escudoBronce : Objeto(nombre == "Escudo de Bronce")
+    Poseer(sujeto == $perseo, poseido == $escudoBronce)
+    FavoreceA(sujeto == $hefesto, favorecido == $perseo)
 then
-    mensajes.add("Perseo obtiene la capacidad de Reflexión debido al Escudo Espejo.");
-end
-
-rule "Obtiene Invisibilidad con Casco de Hades"
-when
-    $perseo : Heroe(nombre == "Perseo")
-    $cascoHades : Objeto(nombre == "Casco de Hades", capacidadDe == "Invisibilidad")
-    Poseer(sujeto == $perseo, poseido == $cascoHades)
-then
-    mensajes.add("Perseo obtiene la capacidad de Invisibilidad debido al Casco de Hades.");
+    mensajes.add("Perseo obtiene el Escudo Espejo gracias al favor de Hefesto, que pule el Escudo de Bronce");
+    insert(new Poseer($perseo ,new Objeto("Escudo Espejo", "Reflexion")));
+    retract($escudoBronce);
+    
+    
 end
 
 
-rule "Obtiene Capacidad de Vuelo con Sandalias Aladas"
-when
-    $perseo : Heroe(nombre == "Perseo")
-    $sandaliasAladas : Objeto(nombre == "Sandalias Aladas", capacidadDe == "Vuelo")
-    Poseer(sujeto == $perseo, poseido == $sandaliasAladas)
-then
-    mensajes.add("Perseo obtiene la capacidad de Vuelo debido a las Sandalias Aladas.");
-end
 
-*/
+
 
 
 rule "Localización de las Grayas por favores de Hermes y Atenea"
@@ -248,7 +170,7 @@ when
     $grayas : Dios(nombre == "Grayas")
     FavoreceA(sujeto == $hermes, favorecido == $perseo)
     FavoreceA(sujeto == $atenea, favorecido == $perseo)
-   FavoreceA(sujeto == $hades, favorecido == $perseo)
+    FavoreceA(sujeto == $hades, favorecido == $perseo)
     
 then
     mensajes.add("Perseo localiza a las Grayas debido a los favores de Hermes y Atenea.");
@@ -259,66 +181,59 @@ end
 rule "Obtiene Ojo/Diente de las Grayas usando invisibilidad"
 when
     $perseo : Heroe(nombre == "Perseo")
+    $ninfas : Criatura(nombre == "Ninfas")
     $grayas : Dios(nombre == "Grayas")
     $ojoGrayas : Objeto(nombre == "Ojo de Grayas")
+    $poseeGrayas : Poseer(sujeto == $grayas, poseido == $ojoGrayas)
     $cascoHades : Objeto(nombre == "Casco de Hades")
     Localizar(sujeto == $perseo, persLocalizado  == $grayas)
 	$perseoInvi : Poseer(sujeto == $perseo, poseido == $cascoHades)
 then
     mensajes.add("Perseo obtiene (roba) el Ojo/Diente de las Grayas debido a tener invisibilidad.");
+    retract($poseeGrayas);
+    insert(new Localizar($perseo, $ninfas));
     insert(new Poseer($perseo, $ojoGrayas));
 end
 
 
 
-rule "Localización de las Ninfas tras intercambio con las Grayas"
+rule "Obtencion Sandalias y Zurron tras localizar Ninfas"
 when
     $perseo : Heroe(nombre == "Perseo")
-    $grayas : Dios(nombre == "Grayas")
     $ninfas : Criatura(nombre == "Ninfas")
+   	$medusa : Criatura(nombre == "Medusa")
     $zurronMagico : Objeto(nombre == "Zurron Magico")
     $sandaliasAladas : Objeto(nombre == "Sandalias Aladas")
     $ojoGrayas : Objeto(nombre == "Ojo de Grayas")
+    $poseeNinfasZ : Poseer(sujeto == $ninfas, poseido == $zurronMagico)
+    $poseeNinfasS : Poseer(sujeto == $ninfas, poseido == $sandaliasAladas)
     Poseer(sujeto == $perseo, poseido == $ojoGrayas)
+    Localizar(sujeto == $perseo, persLocalizado == $ninfas )
 then
-    mensajes.add("Perseo localiza a las Ninfas tras el intercambio del Ojo de las Grayas.");
-    insert(new Localizar($perseo, $ninfas));
+    mensajes.add("Perseo localiza a las Ninfas tras el intercambio del Ojo de las Grayas. Obtiene el Zurron Magico y las Sandalias Aladas.");
+    retract($poseeNinfasZ);
+    retract($poseeNinfasS);
     insert(new Poseer($perseo, $zurronMagico));
     insert(new Poseer($perseo, $sandaliasAladas));
-  
+    insert(new Localizar($perseo, $medusa));
 end
 
-
-rule "Mata a Medusa usando Hoz de Acero, Espejo, Invisibilidad y Vuelo"
-when
-	$medusa : Criatura(nombre == "Medusa")
-    $perseo : Heroe(nombre == "Perseo")
-    $hozAcero : Objeto(nombre == "Hoz de Acero")
-    Poseer(sujeto == $perseo, poseido == $hozAcero)
-    $escudoEspejo : Objeto(nombre == "Escudo de Bronce")
-    Poseer(sujeto == $perseo, poseido == $escudoEspejo)
-    $cascoHades : Objeto(nombre == "Casco de Hades")
-    Poseer(sujeto == $perseo, poseido == $cascoHades)
-    $sandaliasAladas : Objeto(nombre == "Sandalias Aladas")
-    Poseer(sujeto == $perseo, poseido == $sandaliasAladas)
-then
-    mensajes.add("Perseo mata a Medusa usando Hoz de Acero, Espejo, Invisibilidad y Vuelo.");
-    insert(new Asesinar($perseo, $medusa));
-    insert(new Poseer($perseo, new Objeto("Cabeza de Medusa", "Petrificacion")));
-end
 
 rule "Perseo mata a Medusa"
 when
     $p : Heroe(nombre == "Perseo")
     $m : Criatura(nombre == "Medusa")
-    $obj1 : Poseer(sujeto == $p, poseido.capacidadDe == "Invisibilidad")
-    $obj2 : Poseer(sujeto == $p, poseido.capacidadDe == "Vuelo")
-    $obj3 : Poseer(sujeto == $p, poseido.capacidadDe == "Espejo")
-    $obj4 : Poseer(sujeto == $p, poseido.nombre == "Matar")
-    Localizar(sujeto == $p, persLocalizado == $m) // ---> Esta condición creo que os faltaba
-    not Muerto(afectado == $m) // Para evitar que la maten dos veces, por si en el futuro se generaliza la regla
+    
+    $obj1 : Poseer(sujeto == $p, capacidadDe   == "Invisibilidad")
+    $obj2 : Poseer(sujeto == $p, capacidadDe == "Vuelo")
+    $obj3 : Poseer(sujeto == $p, capacidadDe == "Reflexion")
+    $obj4 : Poseer(sujeto == $p, capacidadDe   == "Matar")
+    Localizar(sujeto == $p, persLocalizado == $m)
+
 then
     mensajes.add("Perseo mata a Medusa debido a tener Hoz de Acero, Espejo, Invisibilidad y Vuelo.");
+    insert(new Muerto($m));
+    retract($m);
 end
 
 
@@ -347,13 +262,11 @@ when
 	$andromedaPresa : Preso(afectado  == $andromeda)
     $cabezaMedusa : Objeto(nombre == "Cabeza de Medusa", capacidadDe == "Petrificacion")
     Poseer(sujeto == $perseo, poseido == $cabezaMedusa)
-    Preso(afectado == $andromeda)
 then
     mensajes.add("Perseo mata a Ceto usando la Cabeza de Medusa y libera a Andrómeda.");
     retract($andromedaPresa);
     retract($cetoLibre);
     insert(new Muerto($ceto));
-    retract($ceto);
     insert(new Libre($andromeda));
 end
 
@@ -368,140 +281,6 @@ end
 
 
 
-
-
-/**
-rule "Liberar Andromeda"
-when
-    $cond1: Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Atenea")
-    $cond2: Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Hermes")
-    $cond3: Condicion(sujeto == "Casiopea", tipoCondicion == "enojo", objetivo == "Poseidon")
-then
-    mensajes.add("Si, Perseo puede liberar a Andromeda debido a tener el favor de Atenea, Hermes, y el enojo de Poseidon.");
-end
-
-rule "Favor de Atenea"
-when
-    Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Atenea")
-then
-    mensajes.add("Perseo tiene el favor de Atenea.");
-    // Insertar lógica adicional si el favor de Atenea concede algún objeto o ventaja
-end
-
-rule "Favor de Hermes"
-when
-    Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Hermes")
-then
-    mensajes.add("Perseo tiene el favor de Hermes.");
-    // Lógica para conceder objetos o capacidades si Hermes está a favor de Perseo
-end
-
-rule "Favor de Hades"
-when
-    Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Hades")
-then
-    mensajes.add("Perseo tiene el favor de Hades.");
-    // Hades podría proporcionar el casco de invisibilidad
-end
-
-rule "Enojo de Poseidón hacia Casiopea"
-when
-    Condicion(sujeto == "Casiopea", tipoCondicion == "enojo", objetivo == "Poseidon")
-then
-    mensajes.add("Poseidón está enojado con Casiopea y libera a Ceto.");
-    // Liberar a Ceto como consecuencia
-end
-
-// Reglas para obtención de objetos
-rule "Perseo obtiene Escudo de Bronce"
-when
-    Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Atenea")
-then
-    mensajes.add("Perseo obtiene el Escudo de Bronce de Atenea.");
-    // Lógica para añadir el Escudo de Bronce a los objetos de Perseo
-end
-
-rule "Perseo obtiene Hoz de Acero de Hermes"
-when
-    Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Hermes")
-then
-    mensajes.add("Perseo obtiene la Hoz de Acero de Hermes.");
-    // Lógica para añadir la Hoz de Acero a Perseo
-end
-
-rule "Perseo obtiene Casco de Invisibilidad de Hades"
-when
-    Condicion(sujeto == "Perseo", tipoCondicion == "favor", objetivo == "Hades")
-then
-    mensajes.add("Perseo obtiene el Casco de Invisibilidad de Hades.");
-    // Lógica para añadir el Casco de Invisibilidad a Perseo
-end
-
-// Regla para definir capacidades basadas en objetos
-rule "Perseo obtiene Capacidad Invisibilidad"
-when
-    $condicion: Condicion(sujeto == "Perseo", tipoCondicion == "posee", objetivo == "Casco de Invisibilidad")
-then
-    mensajes.add("Perseo obtiene la capacidad de Invisibilidad gracias al Casco de Hades.");
-end
-
-rule "Perseo obtiene Capacidad Vuelo"
-when
-    $condicion: Condicion(sujeto == "Perseo", tipoCondicion == "posee", objetivo == "Sandalias Aladas")
-then
-    mensajes.add("Perseo obtiene la capacidad de Volar gracias a las Sandalias Aladas.");
-end
-
-// Reglas para liberar a Andrómeda
-rule "Liberar a Andromeda - Perseo con Cabeza de Medusa y Ceto libre"
-when
-    Condicion(sujeto == "Perseo", tipoCondicion == "posee", objetivo == "Cabeza de Medusa")
-    Condicion(sujeto == "Ceto", tipoCondicion == "estado", objetivo == "libre")
-then
-    mensajes.add("Perseo puede liberar a Andrómeda al petrificar a Ceto con la Cabeza de Medusa.");
-    // Lógica para liberar a Andrómeda
-end
-
-// Ejemplo de regla alternativa si el héroe posee otra capacidad o medio de vuelo
-rule "Perseo usa Pegaso para volar"
-when
-    Condicion(sujeto == "Perseo", tipoCondicion == "posee", objetivo == "Pegaso")
-then
-    mensajes.add("Perseo puede volar gracias a Pegaso.");
-    // Perseo obtiene la capacidad de vuelo
-end
-
-// Regla para matar a Medusa (con condiciones de vuelo, invisibilidad y arma)
-rule "Matar a Medusa"
-when
-    Condicion(sujeto == "Perseo", tipoCondicion == "capacidad", objetivo == "Invisibilidad")
-    Condicion(sujeto == "Perseo", tipoCondicion == "capacidad", objetivo == "Vuelo")
-    Condicion(sujeto == "Perseo", tipoCondicion == "posee", objetivo == "Hoz de Acero")
-then
-    mensajes.add("Perseo puede matar a Medusa usando la Hoz de Acero, vuelo e invisibilidad.");
-    // Añadir lógica para cambiar el estado de Medusa a muerta
-end
-
-// Regla para obtener Cabeza de Medusa tras matar a Medusa
-rule "Obtener Cabeza de Medusa"
-when
-    Condicion(sujeto == "Medusa", tipoCondicion == "estado", objetivo == "muerta")
-    Condicion(sujeto == "Perseo", tipoCondicion == "capacidad", objetivo == "Vuelo")
-then
-    mensajes.add("Perseo obtiene la Cabeza de Medusa después de matar a Medusa.");
-    // Añadir la Cabeza de Medusa a los objetos de Perseo
-end
-
-// Regla general para liberar a un personaje si su captor ha sido vencido
-rule "Liberar personaje capturado"
-when
-    $captor: Condicion(sujeto == "Ceto", tipoCondicion == "estado", objetivo == "muerto")
-then
-    mensajes.add("Andrómeda es liberada porque Ceto ha sido derrotado.");
-    // Cambiar el estado de Andrómeda a libre
-end
-
-**/
 
 
 

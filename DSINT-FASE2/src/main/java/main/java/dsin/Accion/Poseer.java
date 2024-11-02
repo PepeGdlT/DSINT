@@ -19,8 +19,15 @@ public class Poseer extends Accion {
 		return poseido;
 	}
 
-
-
+    public String getCapacidadDe() {
+    	return poseido.getCapacidadDe();
+    }
+    
+    public String getNombre() {
+    	return poseido.getNombre();
+    }
+    
+    
 	@Override
     public String toString() {
         return super.toString() + " Poseer{" +

@@ -33,7 +33,7 @@ end
 rule "0.02 Creación de Objetos Especiales"
 agenda-group  "iniciales"
 then
-    insert(new Objeto("Escudo de Bronce", "Reflexion"));
+    insert(new Objeto("Escudo de Bronce", "Pulir"));
     insert(new Objeto("Hoz de Acero", "Matar"));
     insert(new Objeto("Casco de Hades", "Invisibilidad"));
     insert(new Objeto("Zurron Magico", "Guardar cabeza Medusa"));
@@ -74,14 +74,16 @@ when
     $hermes : Dios(nombre == "Hermes")
     $hefesto : Dios(nombre == "Hefesto")        
     $grayas : Dios(nombre == "Grayas")  
-    
+    $ninfas : Criatura(nombre == "Ninfas")   
     
     $escudoBronce : Objeto(nombre == "Escudo de Bronce")
     $cascoHades : Objeto(nombre == "Casco de Hades")
     $hozAcero : Objeto(nombre == "Hoz de Acero")
     $espadaIndestructible : Objeto(nombre == "Espada Indestructible")
     $bridasOro : Objeto(nombre == "Bridas de Oro")
-    
+    $ojoGrayas : Objeto(nombre == "Ojo de Grayas")
+    $zurron : Objeto(nombre == "Zurron Magico")
+    $sandalias : Objeto(nombre == "Sandalias Aladas")    
     
     
     
@@ -91,6 +93,7 @@ then
     insert(new Poseer($hefesto, $espadaIndestructible)); 
     insert(new Poseer($atenea, $escudoBronce));
     insert(new Poseer($hefesto, $bridasOro));
-    
-
+    insert(new Poseer($grayas, $ojoGrayas));
+    insert(new Poseer($ninfas, $zurron));   
+    insert(new Poseer($ninfas, $sandalias));   
 end
