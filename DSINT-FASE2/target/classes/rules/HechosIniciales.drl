@@ -4,62 +4,57 @@ import main.java.dsin.Objeto.*;
 import main.java.dsin.Accion.*;
 import main.java.dsin.Personaje.*;
 import main.java.dsin.Estado.*;
-
-
 // Creación de personajes sin estado
 rule "0.01 Creación de Personajes Principales"
-agenda-group  "iniciales"
+agenda-group "iniciales"
 then
-    insert(new Heroe("Perseo"));
-    
-    insert(new Humano("Andromeda"));
-    
-    insert(new Dios("Poseidon"));
-    insert(new Dios("Hades"));
-    insert(new Dios("Atenea"));
-    insert(new Dios("Hermes"));
-    insert(new Dios("Hefesto"));
-    insert(new Dios("Grayas"));
-    
-    insert(new Humano("Casiopea"));
-    
-    insert(new Criatura("Medusa"));
-    insert(new Criatura("Ninfas"));
-    insert(new Criatura("Ceto"));
-
+    insert(new Heroe(Constantes.PERSEO));
+    insert(new Humano(Constantes.ANDROMEDA));
+    insert(new Dios(Constantes.POSEIDON));
+    insert(new Dios(Constantes.HADES));
+    insert(new Dios(Constantes.ATENEA));
+    insert(new Dios(Constantes.HERMES));
+    insert(new Dios(Constantes.HEFESTO));
+    insert(new Dios(Constantes.GRAYAS));
+    insert(new Humano(Constantes.CASIOPEA));
+    insert(new Criatura(Constantes.MEDUSA));
+    insert(new Semidios(Constantes.LAS_NINFAS));
+    insert(new Criatura(Constantes.CETO));
 end
 
 // Creación de objetos sin asignación de posesión
 rule "0.02 Creación de Objetos Especiales"
-agenda-group  "iniciales"
+agenda-group "iniciales"
 then
-    insert(new Objeto("Escudo de Bronce", "Pulir"));
-    insert(new Objeto("Hoz de Acero", "Matar"));
-    insert(new Objeto("Casco de Hades", "Invisibilidad"));
-    insert(new Objeto("Zurron Magico", "Guardar cabeza Medusa"));
-    insert(new Objeto("Sandalias Aladas", "Vuelo"));
-    insert(new Objeto("Espada Indestructible",  "Matar"));
-    insert(new Objeto("Bridas de Oro",  "Atrapar Pegaso"));
-    insert(new Objeto("Ojo de Grayas",  "Intercambiar por informacion"));
-    
+    insert(new Objeto(Constantes.ESCUDO_DE_BRONCE, Constantes.CAPACIDAD_PULIR));
+    insert(new Objeto(Constantes.HOZ_DE_ACERO, Constantes.CAPACIDAD_MATAR));
+    insert(new Objeto(Constantes.CASCO_DE_HADES, Constantes.CAPACIDAD_INVISIBILIDAD));
+    insert(new Objeto(Constantes.ZURRON_MAGICO, Constantes.CAPACIDAD_GUARDAR_CABEZA_MEDUSA));
+    insert(new Objeto(Constantes.SANDALIAS_ALADAS, Constantes.CAPACIDAD_VUELO));
+    insert(new Objeto(Constantes.ESPADA_INDESTRUCTIBLE, Constantes.CAPACIDAD_MATAR));
+    insert(new Objeto(Constantes.BRIDAS_DE_ORO, Constantes.CAPACIDAD_ATRAPAR_PEGASO));
+    insert(new Objeto(Constantes.OJO_DE_GRAYAS, Constantes.CAPACIDAD_INTERCAMBIO_INFORMACION));
+    insert(new Objeto(Constantes.ANILLO_DE_INVISIBILIDAD, Constantes.CAPACIDAD_INVISIBILIDAD));
+    insert(new Objeto(Constantes.ESPEJO_DE_MANO, Constantes.CAPACIDAD_REFLEXION));
+    insert(new Objeto(Constantes.CONJURO_DE_VUELO, Constantes.CAPACIDAD_VUELO));
 end
 
 // Asignación de estados iniciales a personajes
 rule "0.03 Estado inicial: Ceto Preso y Andromeda Libre"
-agenda-group  "iniciales"
+agenda-group "iniciales"
 when
-    $ceto : Criatura(nombre == "Ceto")
-    $andromeda : Humano(nombre == "Andromeda")
+    $ceto : Criatura(nombre == Constantes.CETO)
+    $andromeda : Humano(nombre == Constantes.ANDROMEDA)
 then
     insert(new Preso($ceto));        
     insert(new Libre($andromeda)); 
 end
 
 rule "0.04 Estado inicial: Perseo y Casiopea Libres"
-agenda-group  "iniciales"
+agenda-group "iniciales"
 when
-    $perseo : Heroe(nombre == "Perseo")
-    $casiopea : Humano(nombre == "Casiopea")
+    $perseo : Heroe(nombre == Constantes.PERSEO)
+    $casiopea : Humano(nombre == Constantes.CASIOPEA)
 then
     insert(new Libre($perseo));      
     insert(new Libre($casiopea));    
@@ -67,26 +62,23 @@ end
 
 // Relaciones iniciales de posesión
 rule "0.05 Relaciones Iniciales de Posesión"
-agenda-group  "iniciales"
+agenda-group "iniciales"
 when
-    $hades : Dios(nombre == "Hades")
-    $atenea : Dios(nombre == "Atenea")
-    $hermes : Dios(nombre == "Hermes")
-    $hefesto : Dios(nombre == "Hefesto")        
-    $grayas : Dios(nombre == "Grayas")  
-    $ninfas : Criatura(nombre == "Ninfas")   
+    $hades : Dios(nombre == Constantes.HADES)
+    $atenea : Dios(nombre == Constantes.ATENEA)
+    $hermes : Dios(nombre == Constantes.HERMES)
+    $hefesto : Dios(nombre == Constantes.HEFESTO)        
+    $grayas : Dios(nombre == Constantes.GRAYAS)  
+    $ninfas : Semidios(nombre == Constantes.LAS_NINFAS)   
     
-    $escudoBronce : Objeto(nombre == "Escudo de Bronce")
-    $cascoHades : Objeto(nombre == "Casco de Hades")
-    $hozAcero : Objeto(nombre == "Hoz de Acero")
-    $espadaIndestructible : Objeto(nombre == "Espada Indestructible")
-    $bridasOro : Objeto(nombre == "Bridas de Oro")
-    $ojoGrayas : Objeto(nombre == "Ojo de Grayas")
-    $zurron : Objeto(nombre == "Zurron Magico")
-    $sandalias : Objeto(nombre == "Sandalias Aladas")    
-    
-    
-    
+    $escudoBronce : Objeto(nombre == Constantes.ESCUDO_DE_BRONCE)
+    $cascoHades : Objeto(nombre == Constantes.CASCO_DE_HADES)
+    $hozAcero : Objeto(nombre == Constantes.HOZ_DE_ACERO)
+    $espadaIndestructible : Objeto(nombre == Constantes.ESPADA_INDESTRUCTIBLE)
+    $bridasOro : Objeto(nombre == Constantes.BRIDAS_DE_ORO)
+    $ojoGrayas : Objeto(nombre == Constantes.OJO_DE_GRAYAS)
+    $zurron : Objeto(nombre == Constantes.ZURRON_MAGICO)
+    $sandalias : Objeto(nombre == Constantes.SANDALIAS_ALADAS)
 then
     insert(new Poseer($hades, $cascoHades));   
     insert(new Poseer($hermes, $hozAcero));   

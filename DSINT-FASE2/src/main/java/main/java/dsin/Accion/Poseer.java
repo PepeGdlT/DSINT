@@ -20,6 +20,7 @@ public class Poseer extends Accion {
 	}
 
     public String getCapacidadDe() {
+    	
     	return poseido.getCapacidadDe();
     }
     

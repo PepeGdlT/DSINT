@@ -11,6 +11,7 @@ import org.kie.api.logger.KieRuntimeLogger;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieRuntime;
 import org.kie.api.runtime.KieSession;
+import rules.Constantes;
 
 public class DroolsTest {
 
@@ -43,7 +44,7 @@ public class DroolsTest {
                 // Insertar hechos en Drools
                 agregarHechos(kSession, generatedFacts);
                 
-                //kSession.getFactHandles().stream().forEach(n -> System.out.println(n.toString()));
+                kSession.getFactHandles().stream().forEach(n -> System.out.println(n.toString()));
              
                 
                 
