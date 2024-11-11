@@ -17,7 +17,7 @@ global List<String> mensajes;
 		/*
 		 - Cambiar ninfas a semidiosas  - CHECK
 	     - Generalizacion de heroe - CHECK
-		 - Los personajes no se hacen retract, se meten en Muerto y se comprueba con no - 
+		 - Los personajes no se hacen retract, se meten en Muerto y se comprueba con no - CHECK
 		 - Regla lootear - 
 		*/
 
@@ -56,9 +56,9 @@ when
 	$asesina : Asesinar(sujeto == $sujeto, asesinado == $asesinado)
 	
 then 
-	mensajes.add($asesinado.getNombre() +" ha muerto a manos de " + $asesinado.getNombre());
+	mensajes.add($asesinado.getNombre() +" ha muerto a manos de " + $sujeto.getNombre()+ ".");
 	insert(new Muerto($asesinado));
-	retract($asesinado);
+	//REGLAS PARA LOOTEAR
 end
 
 
@@ -71,30 +71,23 @@ when
     $poseeDios : Poseer(sujeto == $dios, poseido == $objeto)
     FavoreceA(sujeto == $dios, favorecido == $heroe)
 then
-    mensajes.add($heroe.getNombre() +" obtiene "+ $objeto.getNombre() +" debido al favor de "+ $dios.getNombre());
+    mensajes.add($heroe.getNombre() +" obtiene "+ $objeto.getNombre() +" debido al favor de "+ $dios.getNombre()+ ".");
     retract($poseeDios)
     insert(new Poseer($heroe, $objeto));
     
 end
 
-//REGLAS SEMIESPECIFICAS---------------------------------------------------------------------------------------------------------------------
 
-rule "Liberar a Andromeda con objeto de petrificación matando a Ceto"
+rule "Heroe muere"
 when
-    $heroe : Heroe()
-    $ceto : Criatura(nombre == Constantes.CETO)
-    $andromeda : Humano(nombre == Constantes.ANDROMEDA)
-    $andromedaPresa : Preso(afectado == $andromeda)
-
-    $objPetrificar : Objeto(capacidadDe == Constantes.CAPACIDAD_PETRIFICACION)
-    Poseer(sujeto == $heroe, poseido == $objPetrificar)
+	$sujeto : Heroe()
+	$muerto : Muerto(afectado == $sujeto)
 then
-    mensajes.add($heroe.getNombre() + " libera a Andromeda usando el/la "+$objPetrificar.getNombre()+" matando a Ceto.");
-    insert(new Muerto($ceto));
-    insert(new Libre($andromeda));
-    retract($andromeda);
+	mensajes.add($sujeto.getNombre() + "ha muerto. Fin de la historia.");
+	retract($sujeto);
 end
 
+//REGLAS SEMIESPECIFICAS---------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -105,6 +98,7 @@ rule "Enojo de Poseidon hacia Casiopea"
 when
     $poseidon : Dios(nombre == Constantes.POSEIDON)
     $casiopea : Humano(nombre == Constantes.CASIOPEA)
+    $casiopeaLibre : Libre(afectado == $casiopea)
     $ceto : Criatura(nombre == Constantes.CETO)
     $cetoPreso : Preso(afectado == $ceto) 
 
@@ -121,8 +115,9 @@ when
     $ceto : Criatura(nombre == Constantes.CETO)
     $andromedaLibre : Libre(afectado == $andromeda)
 	$cetoLibre : Libre(afectado == $ceto)
+	not Muerto( afectado ==  $ceto )
 then
-    mensajes.add("Andrómeda queda presa debido a que Ceto está libre.");
+    mensajes.add("Andromeda queda presa debido a que Ceto esta libre y la captura.");
     retract($andromedaLibre);
     insert(new Preso($andromeda));
 end
@@ -137,7 +132,7 @@ when
     Poseer(sujeto == $heroe, poseido == $escudoBronce)
     FavoreceA(sujeto == $hefesto, favorecido == $heroe)
 then
-    mensajes.add( $heroe.getNombre() + " obtiene el Escudo Espejo gracias al favor de Hefesto, que pule el Escudo de Bronce");
+    mensajes.add( $heroe.getNombre() + " obtiene el Escudo Espejo gracias al favor de Hefesto, que pule el Escudo de Bronce.");
     insert(new Poseer($heroe ,new Objeto("Escudo Espejo", "Reflexion")));
     retract($escudoBronce);
     
@@ -171,7 +166,7 @@ when
     $poseeOjo : Poseer(sujeto == $heroe, poseido == $ojoGrayas )
     $ninfas : Semidios(nombre == Constantes.LAS_NINFAS)
 then
-    mensajes.add($heroe.getNombre()+" localiza a las Ninfas tras chantajear a las Grayas");
+    mensajes.add($heroe.getNombre()+" localiza a las Ninfas tras chantajear a las Grayas.");
     //Posible implementacion de intercambio???
     retract($poseeOjo);
     insert(new Poseer($grayas, $ojoGrayas));
@@ -204,6 +199,7 @@ when
     $sandaliasAladas : Objeto(nombre == Constantes.SANDALIAS_ALADAS)
     $poseeNinfasS : Poseer(sujeto == $ninfas, poseido == $sandaliasAladas)
     Localizar(sujeto == $heroe, persLocalizado == $ninfas )
+    not Muerto(afectado == $medusa)
 then
     mensajes.add($heroe.getNombre() + " localiza a las Ninfas tras el intercambio del Ojo de las Grayas. Obtiene las Sandalias Aladas.");
     retract($poseeNinfasS);
@@ -221,11 +217,12 @@ when
     $zurronMagico : Objeto(nombre == Constantes.ZURRON_MAGICO)
     $poseeNinfasZ : Poseer(sujeto == $ninfas, poseido == $zurronMagico)
     Localizar(sujeto == $heroe, persLocalizado == $ninfas )
+    not Muerto(afectado == $medusa)
+    
 then
-    mensajes.add($heroe.getNombre() + " localiza a las Ninfas tras el intercambio del Ojo de las Grayas. Obtiene el Zurron Magico");
+    mensajes.add($heroe.getNombre() + " localiza a las Ninfas tras el intercambio del Ojo de las Grayas. Obtiene el Zurron Magico.");
     retract($poseeNinfasZ);
     insert(new Poseer($heroe, $zurronMagico));
-    //insert(new Localizar($heroe, $medusa));
 end
 
 
@@ -239,7 +236,7 @@ end
 
 
 
-rule "Perseo mata a Medusa"
+rule "Heroe mata a Medusa"
 when
     $heroe : Heroe()
     $m : Criatura(nombre == "Medusa")
@@ -248,14 +245,14 @@ when
     $obj2 : Poseer(sujeto == $heroe, capacidadDe == Constantes.CAPACIDAD_VUELO)
     $obj3 : Poseer(sujeto == $heroe, capacidadDe == Constantes.CAPACIDAD_REFLEXION)
     $obj4 : Poseer(sujeto == $heroe, capacidadDe   == Constantes.CAPACIDAD_MATAR)
-    //Localizar(sujeto == $heroe, persLocalizado == $m)
     not Muerto(afectado == $m)
 
 then
 	String objetos  = $obj1.getNombre() + ", " + $obj2.getNombre() + ", "+ $obj3.getNombre() + " y "+ $obj4.getNombre();
-    mensajes.add($heroe.getNombre() + " mata a Medusa debido a tener " + objetos);
+    mensajes.add($heroe.getNombre() + " mata a Medusa debido a tener " + objetos + ".");
+    insert(new Asesinar($heroe, $m));
+    //SI HACEMOS LOOTEAR SE QUITA
     insert(new Poseer($heroe, new Objeto(Constantes.CABEZA_DE_MEDUSA, Constantes.CAPACIDAD_PETRIFICACION)));
-    insert(new Muerto($m));
 end
 
 
@@ -269,28 +266,28 @@ when
     $zurronMagico : Objeto(nombre == Constantes.ZURRON_MAGICO)
     not Poseer(sujeto == $heroe, poseido == $zurronMagico)
 then
-	mensajes.add($heroe.getNombre() + " muerte al matar a Medusa y no guardar la cabeza en el Zurron Magico");
-	retract($heroe);
+	mensajes.add($heroe.getNombre() + " muerte al matar a Medusa y no guardar la cabeza en el Zurron Magico.");
+	insert(new Muerto($heroe));
 end
 
 
 
-rule "Mata a Ceto y libera a Andrómeda"
+rule "Liberar a Andromeda con objeto de petrificación matando a Ceto"
 when
     $heroe : Heroe()
     $ceto : Criatura(nombre == Constantes.CETO)
-    $cetoLibre : Libre(afectado  == $ceto)
+    $cetoLibre : Libre(afectado  == $ceto) 
     $andromeda : Humano(nombre == Constantes.ANDROMEDA)
-	$andromedaPresa : Preso(afectado  == $andromeda)
-    $petrificar : Objeto(capacidadDe == Constantes.CAPACIDAD_PETRIFICACION)
-    Poseer(sujeto == $heroe, poseido == $petrificar)
+    $andromedaPresa : Preso(afectado == $andromeda)
+    $objPetrificar : Poseer(sujeto == $heroe, capacidadDe== Constantes.CAPACIDAD_PETRIFICACION)
+    not Muerto( afectado == $ceto )
 then
-    mensajes.add("Perseo mata a Ceto usando la Cabeza de Medusa y libera a Andrómeda.");
-    retract($andromedaPresa);
-    retract($cetoLibre);
-    insert(new Muerto($ceto));
+    mensajes.add($heroe.getNombre() + " libera a Andromeda usando la "+$objPetrificar.getNombre()+" matando a Ceto.");
+    insert(new Asesinar($heroe, $ceto));
     insert(new Libre($andromeda));
 end
+
+
 
 
 

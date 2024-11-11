@@ -44,7 +44,7 @@ public class DroolsTest {
                 // Insertar hechos en Drools
                 agregarHechos(kSession, generatedFacts);
                 
-                kSession.getFactHandles().stream().forEach(n -> System.out.println(n.toString()));
+                //kSession.getFactHandles().stream().forEach(n -> System.out.println(n.toString()));
              
                 
                 
