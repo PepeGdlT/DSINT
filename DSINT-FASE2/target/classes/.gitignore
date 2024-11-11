@@ -1,9 +1,3 @@
-/META-INF/
-/Pregunta/
-/Respuesta/
+/rules/
 /RespuestaGen/
 /com/
-/logback-test.xml
-/main/
-/rules/
-/slf4j-simple-1.7.26.jar

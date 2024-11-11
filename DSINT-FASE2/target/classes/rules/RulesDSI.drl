@@ -20,6 +20,11 @@ global List<String> mensajes;
 		 - Los personajes no se hacen retract, se meten en Muerto y se comprueba con no - CHECK
 		 - Regla lootear - 
 		*/
+	//TODO 
+		/*
+		-tenemos que implementar la clase apresar, es necersaria para la pase 3
+		-generalizar mas reglas para poder mezclar los mitos
+		*/
 
 //LOS ESTADOS Y ACCIONES DEBEN IR CON INSTANCIAS DE PERSONAJES
 
