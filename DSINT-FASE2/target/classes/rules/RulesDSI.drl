@@ -95,6 +95,59 @@ then
 	retract($sujeto);
 end
 
+rule "0.6.1 Liberar personaje"
+when 
+	$libertador : Personaje()
+	$liberado : Personaje()
+	$libera : Liberar(sujeto == $libertador, liberado == $liberado)
+	$preso : Preso(afectado==$liberado)
+then 
+	retract($preso);
+	insert(new Libre($liberado));
+end
+
+rule "0.6.2 Liberar personaje apresado"
+when 
+	$libertador : Personaje()
+	$liberado : Personaje()
+	$apresador : Personaje()
+	$libera : Liberar(sujeto == $libertador, liberado == $liberado)
+	$apresa : Apresar(sujeto == $apresador, apresado ==$liberado)
+	$preso : Preso(afectado==$liberado)
+then 
+	retract($apresa);
+	retract($preso);
+	insert(new Libre($liberado));
+end
+
+rule "0.7.1 Apresar personaje"
+when
+	$apresado : Personaje()
+	$apresador : Personaje()
+	Apresar(sujeto == $apresador, apresado ==$apresado)
+	$libre : Libre(afectado==$apresado)
+then
+	retract($libre);
+	insert(new Preso($apresado));
+end
+rule "0.7.2 Apresar personaje que ha sido previamente liberado"
+when
+	$apresado : Personaje()
+	$apresador : Personaje()
+	$libertador : Personaje()
+	Apresar(sujeto == $apresador, apresado ==$apresado)
+	$libera : Liberar(sujeto == $libertador, liberado == $apresado)
+	$libre : Libre(afectado==$apresado)
+then
+	retract($libre);
+	retract($libera);
+	insert(new Preso($apresado));
+	
+end
+	
+	
+	
+
 
 
 
@@ -103,7 +156,62 @@ end
 // REGLAS SEMIESPECIFICA ---------------------------------------------------------------------------------------------------------------------
 
 
-rule "2.1 Heroe escapa del laberinto con el hilo matando al minotauro"
+rule "2.1.1.1 Heroe escapa del laberinto con el hilo tras matar al minotauro"
+when
+	$h : Heroe()
+	$minos :  Humano( nombre ==  Constantes.MINOS  )
+	$icaro : Humano( nombre ==  Constantes.ICARO  )
+	$dedalo : Humano( nombre ==  Constantes.DEDALO  )
+	$hPreso : Preso(afectado == $h) 
+	$minotauro : Criatura( nombre ==  Constantes.MINOTAURO)
+	Poseer(nombre == $h, poseido == Constantes.HILO_ARIADNA)
+	Asesinar(sujeto == $h, asesinado ==  $minotauro)
+then
+	mensajes.add($h.getNombre()+" escapa del laberinto con el Hilo de Ariadna.");
+	insert (new TieneEnojoCon( $minos, $icaro));
+	insert (new TieneEnojoCon( $minos, $dedalo));
+	insert(new Liberar($h, $h));
+	insert(new Liberar($h, new Humano("acoplados")));
+end
+
+rule "2.1.1.2 Escapa junto al heroe gracias al hilo"
+when
+	$h : Heroe()
+	$minos :  Humano( nombre ==  Constantes.MINOS )
+	$hLibre : Liberar(sujeto == $h, liberado== $h)
+	$minotauro : Criatura( nombre ==  Constantes.MINOTAURO)
+	Poseer(nombre == $h, poseido == Constantes.HILO_ARIADNA)
+	Asesinar(sujeto == $h, asesinado ==  $minotauro)
+	$acoplado: Personaje()
+	Apresar(sujeto == $minos, apresado==$acoplado)
+	
+	//Para que pare cuando libere a todos creamos esto para despues eliminarlo
+	$acoplados : Humano(nombre=="acoplados")
+	Liberar(sujeto==$h, liberado==$acoplados)
+then
+	mensajes.add($acoplado.getNombre() + " escapa junto a " + $h.getNombre())
+	insert(new Liberar($h, $acoplado));
+end
+
+rule "2.1.1.3 STOP Escapa junto al heroe gracias al hilo"
+when
+	$h : Heroe()
+	$minos :  Humano( nombre ==  Constantes.MINOS  )
+	$hLibre : Liberar(sujeto == $h, liberado== $h)
+	$minotauro : Criatura( nombre ==  Constantes.MINOTAURO)
+	Poseer(nombre == $h, poseido == Constantes.HILO_ARIADNA)
+	Asesinar(sujeto == $h, asesinado ==  $minotauro)
+	$acoplado: Personaje()
+	not Apresar(sujeto == $minos, apresado==$acoplado)
+	$acoplados : Humano(nombre=="acoplados")
+	$libAcoplados : Liberar(sujeto==$h, liberado==$acoplados)
+then
+	retract($libAcoplados)
+end
+
+
+
+rule "2.1.2 Heroe escapa del laberinto con vuelo tras matar al minotauro"
 when
 	$h : Heroe()
 	$minos :  Humano( nombre ==  Constantes.MINOS  )
@@ -111,13 +219,14 @@ when
 	$dedalo : Humano( nombre ==  Constantes.DEDALO  )
 	$hLibre : Libre(afectado == $h)
 	$minotauro : Criatura( nombre ==  Constantes.MINOTAURO)
-	Poseer(nombre == $h, poseido == Constantes.HILO_ARIADNA)
+	$objvuelo : Poseer(nombre == $h, poseido.capacidadDe == Constantes.CAPACIDAD_VUELO)
 	Asesinar(sujeto == $h, asesinado ==  $minotauro)
 then
-	mensajes.add("Icaro y Dedalo quedan presos en el laberinto de Minos");
+	mensajes.add($h.getNombre()+" escapa del laberinto con "+objvuelo.getNombre() );
 	insert (new TieneEnojoCon( $minos, $icaro));
 	insert (new TieneEnojoCon( $minos, $dedalo));
-	//liberamos los apresados por MINOS
+	insert(new Liberar($h, $h));
+
 end
 //SE PUEDE ESCAPAR CON VUELO
 
@@ -127,7 +236,8 @@ when
 	$minos : Humano(nombre == Constantes.MINOS)
 	TieneEnojoCon( sujeto == $minos, enojado == $p  )
 then
-	mensajes.add($p + " ha sido apresado en el laberinto de Minos");
+	mensajes.add($p.getNombre() + " ha sido apresado en el laberinto de Minos");
+	insert(new Apresar($minos, $p);
 	insert(new Preso($p));
 end
 
@@ -147,23 +257,8 @@ when
 then
     mensajes.add("Ceto queda libre debido al enojo de Poseidon hacia Casiopea.");
     retract($cetoPreso);
-    insert(new Libre($ceto));
+    insert(new Liberar($poseidon, $ceto));
 end
-
-rule "1.2.2 Andromeda capturada por Ceto"
-when
-    $andromeda : Humano(nombre == Constantes.ANDROMEDA)
-    $ceto : Criatura(nombre == Constantes.CETO)
-    $andromedaLibre : Libre(afectado == $andromeda)
-	$cetoLibre : Libre(afectado == $ceto)
-	not Muerto( afectado ==  $ceto )
-then
-    mensajes.add("Andromeda queda presa debido a que Ceto esta libre y la captura.");
-    retract($andromedaLibre);
-    insert(new Preso($andromeda));
-end
-
-
 
 rule "1.2.3 Obtiene Capacidad de Reflexión con Escudo Espejo"
 when
@@ -380,43 +475,50 @@ then
 end
 
 
+rule "1.2.11.1 Andromeda capturada por Ceto"
+when
+    $andromeda : Humano(nombre == Constantes.ANDROMEDA)
+    $ceto : Criatura(nombre == Constantes.CETO)
+    $andromedaLibre : Libre(afectado == $andromeda)
+	$cetoLibre : Libre(afectado == $ceto)
+	not Muerto( afectado ==  $ceto )
+then
+    mensajes.add("Andromeda queda presa debido a que Ceto esta libre y la captura.");
+    insert (new Apresar($ceto, $andromeda))
+end
 
 
-
-rule "1.2.11 Liberar a Andromeda con objeto de petrificación matando a Ceto"
+rule "1.2.11.2 Liberar a Andromeda con objeto de petrificación matando a Ceto"
 when
     $heroe : Heroe()
     $ceto : Criatura(nombre == Constantes.CETO)
-    $cetoLibre : Libre(afectado  == $ceto) 
     $andromeda : Humano(nombre == Constantes.ANDROMEDA)
-    $andromedaPresa : Preso(afectado == $andromeda)
+    $andromedaPresa : Apresar(sujeto==$ceto, afectado == $andromeda)
     $objPetrificar : Poseer(sujeto == $heroe, capacidadDe== Constantes.CAPACIDAD_PETRIFICACION)
     not Muerto( afectado == $ceto )
 then
     mensajes.add($heroe.getNombre() + " libera a Andromeda usando la "+$objPetrificar.getNombre()+" matando a Ceto.");
     insert(new Asesinar($heroe, $ceto));
-    insert(new Libre($andromeda));
+    insert(new Liberar($heroe,$andromeda));
 end
 
 
-
-rule " "
-when 
-then
-end
 
 
 rule "2.3 Muerte del minotauro"
 when 
 	$h : Heroe(  )
 	$minotauro : Criatura( nombre == Constantes.MINOTAURO)
+	$minos : Humano(nombre==Constantes.MINOS)
 	Poseer(sujeto == $h, capacidadDe == Constantes.CAPACIDAD_MATAR)
-	Preso(afectado == $h) // APRESADO POR MINOS
+	Apresar(sujeto==$minos, apresado==$h)
+	Preso(afectado == $h) 
 	not Muerto(afectado == $minotauro)
 then
-//mata minotauro
-
+	insert(new Asesinar($h, $minotauro)
 end
+
+
 
 
 
