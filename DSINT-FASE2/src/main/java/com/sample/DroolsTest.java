@@ -33,7 +33,10 @@ public class DroolsTest {
                 kSession.setGlobal("mensajes", mensajes); // Configurar la variable global
 
                 // Disparar reglas iniciales
-                kSession.getAgenda().getAgendaGroup("iniciales").setFocus();
+                kSession.getAgenda().getAgendaGroup("MITO1").setFocus();
+                kSession.fireAllRules(); // Dispara las reglas iniciales
+                
+                kSession.getAgenda().getAgendaGroup("MITO2").setFocus();
                 kSession.fireAllRules(); // Dispara las reglas iniciales
 
                 // Procesar el archivo de entrada

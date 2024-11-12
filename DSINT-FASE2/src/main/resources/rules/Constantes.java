@@ -57,5 +57,6 @@ public class Constantes {
     public static final String CAPACIDAD_INTERCAMBIO_INFORMACION = "Intercambiar por informacion";
     public static final String CAPACIDAD_REFLEXION = "Reflexion";
     public static final String CAPACIDAD_PETRIFICACION = "Petrificacion";
+    public static final String CAPACIDAD_ESCAPAR = "Escapar";
 
 }

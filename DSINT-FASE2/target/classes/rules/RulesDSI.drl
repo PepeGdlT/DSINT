@@ -18,13 +18,15 @@ global List<String> mensajes;
 		 - Cambiar ninfas a semidiosas  - CHECK
 	     - Generalizacion de heroe - CHECK
 		 - Los personajes no se hacen retract, se meten en Muerto y se comprueba con no - CHECK
-		 - Regla lootear - 
+
+	
 		*/
 	//TODO 
 		/*
-		-tenemos que implementar la clase apresar, es necersaria para la pase 3
+		-tenemos que implementar la clase CAPTURAR, es necersaria para la pase 3
 		-generalizar mas reglas para poder mezclar los mitos
 		-TERMINAR LOOTEAR!!!!!!
+		-CAMBIAR PRESO POR SUJETO Y APRESADO PARA APRESADO POR CRETO O MINOS
 		*/
 
 //LOS ESTADOS Y ACCIONES DEBEN IR CON INSTANCIAS DE PERSONAJES
@@ -32,7 +34,7 @@ global List<String> mensajes;
 
 // REGLAS PARA ACCIONES GENERALES
 //
-rule "Quitar Objeto"
+rule "0.1 Quitar Objeto"
 when
     $s : Personaje()
     $o : Objeto()
@@ -44,7 +46,7 @@ then
 end
 
 
-rule "Lootear al asesinado" 
+rule "0.2 Lootear al asesinado" 
 when 
 	$sujeto : Personaje()
 	$asesinado : Personaje()
@@ -55,7 +57,7 @@ then
 	//REGLAS PARA LOOTEAR
 end
 
-rule "Personaje asesina a otro" 
+rule "0.3 Personaje asesina a otro" 
 when 
 	$sujeto : Personaje()
 	$asesinado : Personaje()
@@ -69,7 +71,7 @@ end
 
 
 
-rule "Obtiene objeto por el favor de un dios"
+rule "0.4 Obtiene objeto por el favor de un dios"
 when
     $heroe : Heroe()
     $dios : Dios()
@@ -84,7 +86,7 @@ then
 end
 
 
-rule "Heroe muere"
+rule "0.5 Heroe muere"
 when
 	$sujeto : Heroe()
 	$muerto : Muerto(afectado == $sujeto)
@@ -95,9 +97,45 @@ end
 
 
 
+
+
+
+// REGLAS SEMIESPECIFICA ---------------------------------------------------------------------------------------------------------------------
+
+
+rule "2.1 Heroe escapa del laberinto con el hilo matando al minotauro"
+when
+	$h : Heroe()
+	$minos :  Humano( nombre ==  Constantes.MINOS  )
+	$icaro : Humano( nombre ==  Constantes.ICARO  )
+	$dedalo : Humano( nombre ==  Constantes.DEDALO  )
+	$hLibre : Libre(afectado == $h)
+	$minotauro : Criatura( nombre ==  Constantes.MINOTAURO)
+	Poseer(nombre == $h, poseido == Constantes.HILO_ARIADNA)
+	Asesinar(sujeto == $h, asesinado ==  $minotauro)
+then
+	mensajes.add("Icaro y Dedalo quedan presos en el laberinto de Minos");
+	insert (new TieneEnojoCon( $minos, $icaro));
+	insert (new TieneEnojoCon( $minos, $dedalo));
+	//liberamos los apresados por MINOS
+end
+//SE PUEDE ESCAPAR CON VUELO
+
+rule "2.2 Personaje en laberinto por el enfado de Minos"
+when
+	$p : Personaje()
+	$minos : Humano(nombre == Constantes.MINOS)
+	TieneEnojoCon( sujeto == $minos, enojado == $p  )
+then
+	mensajes.add($p + " ha sido apresado en el laberinto de Minos");
+	insert(new Preso($p));
+end
+
+
+
 // REGLAS ESPECIFICAS ---------------------------------------------------------------------------------------------------------------------
 
-rule "Enojo de Poseidon hacia Casiopea"
+rule "1.2.1 Enojo de Poseidon hacia Casiopea"
 when
     $poseidon : Dios(nombre == Constantes.POSEIDON)
     $casiopea : Humano(nombre == Constantes.CASIOPEA)
@@ -112,7 +150,7 @@ then
     insert(new Libre($ceto));
 end
 
-rule "Andromeda capturada por Ceto"
+rule "1.2.2 Andromeda capturada por Ceto"
 when
     $andromeda : Humano(nombre == Constantes.ANDROMEDA)
     $ceto : Criatura(nombre == Constantes.CETO)
@@ -127,7 +165,7 @@ end
 
 
 
-rule "Obtiene Capacidad de Reflexión con Escudo Espejo"
+rule "1.2.3 Obtiene Capacidad de Reflexión con Escudo Espejo"
 when
     $heroe : Heroe()
     $hefesto : Dios(nombre == Constantes.HEFESTO)
@@ -143,7 +181,7 @@ then
 end
 
 
-rule "Localización de las Grayas por favores de Hermes y Atenea"
+rule "1.2.4 Localización de las Grayas por favores de Hermes y Atenea"
 when
     $heroe : Heroe()
     $hermes : Dios(nombre == Constantes.HERMES)
@@ -159,7 +197,7 @@ end
 
 
 
-rule "Chantaje a las grayas para localizar a las ninfas"
+rule "1.2.5 Chantaje a las grayas para localizar a las ninfas"
 when
     $heroe : Heroe()
     $grayas : Dios(nombre == Constantes.GRAYAS)
@@ -177,7 +215,7 @@ then
     insert(new Localizar($heroe, $medusa));
 end
 
-rule "Robar ojo grayas"
+rule "1.2.6 Robar ojo grayas"
 when
 	$heroe : Heroe()
 	$grayas : Dios(nombre == Constantes.GRAYAS)
@@ -194,7 +232,7 @@ end
     
 
 
-rule "Obtencion Sandalias Aladas tras localizar Ninfas"
+rule "1.2.7.1 Obtencion Sandalias Aladas tras localizar Ninfas"
 when
     $heroe : Heroe()
     $ninfas : Semidios(nombre == Constantes.LAS_NINFAS)
@@ -207,12 +245,11 @@ then
     mensajes.add($heroe.getNombre() + " recibe de las Ninfas las Sandalias Aladas.");
     retract($poseeNinfasS);
     insert(new Poseer($heroe, $sandaliasAladas));
-    //insert(new Localizar($heroe, $medusa));
 end
 
 
 
-rule "Obtencion Zurron Magico tras localizar Ninfas"
+rule "1.2.7.2 Obtencion Zurron Magico tras localizar Ninfas"
 when
     $heroe : Heroe()
     $ninfas : Semidios(nombre == Constantes.LAS_NINFAS)
@@ -233,7 +270,7 @@ end
 
 
 //SUPERAR O MORIR, GORGONAS
-rule "Heroe evita  a las gorgonas"
+rule "1.2.8 Heroe evita  a las gorgonas"
 when
 	    $heroe : Heroe()
 	    $g : Criatura(nombre == Constantes.GORGONAS)
@@ -248,7 +285,7 @@ then
 		
 end
 
-rule "Heroe no evita  a las gorgonas"
+rule "1.2.9 Heroe no evita  a las gorgonas"
 when
 	    $heroe : Heroe()
 	    $g : Criatura(nombre == Constantes.GORGONAS)
@@ -264,7 +301,7 @@ end
 
 
 //SUPERAR O MORIR, MEDUSA
-rule "Heroe mata a Medusa"
+rule "1.2.10.1 Heroe mata a Medusa"
 when
     $heroe : Heroe()
     $m : Criatura(nombre == Constantes.MEDUSA)
@@ -284,7 +321,7 @@ then
     insert(new Poseer($heroe, new Objeto(Constantes.CABEZA_DE_MEDUSA, Constantes.CAPACIDAD_PETRIFICACION)));
 end
 
-rule "Lo mata medusa debido a que no tiene objeto reflexion"
+rule "1.2.10.2 Lo mata medusa debido a que no tiene objeto reflexion"
 when
 	$heroe : Heroe()
 	$medusa : Criatura(nombre == Constantes.MEDUSA)
@@ -300,7 +337,7 @@ then
 
 end
 
-rule "Lo mata medusa debido a que no tiene objeto matar"
+rule "1.2.10.3 Lo mata medusa debido a que no tiene objeto matar"
 when
 	$heroe : Heroe()
 	$medusa : Criatura(nombre == Constantes.MEDUSA)
@@ -317,7 +354,7 @@ then
 end
 
 
-rule "Muere debido a que no tiene el Zurron Magico"
+rule "1.2.10.4 Muere debido a que no tiene el Zurron Magico"
 when
 	$heroe : Heroe()
 	$medusa : Criatura(nombre == Constantes.MEDUSA)
@@ -330,7 +367,7 @@ then
 	insert(new Asesinar($medusa,$heroe));
 end
 
-rule "No puede volver a casa tras matar a Medusa"
+rule "1.2.10.5 No puede volver a casa tras matar a Medusa"
 when
 	$heroe : Heroe()
 	$medusa : Criatura(nombre == Constantes.MEDUSA)
@@ -346,7 +383,7 @@ end
 
 
 
-rule "Liberar a Andromeda con objeto de petrificación matando a Ceto"
+rule "1.2.11 Liberar a Andromeda con objeto de petrificación matando a Ceto"
 when
     $heroe : Heroe()
     $ceto : Criatura(nombre == Constantes.CETO)
@@ -363,18 +400,39 @@ end
 
 
 
+rule " "
+when 
+then
+end
+
+
+rule "2.3 Muerte del minotauro"
+when 
+	$h : Heroe(  )
+	$minotauro : Criatura( nombre == Constantes.MINOTAURO)
+	Poseer(sujeto == $h, capacidadDe == Constantes.CAPACIDAD_MATAR)
+	Preso(afectado == $h) // APRESADO POR MINOS
+	not Muerto(afectado == $minotauro)
+then
+//mata minotauro
+
+end
 
 
 
+rule "2.4 Dedalo e Icaro consiguen Alas de Icaro"
+when 
+	//ICARO Y DEDALO ESTAN APRESADOS POR MINOS
+then
+	//CREAN ALAS DE ICARO
+end
 
-
-
-
-
-
-
-
-
+rule "2.5 Dedalo consiguen Alas de Icaro"
+when 
+	//ICARO Y DEDALO ESTAN APRESADOS POR MINOS
+then
+	//CREAN ALAS DE ICARO
+end
 
 
 
