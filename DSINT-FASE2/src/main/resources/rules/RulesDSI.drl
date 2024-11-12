@@ -24,12 +24,13 @@ global List<String> mensajes;
 		/*
 		-tenemos que implementar la clase apresar, es necersaria para la pase 3
 		-generalizar mas reglas para poder mezclar los mitos
+		-TERMINAR LOOTEAR!!!!!!
 		*/
 
 //LOS ESTADOS Y ACCIONES DEBEN IR CON INSTANCIAS DE PERSONAJES
 
 
-// Regla para quitar objetos de personajes
+// REGLAS PARA ACCIONES GENERALES
 //
 rule "Quitar Objeto"
 when
@@ -88,12 +89,9 @@ when
 	$sujeto : Heroe()
 	$muerto : Muerto(afectado == $sujeto)
 then
-	mensajes.add($sujeto.getNombre() + "ha muerto. Fin de la historia.");
+	mensajes.add($sujeto.getNombre() + " no ha conseguido su objetivo. Fin de la historia.");
 	retract($sujeto);
 end
-
-//REGLAS SEMIESPECIFICAS---------------------------------------------------------------------------------------------------------------------
-
 
 
 
@@ -128,6 +126,7 @@ then
 end
 
 
+/* 	ELIMINAR?? El escudo de bronce damos por supuesto que ya esta pulido y refleja
 
 rule "Obtiene Capacidad de Reflexión con Escudo Espejo"
 when
@@ -143,7 +142,7 @@ then
     
     
 end
-
+*/
 
 rule "Localización de las Grayas por favores de Hermes y Atenea"
 when
@@ -167,26 +166,28 @@ rule "Chantaje a las grayas para localizar a las ninfas"
 when
     $heroe : Heroe()
     $grayas : Dios(nombre == Constantes.GRAYAS)
+    $gorgonas : Criatura(nombre == Constantes.GORGONAS)
     $ojoGrayas : Objeto(nombre == Constantes.OJO_DE_GRAYAS)
     $poseeOjo : Poseer(sujeto == $heroe, poseido == $ojoGrayas )
-    $ninfas : Semidios(nombre == Constantes.LAS_NINFAS)
+    $ninfas : Semidios(nombre == Constantes.LAS_NINFAS)   	
+    $medusa : Criatura(nombre == Constantes.MEDUSA)
 then
-    mensajes.add($heroe.getNombre()+" localiza a las Ninfas tras chantajear a las Grayas.");
+    mensajes.add($heroe.getNombre()+" localiza a las Ninfas y a Medusa tras chantajear a las Grayas ");
     //Posible implementacion de intercambio???
     retract($poseeOjo);
-    insert(new Poseer($grayas, $ojoGrayas));
+    //insert(new Poseer($grayas, $ojoGrayas)); es realmente necesario para la historia devolverselo? si no lo devolvemos evitamos el bucle
     insert(new Localizar($heroe, $ninfas));
+    insert(new Localizar($heroe, $medusa));
 end
 
 rule "Obtener ojo grayas"
 when
 	$heroe : Heroe()
-	$ninfas : Semidios(nombre == Constantes.LAS_NINFAS)
 	$grayas : Dios(nombre == Constantes.GRAYAS)
+	Localizar(sujeto == $heroe, persLocalizado == $grayas)
     $ojoGrayas : Objeto(nombre == Constantes.OJO_DE_GRAYAS)
     $poseeOjo : Poseer(sujeto == $grayas, poseido == $ojoGrayas )
     Poseer(sujeto == $heroe, capacidadDe  == Constantes.CAPACIDAD_INVISIBILIDAD)
-    not Localizar(sujeto == $heroe, persLocalizado == $ninfas)
 then
 	mensajes.add($heroe.getNombre()+" roba el ojo a las Grayas.");
 	retract($poseeOjo);
@@ -206,7 +207,7 @@ when
     Localizar(sujeto == $heroe, persLocalizado == $ninfas )
     not Muerto(afectado == $medusa)
 then
-    mensajes.add($heroe.getNombre() + " localiza a las Ninfas tras el intercambio del Ojo de las Grayas. Obtiene las Sandalias Aladas.");
+    mensajes.add($heroe.getNombre() + " recibe de las Ninfas las Sandalias Aladas.");
     retract($poseeNinfasS);
     insert(new Poseer($heroe, $sandaliasAladas));
     //insert(new Localizar($heroe, $medusa));
@@ -225,7 +226,7 @@ when
     not Muerto(afectado == $medusa)
     
 then
-    mensajes.add($heroe.getNombre() + " localiza a las Ninfas tras el intercambio del Ojo de las Grayas. Obtiene el Zurron Magico.");
+    mensajes.add($heroe.getNombre() + " recibe de las Ninfas el Zurron Magico.");
     retract($poseeNinfasZ);
     insert(new Poseer($heroe, $zurronMagico));
 end
@@ -234,46 +235,117 @@ end
 
 
 
+//SUPERAR O MORIR, GORGONAS
 rule "Heroe evita  a las gorgonas"
 when
+	    $heroe : Heroe()
+	    $g : Criatura(nombre == Constantes.GORGONAS)
+	    $medusa : Criatura(nombre == Constantes.MEDUSA)
+	    Localizar(sujeto==$heroe , persLocalizado==$medusa)
+	 
+	    $obj1 : Poseer(sujeto == $heroe, capacidadDe   == Constantes.CAPACIDAD_INVISIBILIDAD)
+	    not Muerto(afectado == $g)
 then
+		mensajes.add($heroe.getNombre() + " evita a las Gorgonas y entra a la cueva gracias a tener "+ $obj1.getNombre() + ".");
+		insert(new Muerto($g)); //Las ponemos en muerto aunque tecnicamenete no lo esten para evitar que se vuelva a disparar esta regla
+		
+end
+
+rule "Heroe no evita  a las gorgonas"
+when
+	    $heroe : Heroe()
+	    $g : Criatura(nombre == Constantes.GORGONAS)
+	   	$medusa : Criatura(nombre == Constantes.MEDUSA)
+	    Localizar(sujeto==$heroe , persLocalizado==$medusa)
+	 
+	    not Poseer(sujeto == $heroe, capacidadDe   == Constantes.CAPACIDAD_INVISIBILIDAD)
+	    not Muerto(afectado == $g)
+then
+		mensajes.add($heroe.getNombre() + " no consigue evitar a las Gorgonas debido a no tener un objeto que lo haga invisible.");
+		insert(new Muerto($heroe)); 
 end
 
 
-
+//SUPERAR O MORIR, MEDUSA
 rule "Heroe mata a Medusa"
 when
     $heroe : Heroe()
-    $m : Criatura(nombre == "Medusa")
-    
-    $obj1 : Poseer(sujeto == $heroe, capacidadDe   == Constantes.CAPACIDAD_INVISIBILIDAD)
-    $obj2 : Poseer(sujeto == $heroe, capacidadDe == Constantes.CAPACIDAD_VUELO)
+    $m : Criatura(nombre == Constantes.MEDUSA)
+    $g : Criatura(nombre == Constantes.GORGONAS)
+    Muerto(afectado == $g)			//Tiene que haberlas superado para llegar a medusa
+    Localizar(sujeto==$heroe, persLocalizado==$m)
+    $vuelo : Poseer(sujeto == $heroe, capacidadDe == Constantes.CAPACIDAD_VUELO)
     $obj3 : Poseer(sujeto == $heroe, capacidadDe == Constantes.CAPACIDAD_REFLEXION)
     $obj4 : Poseer(sujeto == $heroe, capacidadDe   == Constantes.CAPACIDAD_MATAR)
     not Muerto(afectado == $m)
 
 then
-	String objetos  = $obj1.getNombre() + ", " + $obj2.getNombre() + ", "+ $obj3.getNombre() + " y "+ $obj4.getNombre();
-    mensajes.add($heroe.getNombre() + " mata a Medusa debido a tener " + objetos + ".");
+	String objetos  =  $obj3.getNombre() + " y "+ $obj4.getNombre();
+    mensajes.add($heroe.getNombre() + " mata a Medusa debido a tener " + objetos + " y vuelve a casa volando gracias a "+$vuelo.getNombre());
     insert(new Asesinar($heroe, $m));
     //SI HACEMOS LOOTEAR SE QUITA
     insert(new Poseer($heroe, new Objeto(Constantes.CABEZA_DE_MEDUSA, Constantes.CAPACIDAD_PETRIFICACION)));
 end
 
+rule "Lo mata medusa debido a que no tiene objeto reflexion"
+when
+	$heroe : Heroe()
+	$medusa : Criatura(nombre == Constantes.MEDUSA)
+	$g : Criatura(nombre == Constantes.GORGONAS)
+	Muerto(afectado == $g)
+	Localizar(sujeto==$heroe, persLocalizado==$medusa)
+    $reflejo : Objeto(capacidadDe == Constantes.CAPACIDAD_REFLEXION)
+    not Poseer(sujeto == $heroe, poseido == $reflejo)
+    not Muerto(afectado==$medusa)
+then
+	mensajes.add($heroe.getNombre() + " petrificado por Medusa debido a no tener un objeto que refleje");
+	insert(new Asesinar($medusa,$heroe));
 
+end
+
+rule "Lo mata medusa debido a que no tiene objeto matar"
+when
+	$heroe : Heroe()
+	$medusa : Criatura(nombre == Constantes.MEDUSA)
+	$g : Criatura(nombre == Constantes.GORGONAS)
+	Muerto(afectado == $g)			
+	Localizar(sujeto==$heroe, persLocalizado==$medusa)
+    $matar : Objeto(capacidadDe == Constantes.CAPACIDAD_MATAR)
+    not Poseer(sujeto == $heroe, poseido == $matar)
+    not Muerto(afectado==$medusa)
+then
+	mensajes.add($heroe.getNombre() + " muerte al intentar matar a Medusa ya que no posee un objeto con dicha capacidad");
+	insert(new Asesinar($medusa,$heroe));
+
+end
 
 
 rule "Muere debido a que no tiene el Zurron Magico"
 when
 	$heroe : Heroe()
 	$medusa : Criatura(nombre == Constantes.MEDUSA)
+	$asesinar: Asesinar(sujeto==$heroe, asesinado==$medusa)
 	$medusaMuerta : Muerto(afectado == $medusa)
     $zurronMagico : Objeto(nombre == Constantes.ZURRON_MAGICO)
     not Poseer(sujeto == $heroe, poseido == $zurronMagico)
 then
 	mensajes.add($heroe.getNombre() + " muerte al matar a Medusa y no guardar la cabeza en el Zurron Magico.");
+	insert(new Asesinar($medusa,$heroe));
+end
+
+rule "No puede volver a casa tras matar a Medusa"
+when
+	$heroe : Heroe()
+	$medusa : Criatura(nombre == Constantes.MEDUSA)
+	$asesinar: Asesinar(sujeto==$heroe, asesinado==$medusa)
+	$medusaMuerta : Muerto(afectado == $medusa)
+    not Poseer(sujeto == $heroe, poseido.capacidadDe == Constantes.CAPACIDAD_VUELO)
+then
+	mensajes.add($heroe.getNombre() + " nunca consiguio volver a casa al no poder volar y acabo muriendo de inanición");
 	insert(new Muerto($heroe));
 end
+
+
 
 
 

@@ -16,6 +16,7 @@ public class Constantes {
     public static final String MEDUSA = "Medusa";
     public static final String LAS_NINFAS = "Las Ninfas";
     public static final String CETO = "Ceto";
+    public static final String GORGONAS = "Gorgonas";
     
     // Nombres de objetos especiales
     public static final String ESCUDO_DE_BRONCE = "Escudo de Bronce";
@@ -33,7 +34,7 @@ public class Constantes {
     
 //MITO 2
     // Nombres de personajes principales
-    public static final String MINOS = "Minas";
+    public static final String MINOS = "Minos";
     public static final String TESEO = "Teseo";
     public static final String ARIADNA = "Ariadna";
     public static final String MINOTAURO = "el Minotauro";

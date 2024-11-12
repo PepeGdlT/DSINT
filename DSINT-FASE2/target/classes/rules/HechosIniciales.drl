@@ -21,6 +21,7 @@ then
     insert(new Criatura(Constantes.MEDUSA));
     insert(new Semidios(Constantes.LAS_NINFAS));
     insert(new Criatura(Constantes.CETO));
+    insert(new Criatura(Constantes.GORGONAS));
     //Mito 2
     insert(new Heroe(Constantes.TESEO));
     insert(new Humano(Constantes.MINOS));
@@ -35,7 +36,7 @@ rule "0.02 Creación de Objetos Especiales"
 agenda-group "iniciales"
 then
 	//Mito 1 Perseo
-    insert(new Objeto(Constantes.ESCUDO_DE_BRONCE, Constantes.CAPACIDAD_PULIR));
+    insert(new Objeto(Constantes.ESCUDO_DE_BRONCE, Constantes.CAPACIDAD_REFLEXION));
     insert(new Objeto(Constantes.HOZ_DE_ACERO, Constantes.CAPACIDAD_MATAR));
     insert(new Objeto(Constantes.CASCO_DE_HADES, Constantes.CAPACIDAD_INVISIBILIDAD));
     insert(new Objeto(Constantes.ZURRON_MAGICO, Constantes.CAPACIDAD_GUARDAR_CABEZA_MEDUSA));
@@ -53,7 +54,7 @@ then
     insert(new Objeto(Constantes.CUERNO_MINOTAURO));
 end
 
-// Asignación de estados iniciales a personajes
+// Asignación de estados iniciales a personajes mito1
 rule "0.03 Estado inicial: Ceto Preso y Andromeda Libre"
 agenda-group "iniciales"
 when
@@ -75,7 +76,7 @@ then
 end
 
 // Relaciones iniciales de posesión
-rule "0.05 Relaciones Iniciales de Posesión"
+rule "0.05 Relaciones Iniciales de Posesión mito 1"
 agenda-group "iniciales"
 when
     $hades : Dios(nombre == Constantes.HADES)
@@ -103,3 +104,48 @@ then
     insert(new Poseer($ninfas, $zurron));   
     insert(new Poseer($ninfas, $sandalias));   
 end
+
+
+// Asignación de estados iniciales a personajes mito2
+rule "0.03 Estado inicial: Minotauro Preso y Dedalo e Icaro Libre"
+agenda-group "iniciales"
+when
+    $minotauro : Criatura(nombre == Constantes.MINOTAURO)
+    $dedalo : Humano(nombre == Constantes.DEDALO)
+    $icaro : Humano(nombre == Constantes.ICARO)
+then
+    insert(new Preso($minotauro));        
+    insert(new Libre($dedalo));
+    insert(new Libre($icaro)); 
+end
+
+rule "0.04 Estado inicial: Teseo y Ariadna Libres"
+agenda-group "iniciales"
+when
+    $teseo : Heroe(nombre == Constantes.TESEO)
+    $ariadna : Humano(nombre == Constantes.ARIADNA)
+then
+    insert(new Libre($teseo));      
+    insert(new Libre($ariadna));    
+end
+
+// Relaciones iniciales de posesión
+rule "0.05 Relaciones Iniciales de Posesión mito 2"
+agenda-group "iniciales"
+when
+    $minotauro : Criatura(nombre == Constantes.MINOTAURO)
+    $ariadna : Humano(nombre == Constantes.ARIADNA)
+    $teseo : Heroe(nombre == Constantes.TESEO)  
+    
+    $cuerno : Objeto(nombre == Constantes.CUERNO_MINOTAURO)
+    $hilo :	Objeto(nombre == Constantes.HILO_ARIADNA)
+    $espada : Objeto(nombre == Constantes.ESPADA_TESEO)
+
+then
+    insert(new Poseer($minotauro, $cuerno));   
+    insert(new Poseer($ariadna, $hilo));   
+    insert(new Poseer($teseo, $espada)); 
+end
+
+
+
