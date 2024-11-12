@@ -23,7 +23,6 @@ global List<String> mensajes;
 
 //LOS ESTADOS Y ACCIONES DEBEN IR CON INSTANCIAS DE PERSONAJES
 
-
 // Regla para quitar objetos de personajes
 //
 rule "Quitar Objeto"
@@ -76,6 +75,8 @@ then
     insert(new Poseer($heroe, $objeto));
     
 end
+
+//REGLA PARA APRESAR
 
 
 rule "Heroe muere"
@@ -204,7 +205,6 @@ then
     mensajes.add($heroe.getNombre() + " localiza a las Ninfas tras el intercambio del Ojo de las Grayas. Obtiene las Sandalias Aladas.");
     retract($poseeNinfasS);
     insert(new Poseer($heroe, $sandaliasAladas));
-    //insert(new Localizar($heroe, $medusa));
 end
 
 
@@ -266,7 +266,7 @@ when
     $zurronMagico : Objeto(nombre == Constantes.ZURRON_MAGICO)
     not Poseer(sujeto == $heroe, poseido == $zurronMagico)
 then
-	mensajes.add($heroe.getNombre() + " muerte al matar a Medusa y no guardar la cabeza en el Zurron Magico.");
+	mensajes.add($heroe.getNombre() + " muere al matar a Medusa y no guardar la cabeza en el Zurron Magico.");
 	insert(new Muerto($heroe));
 end
 

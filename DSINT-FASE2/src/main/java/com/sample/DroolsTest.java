@@ -16,39 +16,33 @@ import rules.Constantes;
 public class DroolsTest {
 
     public static void main(String[] args) {
-    	
         try {
             // Inicialización de la base de conocimiento
             KieServices ks = KieServices.Factory.get();
             KieContainer kContainer = ks.getKieClasspathContainer();
-            KieSession kSession = kContainer.newKieSession("ksession-rules-dsin");
 
-            
-            // Crear una lista para almacenar mensajes
-            List<String> mensajes = new ArrayList<>();
-            kSession.setGlobal("mensajes", mensajes); // Configurar la variable global
-
-
-            // HECHOS INICIALES
-            kSession.getAgenda().getAgendaGroup("iniciales").setFocus();
-            kSession.fireAllRules(); // Dispara las reglas iniciales
-
-        
-
-            // Procesar la pregunta y condiciones de cada archivo de entrada
+            // Procesar cada archivo de entrada
             for (int i = 0; i < args.length; i++) {
-            	System.out.println("Fichero " + args[i]);
+                System.out.println("Fichero " + args[i]);
+
+                // Crear una nueva sesión para cada archivo de entrada
+                KieSession kSession = kContainer.newKieSession("ksession-rules-dsin");
+
+                // Crear una lista para almacenar mensajes
+                List<String> mensajes = new ArrayList<>();
+                kSession.setGlobal("mensajes", mensajes); // Configurar la variable global
+
+                // Disparar reglas iniciales
+                kSession.getAgenda().getAgendaGroup("iniciales").setFocus();
+                kSession.fireAllRules(); // Dispara las reglas iniciales
+
+                // Procesar el archivo de entrada
                 Parser processor = new Parser(args[i], kSession);
                 List<Object> generatedFacts = processor.getGeneratedFacts(); // Obtener los hechos generados desde el archivo
 
                 // Insertar hechos en Drools
                 agregarHechos(kSession, generatedFacts);
-                
-                //kSession.getFactHandles().stream().forEach(n -> System.out.println(n.toString()));
-             
-                
-                
-                
+
                 // Ejecutar reglas después de insertar hechos
                 kSession.fireAllRules();
                 System.out.println("Mensajes collected: " + String.join(", \n", mensajes));
@@ -59,11 +53,9 @@ public class DroolsTest {
                 // Guardar respuesta en el archivo correspondiente
                 String nombreArchivoSalida = "src/main/resources/RespuestaGen/Fase2.Perseo" + (i + 1) + ".Respuesta.txt";
                 guardarRespuesta(respuesta, nombreArchivoSalida);
-                
-                // Limpiar mensajes para el siguiente archivo de entrada
-                mensajes.clear();
-                // Limpiar los hechos generados si es necesario
-                generatedFacts.clear();
+
+                // Cerrar la sesión actual para liberar recursos
+                kSession.dispose();
             }
         } catch (Throwable t) {
             t.printStackTrace();
