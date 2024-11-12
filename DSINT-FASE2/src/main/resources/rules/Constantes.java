@@ -31,6 +31,7 @@ public class Constantes {
     public static final String ESPEJO_DE_MANO = "Espejo de Mano";
     public static final String CONJURO_DE_VUELO = "Conjuro de Vuelo";
     public static final String CABEZA_DE_MEDUSA = "Cabeza de Medusa";
+    public static final String ESCUDO_ESPEJO = "Escudo Espejo";
     
 //MITO 2
     // Nombres de personajes principales
