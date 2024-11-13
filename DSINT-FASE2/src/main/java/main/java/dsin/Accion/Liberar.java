@@ -17,4 +17,6 @@ public class Liberar extends Accion {
                 "liberado=" + liberado +
                 '}';
     }
+    
+    
 }

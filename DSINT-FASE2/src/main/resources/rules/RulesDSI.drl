@@ -54,7 +54,7 @@ when
 	$o : Poseer(sujeto==$asesinado)
 	
 then 
-	//REGLAS PARA LOOTEAR
+	
 end
 
 rule "0.3 Personaje asesina a otro" 
