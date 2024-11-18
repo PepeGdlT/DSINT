@@ -1,0 +1,15 @@
+"src/main/resources/Pregunta/Fase2.Perseo1.txt"
+"src/main/resources/Pregunta/Fase2.Perseo2.txt"
+"src/main/resources/Pregunta/Fase2.Perseo3.txt"
+"src/main/resources/Pregunta/Fase2.Perseo4.txt"
+"src/main/resources/Pregunta/Fase2.Perseo5.txt"
+
+
+query "getPoseer" (Heroe heroe, Objeto objeto)
+    $p : Poseer(sujeto == heroe, poseido == objeto)
+  
+end
+
+query "getLiberar" (Personaje libertador, Personaje liberado )
+    $l : Liberar(sujeto == libertador, liberado == liberado)
+end
