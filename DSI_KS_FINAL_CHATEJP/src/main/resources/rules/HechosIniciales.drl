@@ -1,0 +1,194 @@
+package rules;
+
+import main.java.dsin.Objeto.*;
+import main.java.dsin.Accion.*;
+import main.java.dsin.Personaje.*;
+import main.java.dsin.Estado.*;
+// Creaci n de personajes sin estado
+rule "0.01.1 Creacion de Personajes Principales MITO1"
+agenda-group "MITO1"
+then
+	//Mito 1
+    insert(new Semidios(Constantes.PERSEO));
+    insert(new Humano(Constantes.ANDROMEDA));
+    insert(new Dios(Constantes.POSEIDON));
+    insert(new Dios(Constantes.HADES));
+    insert(new Dios(Constantes.ATENEA));
+    insert(new Dios(Constantes.HERMES));
+    insert(new Dios(Constantes.HEFESTO));
+    insert(new Dios(Constantes.GRAYAS));
+    insert(new Humano(Constantes.CASIOPEA));
+    insert(new Criatura(Constantes.MEDUSA));
+    insert(new Semidios(Constantes.LAS_NINFAS));
+    insert(new Criatura(Constantes.CETO));
+    insert(new Criatura(Constantes.GORGONAS));
+
+end
+
+
+rule "0.01.2 Creacion de Personajes Principales MITO2"
+agenda-group "MITO2"
+then
+    insert(new Humano(Constantes.TESEO));
+    insert(new Humano(Constantes.MINOS));
+    insert(new Criatura(Constantes.MINOTAURO));
+    insert(new Humano(Constantes.ARIADNA));
+    insert(new Humano(Constantes.DEDALO));
+    insert(new Humano(Constantes.ICARO));
+   
+end
+
+
+rule "0.02.1 Creacion de Objetos Especiales MITO1"
+agenda-group "MITO1"
+then
+    insert(new Objeto(Constantes.ESCUDO_DE_BRONCE, Constantes.CAPACIDAD_NULA));
+    insert(new Objeto(Constantes.HOZ_DE_ACERO, Constantes.CAPACIDAD_MATAR));
+    insert(new Objeto(Constantes.CASCO_DE_HADES, Constantes.CAPACIDAD_INVISIBILIDAD));
+    insert(new Objeto(Constantes.ZURRON_MAGICO, Constantes.CAPACIDAD_GUARDAR_CABEZA_MEDUSA));
+    insert(new Objeto(Constantes.SANDALIAS_ALADAS, Constantes.CAPACIDAD_VUELO));
+    insert(new Objeto(Constantes.ESPADA_INDESTRUCTIBLE, Constantes.CAPACIDAD_MATAR));
+    insert(new Objeto(Constantes.BRIDAS_DE_ORO, Constantes.CAPACIDAD_ATRAPAR_PEGASO));
+    insert(new Objeto(Constantes.OJO_DE_GRAYAS, Constantes.CAPACIDAD_INTERCAMBIO_INFORMACION));
+    insert(new Objeto(Constantes.ANILLO_DE_INVISIBILIDAD, Constantes.CAPACIDAD_INVISIBILIDAD));
+    insert(new Objeto(Constantes.ESPEJO_DE_MANO, Constantes.CAPACIDAD_REFLEXION));
+    insert(new Objeto(Constantes.CONJURO_DE_VUELO, Constantes.CAPACIDAD_VUELO));
+    insert(new Objeto(Constantes.CABEZA_MEDUSA, Constantes.CAPACIDAD_PETRIFICACION));
+    insert(new Objeto(Constantes.ESCUDO_ESPEJO, Constantes.CAPACIDAD_REFLEXION)); 
+    insert(new Objeto(Constantes.CABEZA_CETO, Constantes.CAPACIDAD_NULA));
+    
+    
+end
+
+
+
+rule "0.02.2 Creacion de Objetos Especiales MITO2"
+agenda-group "MITO2"
+then
+    insert(new Objeto(Constantes.HILO_ARIADNA, Constantes.CAPACIDAD_ESCAPAR));
+    insert(new Objeto(Constantes.ESPADA_TESEO, Constantes.CAPACIDAD_MATAR));
+    insert(new Objeto(Constantes.CUERNO_MINOTAURO, Constantes.CAPACIDAD_MATAR));
+    insert(new Objeto(Constantes.CERA_ABEJA, Constantes.CAPACIDAD_NULA));
+    insert(new Objeto(Constantes.PLUMAS, Constantes.CAPACIDAD_NULA));
+    insert(new Objeto(Constantes.ALAS_CERA_PLUMAS, Constantes.CAPACIDAD_VUELO));
+    insert(new Objeto(Constantes.PIEL_MINOTAURO, Constantes.CAPACIDAD_NULA));
+    insert(new Objeto(Constantes.TOTE_MINOTAURO, Constantes.CAPACIDAD_GUARDAR_CABEZA_MEDUSA));
+    insert(new Objeto(Constantes.CABEZA_MINOTAURO, Constantes.CAPACIDAD_NULA));
+    
+end
+
+
+
+// Asignacion de estados iniciales a personajes mito1
+rule "0.03.1 Estado inicial: Ceto Preso y Andromeda Libre - Heroe Libre y Casiopea Libre MITO1"
+agenda-group "ESTADOS-INICIALES"
+when
+    $ceto : Criatura(nombre == Constantes.CETO)
+    $andromeda : Humano(nombre == Constantes.ANDROMEDA)
+    $poseidon : Dios(nombre == Constantes.POSEIDON)
+    $h : Heroe()
+    $casiopea : Humano(nombre == Constantes.CASIOPEA)
+then
+      
+    insert(new Libre($andromeda)); 
+    insert(new Libre($h));      
+    insert(new Libre($casiopea));  
+    insert(new Libre($ceto));
+    insert(new Apresar($poseidon, $ceto));   
+end
+
+rule "0.03.2 Estado inicial: Minotauro Preso y Dedalo e Icaro Libre - Heroe Libre y Aridadna Libre MITO2"
+agenda-group "ESTADOS-INICIALES"
+when
+    $minotauro : Criatura(nombre == Constantes.MINOTAURO)
+    $dedalo : Humano(nombre == Constantes.DEDALO)
+    $icaro : Humano(nombre == Constantes.ICARO)
+    $h : Heroe()
+    $ariadna : Humano(nombre == Constantes.ARIADNA)
+    $minos : Humano(nombre == Constantes.MINOS)
+    
+then
+	//TODOS EMPIEZAN LIBRES Y DSPS LOS APRESAS
+	insert(new Libre($dedalo));
+    insert(new Libre($icaro)); 
+    insert(new Libre($h));      
+    insert(new Libre($ariadna));  
+    insert(new Libre($minotauro));
+    insert(new Preso($minotauro));        
+  
+end
+
+
+// Relaciones iniciales de posesion
+rule "0.04.1 Relaciones Iniciales de Posesion MITO1"
+agenda-group "MITO1"
+when
+    $hades : Dios(nombre == Constantes.HADES)
+    $atenea : Dios(nombre == Constantes.ATENEA)
+    $hermes : Dios(nombre == Constantes.HERMES)
+    $hefesto : Dios(nombre == Constantes.HEFESTO)        
+    $grayas : Dios(nombre == Constantes.GRAYAS)  
+    $ninfas : Semidios(nombre == Constantes.LAS_NINFAS)  
+    $medusa : Criatura(nombre == Constantes.MEDUSA) 
+    $ceto : Criatura(nombre == Constantes.CETO) 
+    
+    
+    $escudoBronce : Objeto(nombre == Constantes.ESCUDO_DE_BRONCE)
+    $cascoHades : Objeto(nombre == Constantes.CASCO_DE_HADES)
+    $hozAcero : Objeto(nombre == Constantes.HOZ_DE_ACERO)
+    $espadaIndestructible : Objeto(nombre == Constantes.ESPADA_INDESTRUCTIBLE)
+    $bridasOro : Objeto(nombre == Constantes.BRIDAS_DE_ORO)
+    $ojoGrayas : Objeto(nombre == Constantes.OJO_DE_GRAYAS)
+    $zurron : Objeto(nombre == Constantes.ZURRON_MAGICO)
+    $sandalias : Objeto(nombre == Constantes.SANDALIAS_ALADAS)
+    $cabezaMedusa : Objeto(nombre == Constantes.CABEZA_MEDUSA)
+    $cabezaCeto : Objeto(nombre == Constantes.CABEZA_CETO)
+    
+then
+    insert(new Poseer($hades, $cascoHades));   
+    insert(new Poseer($hermes, $hozAcero));   
+    insert(new Poseer($hefesto, $espadaIndestructible)); 
+    insert(new Poseer($atenea, $escudoBronce));
+    insert(new Poseer($hefesto, $bridasOro));
+    insert(new Poseer($grayas, $ojoGrayas));
+    insert(new Poseer($ninfas, $zurron));   
+    insert(new Poseer($ninfas, $sandalias));   
+    insert(new Poseer($medusa, $cabezaMedusa));
+    insert(new Poseer($ceto, $cabezaCeto));
+end
+
+
+
+
+// Relaciones iniciales de posesion
+rule "0.04.2 Relaciones Iniciales de Posesion MITO2"
+agenda-group "MITO2"
+when
+    $minotauro : Criatura(nombre == Constantes.MINOTAURO)
+    $ariadna : Humano(nombre == Constantes.ARIADNA)
+    $teseo : Humano(nombre == Constantes.TESEO)  
+    
+    $cuerno : Objeto(nombre == Constantes.CUERNO_MINOTAURO) 
+    $hilo :	Objeto(nombre == Constantes.HILO_ARIADNA)
+    $espada : Objeto(nombre == Constantes.ESPADA_TESEO)
+    $piel : Objeto(nombre==Constantes.PIEL_MINOTAURO)
+    $cabezaMinotauro : Objeto(nombre==Constantes.CABEZA_MINOTAURO)
+    
+
+then
+    insert(new Poseer($minotauro, $cuerno));   
+    insert(new Poseer($ariadna, $hilo));   
+    insert(new Poseer($teseo, $espada)); 
+    insert(new Poseer($minotauro, $piel));  
+    insert(new Poseer($minotauro, $cabezaMinotauro));
+end
+
+//MODIFICAR DROOL TEST
+
+rule "0.01.3 Creacion de Personajes Principales EXTRA"
+agenda-group "MITO2"
+then
+	insert(new Dios(Constantes.APOLO));
+	insert(new Semidios(Constantes.HERCULES));
+end
+
