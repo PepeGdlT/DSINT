@@ -1,6 +1,6 @@
 package rules;
 
-// Importaciï¿½n de clases
+// Importacion de clases
 import java.util.List;
 import main.java.dsin.Objeto.*;
 import main.java.dsin.Accion.*;
@@ -14,12 +14,9 @@ global List<String> mensajes;
 
 // REGLAS GENERALES---------------------------------------------------------------------------------------------------------------------
 	
-	
-	//juan me rayas
-	//LOS OBJETIVOS SON UNA LISTA Y SE VAN COMPROBANDO UNO O UNO O SOY GAY
 	//CAMBIOS: 
 		/*
-		-cmabiado ALAS_ICARO_DEDALO por ALAS_PLUMA_CERA
+		-cambiado ALAS_ICARO_DEDALO por ALAS_PLUMA_CERA
 		-cambios en las reglas de escapar del laberiento
 		*/
 	//TODO 
@@ -46,6 +43,35 @@ when
 then
     retract($posee);
     retract($quita);
+end
+
+rule "0.0 Convertir a heroe"
+salience 2
+when
+	$h : Heroe()
+	$p : Personaje(nombre == $h.getNombre(), this != $h)
+	$favores : List() from collect (FavoreceA(favorecido == $p))
+	$enojos : List() from collect (TieneEnojoCon(enojado == $p))
+	$posesiones : List() from collect (Poseer(sujeto == $p))
+then
+	mensajes.add($h.getNombre() + " es el HEROE de esta historia");
+	for(FavoreceA favor : (List<FavoreceA>) $favores){
+		insert(new FavoreceA(favor.getSujeto(), $h));
+		retract(favor);
+	}
+	
+	for(TieneEnojoCon enojo : (List<TieneEnojoCon>) $enojos){
+		insert(new TieneEnojoCon(enojo.getSujeto(), $h));
+		retract(enojo);
+	}
+	
+	for(Poseer posesion : (List<Poseer>) $posesiones){
+		insert(new Poseer($h, posesion.getPoseido()));
+		retract(posesion);
+	}
+	
+	//por ultimo hacemos el retract
+	retract($p)
 end
 
 rule "0.3 Personaje asesina a otro" 
@@ -210,11 +236,12 @@ then
 end
 
 
-rule "2.2 Personaje en laberinto por el enfado de Minos"
+rule "2.2 Enojo de Minos, apresa en el laberinto"
 when
 	$p : Personaje()
 	$minos : Humano(nombre == Constantes.MINOS)
-	TieneEnojoCon( sujeto == $minos, enojado == $p  )
+	TieneEnojoCon(sujeto == $minos, enojado == $p)
+	not Muerto(afectado == $p)
 then
 	//mensajes.add($p.getNombre() + " ha sido apresado en el laberinto de Minos");
 	insert(new Apresar($minos, $p));
@@ -228,16 +255,15 @@ when
 	$minos : Humano(nombre == Constantes.MINOS)
 	$hilo : Objeto(nombre == Constantes.HILO_ARIADNA)
 	$poseeHilo : Poseer(sujeto==$ariadna, poseido==$hilo)
-	$inv : Objeto(capacidadDe == Constantes.CAPACIDAD_INVISIBILIDAD)
-	$poseeInv : Poseer(sujeto==$h, poseido == $inv)
+	$poseeInv : Poseer(sujeto==$h, capacidadDe == Constantes.CAPACIDAD_INVISIBILIDAD)
 	Apresar(sujeto==$minos, apresado==$h) 
 then
-	mensajes.add($h.getNombre() + " asalta a Ariadna y roba su hilo magico siendo invisible gracias a el "+ $inv.getNombre());
+	mensajes.add($h.getNombre() + " asalta a Ariadna y roba su hilo magico siendo invisible gracias a el "+ $poseeInv.getNombreObjeto());
 	insert(new Poseer($h, $hilo));
 	retract($poseeHilo);
 end
 
-rule "2.7 Si heroe tiene piel de minotauro y favor de hefesto construye riñonera de piel minotauro"	
+rule "2.7 Si heroe tiene piel de minotauro y favor de hefesto construye rinionera de piel minotauro"	
 when
 	$h : Heroe()
 	$pielMin : Objeto(nombre == Constantes.PIEL_MINOTAURO)
@@ -645,58 +671,36 @@ then
 end
 
 
-
-
 rule "Fin Liberacion"
-salience 100
 when 
 	$p1 : Personaje ()
 	$p2 : Personaje ()
 	Liberar(sujeto == $p1, liberado == $p2)
-	Objetivo(sujeto == $p1, afectado == $p2)
+	$obj : Objetivo(sujeto == $p1, afectado == $p2)
 then
-	mensajes.add("Si chungo");
-	drools.halt();
+	retract($obj);
 end
 
-rule "Fin Tener"
-salience 100
+rule "Fin Poseer"
 when 
 	$p : Personaje ()
 	$o : Objeto ()
 	Poseer(sujeto == $p, poseido == $o)
-	Objetivo(sujeto == $p, objeto == $o)
+	$obj : Objetivo(sujeto == $p, objeto == $o)
 then
-	mensajes.add( "Si chungo");
-	drools.halt();
+	retract($obj);
 end
 
 
-
-
-rule "FIN TENER Y OBTENCION"
-salience 100
-when 
-	$p1 : Personaje ()
-	$p2 : Personaje ()
-	$o1 : Objeto ()
-	$o2 : Objeto ()
-	$o3 : Objeto ()
-	Liberar(sujeto == $p1, liberado == $p2)
-	Objetivo(sujeto == $p1, afectado == $p2)
-	
-	Poseer(sujeto == $p1, poseido == $o1)
-	Objetivo(sujeto == $p1, objeto == $o1)
-
-	Poseer(sujeto == $p1, poseido == $o2)
-	Objetivo(sujeto == $p1, objeto == $o2)
-	
-	Poseer(sujeto == $p1, poseido == $o3)
-	Objetivo(sujeto == $p1, objeto == $o3)
+rule "FIN EJECUCION REGLAS"
+when
+	$h : Heroe()
+	not Objetivo(sujeto == $h)
 then
-	mensajes.add("Si chungo");
+	mensajes.add("SE DEBE PARAR");
 	drools.halt();
-end	
+end
+
 
 
 query "getPoseer" (Heroe heroe, Objeto objeto)

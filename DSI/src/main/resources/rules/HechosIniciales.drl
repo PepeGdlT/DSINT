@@ -79,9 +79,9 @@ end
 
 
 
-// Asignaci n de estados iniciales a personajes mito1
+// Asignacion de estados iniciales a personajes mito1
 rule "0.03.1 Estado inicial: Ceto Preso y Andromeda Libre - Heroe Libre y Casiopea Libre MITO1"
-agenda-group "MITO1"
+agenda-group "ESTADOS-INICIALES"
 when
     $ceto : Criatura(nombre == Constantes.CETO)
     $andromeda : Humano(nombre == Constantes.ANDROMEDA)
@@ -98,7 +98,7 @@ then
 end
 
 rule "0.03.2 Estado inicial: Minotauro Preso y Dedalo e Icaro Libre - Heroe Libre y Aridadna Libre MITO2"
-agenda-group "MITO2"
+agenda-group "ESTADOS-INICIALES"
 when
     $minotauro : Criatura(nombre == Constantes.MINOTAURO)
     $dedalo : Humano(nombre == Constantes.DEDALO)
@@ -118,7 +118,7 @@ then
 end
 
 
-// Relaciones iniciales de posesi n
+// Relaciones iniciales de posesion
 rule "0.04.1 Relaciones Iniciales de Posesion MITO1"
 agenda-group "MITO1"
 when
@@ -159,13 +159,13 @@ end
 
 
 
-// Relaciones iniciales de posesi n
+// Relaciones iniciales de posesion
 rule "0.04.2 Relaciones Iniciales de Posesion MITO2"
 agenda-group "MITO2"
 when
     $minotauro : Criatura(nombre == Constantes.MINOTAURO)
     $ariadna : Humano(nombre == Constantes.ARIADNA)
-    $teseo : Heroe(nombre == Constantes.TESEO)  
+    $teseo : Humano(nombre == Constantes.TESEO)  
     
     $cuerno : Objeto(nombre == Constantes.CUERNO_MINOTAURO) 
     $hilo :	Objeto(nombre == Constantes.HILO_ARIADNA)

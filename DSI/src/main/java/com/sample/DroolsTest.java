@@ -28,7 +28,7 @@ public class DroolsTest {
         File carpetaSalidaDir = new File(carpetaSalida);
 
         if (!carpetaEntradaDir.isDirectory()) {
-            System.err.println("La carpeta de entrada no es válida: " + carpetaEntrada);
+            System.err.println("La carpeta de entrada no es valida: " + carpetaEntrada);
             return;
         }
 
@@ -37,7 +37,7 @@ public class DroolsTest {
         }
 
         try {
-            // Inicialización de la base de conocimiento
+            // Inicializacion de la base de conocimiento
             KieServices ks = KieServices.Factory.get();
             KieContainer kContainer = ks.getKieClasspathContainer();
 
@@ -54,7 +54,7 @@ public class DroolsTest {
             for (File archivoEntrada : archivosEntrada) {
                 System.out.println("Procesando archivo: " + archivoEntrada.getName());
 
-                // Crear una nueva sesión para cada archivo de entrada
+                // Crear una nueva sesion para cada archivo de entrada
                 KieSession kSession = kContainer.newKieSession("ksession-rules-dsin");
 
                 // Crear una lista para almacenar mensajes
@@ -64,7 +64,7 @@ public class DroolsTest {
                 
                 
                 
-                // Disparar reglas iniciales
+                // Disparar reglas iniciales, que son independientes de las condiciones de entrada
                 kSession.getAgenda().getAgendaGroup("MITO1").setFocus();
                 kSession.fireAllRules(); // Disparar las reglas iniciales
 
@@ -75,13 +75,22 @@ public class DroolsTest {
                 Parser processor = new Parser(archivoEntrada.getAbsolutePath(), kSession);
                 List<Object> generatedFacts = processor.getGeneratedFacts(); // Obtener los hechos generados desde el archivo
                 
-                System.out.println(generatedFacts);
-                // Insertar hechos en Drools
+                //System.out.println(generatedFacts);
+                // Insertar hechos de la entrada
                 agregarHechos(kSession, generatedFacts);
-
-                // Ejecutar reglas después de insertar hechos
+                
+                
+                //Se disparan las reglas que requieren de los datos de la entrada
+                kSession.getAgenda().getAgendaGroup("ESTADOS-INICIALES").setFocus();
                 kSession.fireAllRules();
-               
+                
+                // Ejecutar reglas despues de insertar hechos
+                kSession.fireAllRules();
+                
+                for (Object fact : kSession.getObjects()) {
+                    System.out.println(fact);//DEBUG
+                }
+				
 
                 // Crear respuesta a partir de los mensajes
                 String respuesta = String.join("\n", mensajes);
@@ -91,7 +100,7 @@ public class DroolsTest {
                 //System.out.println("Guardando en: " + nombreArchivoSalida);
                 guardarRespuesta(respuesta, nombreArchivoSalida);
 
-                // Cerrar la sesión actual para liberar recursos
+                // Cerrar la sesion actual para liberar recursos
                 kSession.dispose();
             }
         } catch (Throwable t) {
@@ -99,14 +108,14 @@ public class DroolsTest {
         }
     }
 
-    // Método para agregar hechos a la sesión de Drools
+    // Metodo para agregar hechos a la sesion de Drools
     public static <T> void agregarHechos(KieSession kSession, List<T> hechosGenerados) {
         for (T hecho : hechosGenerados) {
             kSession.insert(hecho);
         }
     }
 
-    // Método para guardar la respuesta en un archivo
+    // Metodo para guardar la respuesta en un archivo
     public static void guardarRespuesta(String respuesta, String nombreArchivo) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
             writer.write(respuesta);

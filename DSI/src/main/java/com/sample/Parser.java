@@ -136,7 +136,7 @@ public class Parser {
 	private void parseQuestion(String pregunta) {
 		if(pregunta.contains("liberar a")) {
 			String[] parts = pregunta.split("liberar a");
-			Personaje heroe =  new Heroe(parts[0].trim().replace("¿Puede ", ""));
+			Personaje heroe =  new Heroe(parts[0].trim().replace("Â¿Puede ", ""));
 			Personaje afectado = getPersonajeByName(parts[1].trim().replace("?", ""));
 			
 			kSession.insert(heroe);			
@@ -146,7 +146,7 @@ public class Parser {
 
 		} else if (pregunta.contains("tener")) {
 			String[] parts = pregunta.split("tener");
-			Personaje heroe = new Heroe(parts[0].trim().replace("¿Puede ", ""));
+			Personaje heroe = new Heroe(parts[0].trim().replace("Â¿Puede ", ""));
 			Objeto objeto = getObjetoByName(parts[1].trim().replace("?", ""));
 			
 			  
@@ -156,12 +156,12 @@ public class Parser {
 
 			
 			
-		} else if (pregunta.contains("¿Quien salva a Andromeda?")) {
-			pregunta = pregunta.replace("¿Quien salva a Andromeda? ", "");
+		} else if (pregunta.contains("Â¿Quien salva a Andromeda?")) {
+			pregunta = pregunta.replace("Quien salva a Andromeda? ", "");
 			Personaje andromeda = getPersonajeByName("Andromeda");
-			Personaje cabezaMedusa = getPersonajeByName("Cabeza de Medusa");
-			Personaje cabezaMinotauro = getPersonajeByName("Cabeza de Minotauro");
-			Personaje cabezaCeto = getPersonajeByName("Cabeza de Ceto");
+			Objeto cabezaMedusa = getObjetoByName("Cabeza de Medusa");
+			Objeto cabezaMinotauro = getObjetoByName("Cabeza de Minotauro");
+			Objeto cabezaCeto = getObjetoByName("Cabeza de Ceto");
 			String[] parts = pregunta.split(",");
 			Heroe h1 = new Heroe(parts[0].trim());
 			Heroe h2 = new Heroe(parts[1].trim());

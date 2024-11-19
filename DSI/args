@@ -13,3 +13,76 @@ end
 query "getLiberar" (Personaje libertador, Personaje liberado )
     $l : Liberar(sujeto == libertador, liberado == liberado)
 end
+
+
+package main.java.dsin.Comprobacion;
+
+import main.java.dsin.Objeto.Objeto;
+import main.java.dsin.Personaje.Personaje;
+
+public class Objetivo {
+    private Personaje sujeto;
+    private Personaje afectado;
+    private Objeto objeto1;
+    private Objeto objeto2;
+    private Objeto objeto3;
+    
+    //EL HEROE TIENE QUE LIBERAR
+    public Objetivo(Personaje sujeto, Personaje afectado){
+        this.sujeto = sujeto;
+        this.afectado = afectado;
+    }
+	
+    //EL HERORE TIENE QUE POSEER CIERTO OBJETO
+    public Objetivo(Personaje sujeto, Objeto objeto1){
+        this.sujeto = sujeto;
+        this.objeto1 = objeto1;
+    }
+    
+    //EL HEROE DEBE LIBERAR Y POSEER CIERTOS OBJETOS
+    public Objetivo(Personaje sujeto, Personaje afectado, Objeto objeto1, Objeto objeto2, Objeto objeto3) {
+		super();
+		this.sujeto = sujeto;
+		this.afectado = afectado;
+		this.objeto1 = objeto1;
+		this.objeto2 = objeto2;
+		this.objeto3 = objeto3;
+	}
+
+	public Personaje getSujeto() {
+		return sujeto;
+	}
+
+
+	public Personaje getAfectado() {
+		return afectado;
+	}
+
+
+	public Objeto getObjeto1() {
+		return objeto1;
+	}
+	
+	public Objeto getObjeto2() {
+		return objeto2;
+	}
+	
+	public Objeto getObjeto3() {
+		return objeto3;
+	}
+
+
+
+
+	@Override
+	public String toString() {
+		return "Objetivo [sujeto=" + sujeto + ", afectado=" + afectado + ", objeto1=" + objeto1 + ", objeto2=" + objeto2
+				+ ", objeto3=" + objeto3 + "]";
+	}
+
+
+	
+	
+    
+	
+}
