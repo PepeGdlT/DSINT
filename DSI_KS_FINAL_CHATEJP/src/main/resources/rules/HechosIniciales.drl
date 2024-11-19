@@ -183,7 +183,6 @@ then
     insert(new Poseer($minotauro, $cabezaMinotauro));
 end
 
-//MODIFICAR DROOL TEST
 
 rule "0.01.3 Creacion de Personajes Principales EXTRA"
 agenda-group "MITO2"

@@ -11,4 +11,11 @@ public class Muerto extends Estado{
     public Muerto(Personaje afectado){
     	super(afectado);
     }
+
+	@Override
+	public String toString() {
+		return "Muerto [getAfectado()=" + getAfectado() + ", toString()=" + super.toString() + "]";
+	}
+    
+    
 }

@@ -35,16 +35,6 @@ global List<String> mensajes;
 
 // REGLAS PARA ACCIONES GENERALES
 //
-rule "0.1 Quitar Objeto"
-when
-    $s : Personaje()
-    $o : Objeto()
-    $posee : Poseer(sujeto == $s, poseido == $o)
-    $quita : Quitar(sujeto == $s, quitado == $o)
-then
-    retract($posee);
-    retract($quita);
-end
 
 rule "0.0 Convertir a heroe"
 salience 2
@@ -55,7 +45,7 @@ when
 	$enojos : List() from collect (TieneEnojoCon(enojado == $p))
 	$posesiones : List() from collect (Poseer(sujeto == $p))
 then
-	mensajes.add($h.getNombre() + " es el heroe de esta historia");
+	mensajes.add($h.getNombre() + " es heroe en este mito.");
 	for(FavoreceA favor : (List<FavoreceA>) $favores){
 		insert(new FavoreceA(favor.getSujeto(), $h));
 		retract(favor);
@@ -74,7 +64,20 @@ then
 	retract($p)
 end
 
-rule "0.3 Personaje asesina a otro" 
+rule "0.1 Quitar Objeto"
+salience 2
+when
+    $s : Personaje()
+    $o : Objeto()
+    $posee : Poseer(sujeto == $s, poseido == $o)
+    $quita : Quitar(sujeto == $s, quitado == $o)
+then
+    retract($posee);
+    retract($quita);
+end
+
+rule "0.2 Personaje asesina a otro" 
+salience 2
 when 
 	$sujeto : Personaje()
 	$asesinado : Personaje()
@@ -87,7 +90,8 @@ then
 end
 
 
-rule "0.4 Obtiene objeto por el favor de un personaje"
+rule "0.3 Tiene el favor de..."
+salience 2
 when
     $heroe : Heroe()
     $personaje : Personaje()
@@ -102,17 +106,19 @@ then
 end
 
 
-rule "0.5 Heroe muere"
+rule "0.4 Heroe muere"
+salience 2
 when
 	$sujeto : Heroe()
 	$muerto : Muerto(afectado == $sujeto)
 then
 	mensajes.add($sujeto.getNombre() + " no ha conseguido su objetivo. Fin de su historia.");
-	retract($sujeto);
+	retract($sujeto);		//da problemas si esta regla tiene mas prioridad que lootear
 end
 
 
-rule "0.6.1 Liberar personaje"
+rule "0.5.1 Liberar personaje"
+salience 2
 when 
 	$libertador : Personaje()
 	$liberado : Personaje()
@@ -131,7 +137,8 @@ end
 
 
 
-rule "0.7.1 Apresar personaje"
+rule "0.6.1 Apresar personaje"
+salience 2
 when
 	$apresado : Personaje()
 	$apresador : Personaje()
@@ -139,7 +146,7 @@ when
 	$libre : Libre(afectado==$apresado)
 	not Preso(afectado == $apresado)
 then
-	mensajes.add($apresado.getNombre() + " ha sido apresado por " + $apresador.getNombre());
+	mensajes.add($apresado.getNombre() + " ha sido apresado por " + $apresador.getNombre() + ".");
 	retract($libre);
 	insert(new Preso($apresado));
 end
@@ -194,7 +201,8 @@ then
 end
 */
 
-rule "0.8.1 Lootear personaje"
+rule "0.7.1 Lootear personaje"
+salience 3
 when 	
 	$sujeto : Personaje()
 	$looteado : Personaje()
@@ -202,15 +210,16 @@ when
 	$muertoPosee : List() from collect (Poseer(sujeto == $looteado))
 then
 	for(Poseer posesion : (List<Poseer>) $muertoPosee){
-		mensajes.add($sujeto.getNombre() + " ha obtenido " + posesion.getNombreObjeto());
+		mensajes.add($sujeto.getNombre() + " ha obtenido " + posesion.getNombreObjeto() + ".");
 		insert(new Poseer($sujeto, posesion.getPoseido()));
 		retract(posesion);
 	}
 	retract($loot);
 end
 
-
-rule "0.10 Rescatar a los apresador por "
+//CAMBIAR PARA NO RESCATAR A LOS MUERTOS
+rule "0.8 Rescatar a los apresador por "
+salience 2
 when
 	$perDerrotado: Personaje()
 	$heroe : Personaje()
@@ -218,7 +227,7 @@ when
 	$rescatados : List() from collect(Apresar(sujeto==$perDerrotado))
 then
 	for(Apresar a : (List<Apresar>) $rescatados){
-		mensajes.add( a.getApresado().getNombre() + " ha sido rescatado");
+		mensajes.add( a.getApresado().getNombre() + " ha sido rescatado.");
 		insert(new Liberar($heroe, a.getApresado()));
 	}
 	retract($rescatar)
@@ -244,7 +253,7 @@ when
 	$minotauro : Criatura( nombre ==  Constantes.MINOTAURO)
 	$hiloAriadna : Objeto(nombre == Constantes.HILO_ARIADNA)
 	Poseer(sujeto == $h, poseido == $hiloAriadna)
-	Asesinar(sujeto  == $h, asesinado ==  $minotauro)
+	Muerto(afectado==$minotauro)
 then
 	mensajes.add($h.getNombre() + " escapa del laberinto con el Hilo de Ariadna.");
 	insert (new TieneEnojoCon($minos, $icaro));
@@ -263,9 +272,9 @@ when
 	Apresar(sujeto == $minos, apresado == $h)
 	$minotauro : Criatura( nombre ==  Constantes.MINOTAURO)
 	$objvuelo : Poseer(sujeto == $h, capacidadDe == Constantes.CAPACIDAD_VUELO)
-	Asesinar(sujeto == $h, asesinado ==  $minotauro)
+	Muerto(afectado==$minotauro)
 then
-	mensajes.add($h.getNombre()+" escapa del laberinto con "+ $objvuelo.getNombreObjeto());
+	mensajes.add($h.getNombre()+" escapa del laberinto con "+ $objvuelo.getNombreObjeto() + ".");
 	insert (new TieneEnojoCon( $minos, $icaro));
 	insert (new TieneEnojoCon( $minos, $dedalo));
 	insert(new Liberar($h, $h));
@@ -274,6 +283,7 @@ end
 
 
 rule "2.2 Enojo de Minos, apresa en el laberinto"
+salience 1
 when
 	$p : Personaje()
 	$minos : Humano(nombre == Constantes.MINOS)
@@ -284,8 +294,7 @@ then
 	insert(new Apresar($minos, $p));
 end
 
-rule "2.3 Heroe puede robar el hilo de Ariadana gracias a la capacidad de invisibilidad si no posee su favor"
-salience 1
+rule "2.3 Robar hilo de Ariadna por invisibilidad"
 when
 	$h : Heroe()
 	$ariadna : Humano(nombre == Constantes.ARIADNA)
@@ -295,7 +304,7 @@ when
 	$poseeInv : Poseer(sujeto==$h, capacidadDe == Constantes.CAPACIDAD_INVISIBILIDAD)
 	Apresar(sujeto==$minos, apresado==$h) 
 then
-	mensajes.add($h.getNombre() + " asalta a Ariadna y roba su hilo magico siendo invisible gracias a el "+ $poseeInv.getNombreObjeto());
+	mensajes.add($h.getNombre() + " asalta a Ariadna y roba su hilo magico siendo invisible gracias a el "+ $poseeInv.getNombreObjeto() + ".");
 	insert(new Poseer($h, $hilo));
 	retract($poseeHilo);
 end
@@ -311,7 +320,7 @@ when
 then
 	retract($poseePiel)
 	insert (new Poseer($h, $tote));
-	mensajes.add("Gracias al favor de hefesto y a la piel de Minotauro hefesto manufactura una Totebag de piel de Minotauro para "+ $h.getNombre());
+	mensajes.add("Gracias al favor de hefesto y a la piel de Minotauro hefesto manufactura una Totebag de piel de Minotauro para "+ $h.getNombre() + ".");
 end
 
 rule "3.1 Si heroe tiene favor de apolo puede usar el oraculo de delfos para localizar a medusa"
@@ -325,6 +334,45 @@ then
 	mensajes.add($h.getNombre() + " localiza a Medusa tras asistir al Oraculo de Delfos teniendo el favor de Apolo.");
 	insert(new Localizar($h, $medusa));
 end
+
+rule "3.2 Heroes se baten en duelo tras localizar al mismo personaje"
+when
+	$h1: Heroe()
+	$h2: Heroe(this != $h1)
+	TieneObjetivos(sujeto == $h1)
+	TieneObjetivos(sujeto == $h2)
+	$per : Personaje()
+	Localizar(sujeto == $h1, persLocalizado == $per)
+	Localizar(sujeto == $h2, persLocalizado == $per)
+	not Muerto(afectado == $h1)
+	not Muerto(afectado == $h2)
+	not Preso(afectado == $h1)
+	not Preso(afectado == $h2)
+then
+	mensajes.add($h1.getNombre() + " y " + $h2.getNombre() + ", se encuentran en la busqueda de " + $per.getNombre() + " y se baten en duelo.");
+	mensajes.add($h1.getNombre() + " sale victorioso tras la ardua batalla.");
+	insert(new Asesinar($h1,$h2));
+end
+
+rule "3.3 Heroes se baten en duelo en el laberinto"
+when
+	$h1: Heroe()
+	$h2: Heroe(this != $h1)
+	$minos : Humano(nombre == Constantes.MINOS)
+	TieneObjetivos(sujeto == $h1)
+	TieneObjetivos(sujeto == $h2)
+	$per : Personaje()
+	Apresar(sujeto == $minos, apresado == $h1)
+	Apresar(sujeto == $minos, apresado == $h2)
+	not Muerto(afectado == $h1)
+	not Muerto(afectado == $h2)
+then
+	mensajes.add($h1.getNombre() + " y " + $h2.getNombre() + ", se cruzan en el laberinto y luchan a muerte por su conflicto de intereses.");
+	mensajes.add($h2.getNombre() + " gana la batalla tras un epico enfrentamiento.");
+	insert(new Asesinar($h2,$h1));
+end
+
+
 
 
 
@@ -386,7 +434,7 @@ when
     $ninfas : Semidios(nombre == Constantes.LAS_NINFAS)   	
     $medusa : Criatura(nombre == Constantes.MEDUSA)
 then
-    mensajes.add($heroe.getNombre()+" localiza a las Ninfas y a Medusa tras chantajear a las Grayas ");
+    mensajes.add($heroe.getNombre()+" localiza a las Ninfas y a Medusa tras chantajear a las Grayas.");
     //Posible implementacion de intercambio???
     retract($poseeOjo);
     //insert(new Poseer($grayas, $ojoGrayas)); es realmente necesario para la historia devolverselo? si no lo devolvemos evitamos el bucle
@@ -495,9 +543,9 @@ when
 
 then
 	String objetos  =  $obj3.getNombreObjeto() + " y "+ $obj4.getNombreObjeto();
-    mensajes.add($heroe.getNombre() + " mata a Medusa debido a tener " + objetos);
-    mensajes.add($heroe.getNombre() + " guarda la peligrosa cabeza de Medusa en "+ $obj5.getNombreObjeto());
-    mensajes.add($heroe.getNombre() + " sale del lugar volando gracias a "+ $vuelo.getNombreObjeto());
+    mensajes.add($heroe.getNombre() + " mata a Medusa debido a tener " + objetos + ".");
+    mensajes.add($heroe.getNombre() + " guarda la peligrosa cabeza de Medusa en "+ $obj5.getNombreObjeto() + ".");
+    mensajes.add($heroe.getNombre() + " sale del lugar volando gracias a "+ $vuelo.getNombreObjeto() + ".");
     insert(new Asesinar($heroe, $m));
     insert(new RescatarDe($heroe, $m));
     
@@ -513,7 +561,7 @@ when
     not Poseer(sujeto == $heroe, capacidadDe == Constantes.CAPACIDAD_REFLEXION)
     not Muerto(afectado==$medusa)
 then
-	mensajes.add($heroe.getNombre() + " petrificado por Medusa debido a no tener un objeto que refleje");
+	mensajes.add($heroe.getNombre() + " petrificado por Medusa debido a no tener un objeto que refleje.");
 	insert(new Asesinar($medusa,$heroe));
 end
 
@@ -527,7 +575,7 @@ when
     not Poseer(sujeto == $heroe, capacidadDe == Constantes.CAPACIDAD_MATAR)
     not Muerto(afectado==$medusa)
 then
-	mensajes.add($heroe.getNombre() + " muere al intentar matar a Medusa ya que no posee un objeto con dicha capacidad");
+	mensajes.add($heroe.getNombre() + " muere al intentar matar a Medusa ya que no posee un objeto con dicha capacidad.");
 	insert(new Asesinar($medusa,$heroe));
 
 end
@@ -553,7 +601,7 @@ when
 	$medusaMuerta : Muerto(afectado == $medusa)
     not Poseer(sujeto == $heroe, poseido.capacidadDe == Constantes.CAPACIDAD_VUELO)
 then
-	mensajes.add($heroe.getNombre() + " nunca consiguio volver a casa al no poder volar y acabo muriendo de inanicion");
+	mensajes.add($heroe.getNombre() + " nunca consiguio volver a casa al no poder volar y acabo muriendo de inanicion.");
 	insert(new Muerto($heroe));
 end
 
@@ -578,7 +626,7 @@ when
     $objPetrificar : Poseer(sujeto == $heroe, capacidadDe== Constantes.CAPACIDAD_PETRIFICACION)
     not Muerto(afectado == $ceto )
 then
-    mensajes.add($heroe.getNombre() + " derrota a Ceto usando la "+$objPetrificar.getNombreObjeto()+".");
+    mensajes.add($heroe.getNombre() + " derrota a Ceto usando la "+$objPetrificar.getNombreObjeto() + ".");
     insert(new Asesinar($heroe, $ceto));
     insert(new RescatarDe($heroe, $ceto));
 end
@@ -595,7 +643,7 @@ when
 	Preso(afectado == $h) 
 	not Muerto(afectado == $minotauro)
 then
-	mensajes.add($h.getNombre() + " consigue derrotar al Minotauro gracias a " + $objeto.getNombreObjeto());
+	mensajes.add($h.getNombre() + " consigue derrotar al Minotauro gracias a " + $objeto.getNombreObjeto() + ".");
 	insert(new Asesinar($h, $minotauro));
 end
 
@@ -624,7 +672,7 @@ when
     $apresados : List() from collect(Apresar(sujeto==$minos))
     $alas : Objeto(nombre == Constantes.ALAS_CERA_PLUMAS)
 then
-	mensajes.add("Dedalo fabrica las alas a partir de cera y plumas");
+	mensajes.add("Dedalo fabrica las alas a partir de cera y plumas.");
 	for(Apresar a : (List<Apresar>) $apresados){
 		mensajes.add(a.getApresado().getNombre() + " ha obtenido las Alas de cera y pluma.");
 		insert(new Poseer(a.getApresado(), $alas));
@@ -641,7 +689,7 @@ when
 	not Muerto(afectado==$per)
 then
 	//QUIEN LOS LIBERA???
-	mensajes.add($per.getNombre() + " escapa del laberinto usando " + $puedeVolar.getNombreObjeto());
+	mensajes.add($per.getNombre() + " escapa del laberinto usando " + $puedeVolar.getNombreObjeto() + ".");
 	insert(new Liberar($per, $per));
 end
 
@@ -670,6 +718,18 @@ then
 	retract($alasIcaro);
 	insert(new Poseer($h, $alas));
 end
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 rule "Fin Liberacion"
@@ -712,6 +772,8 @@ rule "FIN EJECUCION REGLAS"
 salience 100
 when
 	$h : Heroe()
+	TieneObjetivos(sujeto == $h)
+	//si no le quedan objetivos por cumplir se lanza
 	not Objetivo(sujeto == $h)
 then
 	mensajes.add("STOP");

@@ -1,1 +1,16 @@
 ¿Quien salva a Andromeda? Perseo, Teseo, Hercules
+Condiciones:
+Teseo tiene el favor de Apolo
+Teseo tiene el favor de Hefesto
+Teseo tiene el enojo de Minos
+Teseo tiene el favor de Hades
+Hercules tiene el favor de Ariadna
+Hercules tiene el favor de Apolo
+Hercules tiene el enojo de Minos
+Perseo tiene el favor de Hermes
+Perseo tiene el favor de Atenea
+Teseo tiene el favor de Hades
+Perseo tiene el favor de Hefesto
+Perseo tiene el enojo de Minos
+Casiopea tiene el enojo de Poseidon
+

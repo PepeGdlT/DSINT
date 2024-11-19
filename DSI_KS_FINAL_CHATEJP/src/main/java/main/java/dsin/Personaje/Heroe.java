@@ -7,9 +7,11 @@ public class Heroe extends Personaje{
 
 	}
 
-
 	@Override
 	public String toString() {
-		return super.toString();
+		return "Heroe [getNombre()=" + getNombre() + ", toString()=" + super.toString() + "]";
 	}
+
+
+	
 }

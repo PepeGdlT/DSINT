@@ -1,5 +1,8 @@
-/com/
-/RespuestaGen/
-/rules/
+/META-INF/
 /Pregunta/
+/Respuesta/
+/RespuestaGen/
+/com/
+/logback-test.xml
 /main/
+/rules/

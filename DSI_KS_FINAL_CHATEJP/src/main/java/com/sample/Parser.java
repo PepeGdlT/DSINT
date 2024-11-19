@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import javax.enterprise.inject.New;
+
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.QueryResults;
 import org.kie.api.runtime.rule.QueryResultsRow;
@@ -129,7 +131,12 @@ public class Parser {
 			Personaje sujeto = getPersonajeByName(parts[0].trim());
 			Personaje afectado = getPersonajeByName(parts[1].trim());
 			generatedFacts.add(new Liberar(sujeto, afectado));
-		} 
+		} else if(condition.contains("es heroe")) {
+			String[] parts = condition.split("es heroe");
+			String nombre = parts[0].trim();
+			generatedFacts.add(new Heroe(nombre));
+		}  
+		
 	}
 
 
@@ -142,17 +149,18 @@ public class Parser {
 		
 		if(pregunta.contains("liberar a")) {
 			String[] parts = pregunta.split("liberar a");
-			Personaje heroe =  new Heroe(parts[0].trim().replace("¿Puede ", ""));
+			Heroe heroe =  new Heroe(parts[0].trim().replace("¿Puede ", ""));
 			Personaje afectado = getPersonajeByName(parts[1].trim().replace("?", ""));
 			
 			kSession.insert(heroe);			
 			kSession.insert(new Objetivo(heroe, afectado));
+			kSession.insert(new TieneObjetivos(heroe));
 			
 			
 
 		} else if (pregunta.contains("tener")) {
 		    String[] parts = pregunta.split("tener");
-		    Personaje heroe = new Heroe(parts[0].trim().replace("¿Puede ", ""));
+		    Heroe heroe = new Heroe(parts[0].trim().replace("¿Puede ", ""));
 		    String capacidadoObjeto = parts[1].trim().replace("?", "");
 		    Objeto objeto = getObjetoByName(capacidadoObjeto);
 		    
@@ -166,6 +174,7 @@ public class Parser {
 
 
 		    kSession.insert(heroe);
+		    kSession.insert(new TieneObjetivos(heroe));
 		}	else if (pregunta.contains("¿Quien salva a Andromeda?")) {
 		    // Eliminar el texto inicial de la pregunta y obtener los nombres de los héroes
 		    pregunta = pregunta.replace("¿Quien salva a Andromeda? ", "");
@@ -187,6 +196,7 @@ public class Parser {
 		        kSession.insert(new Objetivo(heroe, cabezaMedusa));
 		        kSession.insert(new Objetivo(heroe, cabezaMinotauro));
 		        kSession.insert(new Objetivo(heroe, cabezaCeto));
+		        kSession.insert (new TieneObjetivos(heroe));
 		    }
 		}
 

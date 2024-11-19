@@ -1,24 +1,24 @@
 Si, ha alcanzado el objetivo debido a: 
-Teseo es el heroe de esta historia
+Teseo es heroe en este mito.
 Teseo obtiene Hilo de Ariadna debido al favor de Ariadna.
-Ceto ha sido apresado por Poseidon
-Teseo ha sido apresado por Minos
-Teseo consigue derrotar al Minotauro gracias a Espada de Teseo
+Ceto ha sido apresado por Poseidon.
+Teseo ha sido apresado por Minos.
+Teseo consigue derrotar al Minotauro gracias a Espada de Teseo.
 Minotauro ha muerto a manos de Teseo.
-Teseo ha obtenido Cabeza de Minotauro
-Teseo ha obtenido Piel del minotauro
-Teseo ha obtenido Cuerno del Minotauro
+Teseo ha obtenido Cabeza de Minotauro.
+Teseo ha obtenido Piel del minotauro.
+Teseo ha obtenido Cuerno del Minotauro.
 Teseo escapa del laberinto con el Hilo de Ariadna.
 Teseo fue liberado gracias a Ariadna.
-Dedalo ha sido apresado por Minos
-Icaro ha sido apresado por Minos
+Dedalo ha sido apresado por Minos.
+Icaro ha sido apresado por Minos.
 Dedalo encuentra casualmente cera de abeja y plumas en el laberinto.
-Dedalo fabrica las alas a partir de cera y plumas
+Dedalo fabrica las alas a partir de cera y plumas.
 Icaro ha obtenido las Alas de cera y pluma.
 Dedalo ha obtenido las Alas de cera y pluma.
-Dedalo escapa del laberinto usando Alas de cera y pluma
+Dedalo escapa del laberinto usando Alas de cera y pluma.
 Dedalo fue liberado gracias a Dedalo.
-Icaro escapa del laberinto usando Alas de cera y pluma
+Icaro escapa del laberinto usando Alas de cera y pluma.
 Icaro fue liberado gracias a Icaro.
 Icaro decide no seguir los consejos de su padre y vuela demasiado cerca del sol, las Alas de cera se derriten e Icaro cae y muere.
 Tras la muerte de Icaro, Teseo casualmente encuentra sus alas y se las queda.

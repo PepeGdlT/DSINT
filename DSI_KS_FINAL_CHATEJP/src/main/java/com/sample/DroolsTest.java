@@ -89,11 +89,21 @@ public class DroolsTest {
                 // Ejecutar reglas despues de insertar hechos
                 kSession.fireAllRules();
                 
-                //kSession.getFactHandles();
+                //DEBUG
+                /*
+                if (archivoEntrada.getName().equals("Fase3.Escenario5.txt")) {
+                	
+                	for (Object fact : kSession.getObjects()) {
+                	    System.out.println(fact);
+                	}
+                	
+                	//System.out.println(mensajes);
+                }
+                */
 				
 
                 String respuesta = String.join("\n", mensajes);
-                String inicial = "eduelbebas";
+                String inicial = "";
 
 
 

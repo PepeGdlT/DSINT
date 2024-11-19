@@ -9,4 +9,10 @@ public class Preso extends Estado{
         super(afectado);
     }
 
+	@Override
+	public String toString() {
+		return "Preso [getAfectado()=" + getAfectado() + ", toString()=" + super.toString() + "]";
+	}
+
+    
 }
