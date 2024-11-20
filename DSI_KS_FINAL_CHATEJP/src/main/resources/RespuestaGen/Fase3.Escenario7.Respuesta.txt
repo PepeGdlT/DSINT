@@ -1,76 +1,54 @@
 Si, ha alcanzado el objetivo debido a: 
-Perseo es heroe en este mito.
-Teseo es heroe en este mito.
-Hercules es heroe en este mito.
-Hercules obtiene Hilo de Ariadna debido al favor de Ariadna.
-Teseo obtiene Espada Indestructible debido al favor de Hefesto.
-Teseo obtiene Bridas de Oro debido al favor de Hefesto.
-Teseo obtiene Casco de Hades debido al favor de Hades.
-Perseo obtiene Hoz de Acero debido al favor de Hermes.
-Perseo obtiene Escudo de Bronce debido al favor de Atenea.
+Juan obtiene Hilo de Ariadna debido al favor de Ariadna.
+Edu obtiene Espada Indestructible debido al favor de Hefesto.
+Edu obtiene Bridas de Oro debido al favor de Hefesto.
+Edu obtiene Casco de Hades debido al favor de Hades.
+Pepe obtiene Hoz de Acero debido al favor de Hermes.
+Pepe obtiene Escudo de Bronce debido al favor de Atenea.
 Ceto ha sido apresado por Poseidon.
-Perseo ha sido apresado por Minos.
-Teseo ha sido apresado por Minos.
-Hercules ha sido apresado por Minos.
-Ceto queda libre debido al enojo de Poseidon hacia Casiopea.
-Ceto fue liberado gracias a Poseidon.
-Ceto ha sido apresado por Poseidon.
-Ceto queda libre debido al enojo de Poseidon hacia Casiopea.
-Ceto fue liberado gracias a Poseidon.
-Ceto ha sido apresado por Poseidon.
-Ceto queda libre debido al enojo de Poseidon hacia Casiopea.
-Ceto fue liberado gracias a Poseidon.
-Hercules y Teseo, se cruzan en el laberinto y luchan a muerte por su conflicto de intereses.
-Teseo gana la batalla tras un epico enfrentamiento.
-Hercules ha muerto a manos de Teseo.
-Teseo ha obtenido Hilo de Ariadna.
-Hercules no ha conseguido su objetivo. Fin de su historia.
-Teseo y Perseo, se cruzan en el laberinto y luchan a muerte por su conflicto de intereses.
-Perseo gana la batalla tras un epico enfrentamiento.
-Teseo ha muerto a manos de Perseo.
-Perseo ha obtenido Casco de Hades.
-Perseo ha obtenido Bridas de Oro.
-Perseo ha obtenido Espada Indestructible.
-Perseo ha obtenido Espada de Teseo.
-Perseo ha obtenido Hilo de Ariadna.
-Teseo no ha conseguido su objetivo. Fin de su historia.
-Perseo obtiene el Escudo Espejo gracias al favor de Hefesto, que pule el Escudo de Bronce.
-Perseo localiza a las Grayas debido a los favores de Hermes y Atenea.
-Perseo roba el ojo a las Grayas.
-Perseo localiza a las Ninfas y a Medusa tras chantajear a las Grayas.
-Perseo recibe de las Ninfas las Sandalias Aladas.
-Perseo recibe de las Ninfas el Zurron Magico.
+Pepe ha sido apresado por Minos.
+Edu ha sido apresado por Minos.
+Juan ha sido apresado por Minos.
+Juan y Edu, se cruzan en el laberinto y luchan a muerte por su conflicto de intereses.
+Edu gana la batalla tras un epico enfrentamiento.
+Juan ha muerto a manos de Edu.
+Edu ha obtenido Hilo de Ariadna.
+Juan no ha conseguido su objetivo. Fin de su historia.
+Edu y Pepe, se cruzan en el laberinto y luchan a muerte por su conflicto de intereses.
+Pepe gana la batalla tras un epico enfrentamiento.
+Edu ha muerto a manos de Pepe.
+Pepe ha obtenido Casco de Hades.
+Pepe ha obtenido Bridas de Oro.
+Pepe ha obtenido Espada Indestructible.
+Pepe ha obtenido Hilo de Ariadna.
+Edu no ha conseguido su objetivo. Fin de su historia.
+Pepe obtiene el Escudo Espejo gracias al favor de Hefesto, que pule el Escudo de Bronce.
+Pepe localiza a las Grayas debido a los favores de Hermes y Atenea.
+Pepe roba el ojo a las Grayas.
+Pepe localiza a las Ninfas y a Medusa tras chantajear a las Grayas.
+Pepe recibe de las Ninfas las Sandalias Aladas.
+Pepe recibe de las Ninfas el Zurron Magico.
 Andromeda queda presa debido a que Ceto esta libre y la captura.
 Andromeda ha sido apresado por Ceto.
-Andromeda queda presa debido a que Ceto esta libre y la captura.
-Andromeda queda presa debido a que Ceto esta libre y la captura.
-Andromeda queda presa debido a que Ceto esta libre y la captura.
-Andromeda queda presa debido a que Ceto esta libre y la captura.
-Andromeda queda presa debido a que Ceto esta libre y la captura.
-Perseo consigue derrotar al Minotauro gracias a Espada de Teseo.
-Minotauro ha muerto a manos de Perseo.
-Perseo ha obtenido Cabeza de Minotauro.
-Perseo ha obtenido Piel del minotauro.
-Perseo ha obtenido Cuerno del Minotauro.
-Perseo escapa del laberinto con el Hilo de Ariadna.
-Perseo fue liberado gracias a Ariadna.
-Hercules ha sido rescatado.
-Teseo ha sido rescatado.
+Pepe consigue derrotar al Minotauro gracias a Espada Indestructible.
+Minotauro ha muerto a manos de Pepe.
+Pepe ha obtenido Cabeza de Minotauro.
+Pepe ha obtenido Piel del minotauro.
+Pepe ha obtenido Cuerno del Minotauro.
+Pepe escapa del laberinto con el Hilo de Ariadna.
+Pepe fue liberado gracias a Ariadna.
+Juan ha sido rescatado.
+Edu ha sido rescatado.
 Dedalo ha sido apresado por Minos.
 Icaro ha sido apresado por Minos.
-Gracias al favor de hefesto y a la piel de Minotauro hefesto manufactura una Totebag de piel de Minotauro para Perseo.
-Perseo evita a las Gorgonas y entra a la cueva gracias a tener Casco de Hades.
-Perseo mata a Medusa debido a tener Escudo Espejo y Cuerno del Minotauro.
-Perseo guarda la peligrosa cabeza de Medusa en Zurron Magico.
-Perseo sale del lugar volando gracias a Sandalias Aladas.
-Medusa ha muerto a manos de Perseo.
-Perseo ha obtenido Cabeza de Medusa.
-Perseo derrota a Ceto usando la Cabeza de Medusa.
-Ceto ha muerto a manos de Perseo.
-Perseo ha obtenido Cabeza de Ceto.
-Andromeda ha sido rescatado.
-Andromeda ha sido rescatado.
-Andromeda ha sido rescatado.
-Andromeda ha sido rescatado.
-Andromeda ha sido rescatado.
+Gracias al favor de hefesto y a la piel de Minotauro hefesto manufactura una Totebag de piel de Minotauro para Pepe.
+Pepe evita a las Gorgonas y entra a la cueva gracias a tener Casco de Hades.
+Pepe mata a Medusa debido a tener Escudo Espejo y Cuerno del Minotauro.
+Pepe guarda la peligrosa cabeza de Medusa en Zurron Magico.
+Pepe sale del lugar volando gracias a Sandalias Aladas.
+Medusa ha muerto a manos de Pepe.
+Pepe ha obtenido Cabeza de Medusa.
+Pepe derrota a Ceto usando la Cabeza de Medusa.
+Ceto ha muerto a manos de Pepe.
+Pepe ha obtenido Cabeza de Ceto.
 Andromeda ha sido rescatado.

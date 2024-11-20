@@ -1,16 +1,16 @@
-¿Quien salva a Andromeda? Perseo, Teseo, Hercules
+¿Quien salva a Andromeda? Pepe, Edu, Juan
 Condiciones:
-Teseo tiene el favor de Apolo
-Teseo tiene el favor de Hefesto
-Teseo tiene el enojo de Minos
-Teseo tiene el favor de Hades
-Hercules tiene el favor de Ariadna
-Hercules tiene el favor de Apolo
-Hercules tiene el enojo de Minos
-Perseo tiene el favor de Hermes
-Perseo tiene el favor de Atenea
-Teseo tiene el favor de Hades
-Perseo tiene el favor de Hefesto
-Perseo tiene el enojo de Minos
+Edu tiene el favor de Apolo
+Edu tiene el favor de Hefesto
+Edu tiene el enojo de Minos
+Edu tiene el favor de Hades
+Juan tiene el favor de Ariadna
+Juan tiene el favor de Apolo
+Juan tiene el enojo de Minos
+Pepe tiene el favor de Hermes
+Pepe tiene el favor de Atenea
+Edu tiene el favor de Hades
+Pepe tiene el favor de Hefesto
+Pepe tiene el enojo de Minos
 Casiopea tiene el enojo de Poseidon
 

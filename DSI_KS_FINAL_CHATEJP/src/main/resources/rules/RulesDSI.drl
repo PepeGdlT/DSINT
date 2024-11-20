@@ -113,7 +113,7 @@ when
 	$muerto : Muerto(afectado == $sujeto)
 then
 	mensajes.add($sujeto.getNombre() + " no ha conseguido su objetivo. Fin de su historia.");
-	retract($sujeto);		//da problemas si esta regla tiene mas prioridad que lootear
+	retract($sujeto);		
 end
 
 
@@ -149,57 +149,9 @@ then
 	mensajes.add($apresado.getNombre() + " ha sido apresado por " + $apresador.getNombre() + ".");
 	retract($libre);
 	insert(new Preso($apresado));
-end
+end 
 
-/*
-rule "0.6.1 Liberar personaje"
-when 
-    $libertador : Personaje()
-    $liberado : Personaje()
-    $libera : Liberar(sujeto == $libertador, liberado == $liberado)
-    $preso : Preso(afectado==$liberado)
-then 
-    retract($preso);
-    insert(new Libre($liberado));
-end
-rule "0.6.2 Liberar personaje apresado"
-when 
-    $libertador : Personaje()
-    $liberado : Personaje()
-    $apresador : Personaje()
-    $libera : Liberar(sujeto == $libertador, liberado == $liberado)
-    $apresa : Apresar(sujeto == $apresador, apresado ==$liberado)
-    $preso : Preso(afectado==$liberado)
-then 
-    retract($apresa);
-    retract($preso);
-    insert(new Libre($liberado));
-end
-rule "0.7.1 Apresar personaje"
-when
-    $apresado : Personaje()
-    $apresador : Personaje()
-    Apresar(sujeto == $apresador, apresado ==$apresado)
-    $libre : Libre(afectado==$apresado)
-then
-    retract($libre);
-    insert(new Preso($apresado));
-end
-rule "0.7.2 Apresar personaje que ha sido previamente liberado"
-when
-    $apresado : Personaje()
-    $apresador : Personaje()
-    $libertador : Personaje()
-    Apresar(sujeto == $apresador, apresado ==$apresado)
-    $libera : Liberar(sujeto == $libertador, liberado == $apresado)
-    $libre : Libre(afectado==$apresado)
-then
-    retract($libre);
-    retract($libera);
-    insert(new Preso($apresado));
 
-end
-*/
 
 rule "0.7.1 Lootear personaje"
 salience 3
@@ -217,7 +169,6 @@ then
 	retract($loot);
 end
 
-//CAMBIAR PARA NO RESCATAR A LOS MUERTOS
 rule "0.8 Rescatar a los apresador por "
 salience 2
 when
@@ -234,6 +185,16 @@ then
 end
 
 
+rule "0.8.1 Apresado muere, irrescatable"
+salience 2
+when
+	$apresador : Personaje();
+	$apresado : Personaje();
+	$apresar : Apresar( sujeto == $apresador, apresado == $apresado )
+	$muertoApresado : Muerto( afectado == $apresado )
+then
+	retract($apresar);
+end
 
 // REGLAS SEMIESPECIFICA ---------------------------------------------------------------------------------------------------------------------
 
@@ -386,6 +347,7 @@ when
     $ceto : Criatura(nombre == Constantes.CETO)
     $cetoPreso : Preso(afectado == $ceto) 
     TieneEnojoCon(sujeto == $poseidon, enojado == $casiopea)
+    not Libre(afectado == $ceto)
 then
     mensajes.add("Ceto queda libre debido al enojo de Poseidon hacia Casiopea.");
     insert(new Liberar($poseidon, $ceto));
@@ -613,6 +575,7 @@ when
     $andromedaLibre : Libre(afectado == $andromeda)
 	$cetoLibre : Libre(afectado == $ceto)
 	not Muerto( afectado ==  $ceto )
+	not Preso ( afectado == $andromeda)
 then
     mensajes.add("Andromeda queda presa debido a que Ceto esta libre y la captura.");
     insert (new Apresar($ceto, $andromeda));
@@ -688,7 +651,6 @@ when
 	Apresar(sujeto==$minos, apresado==$per)
 	not Muerto(afectado==$per)
 then
-	//QUIEN LOS LIBERA???
 	mensajes.add($per.getNombre() + " escapa del laberinto usando " + $puedeVolar.getNombreObjeto() + ".");
 	insert(new Liberar($per, $per));
 end
