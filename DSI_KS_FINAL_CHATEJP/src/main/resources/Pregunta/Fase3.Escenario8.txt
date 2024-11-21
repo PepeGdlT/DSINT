@@ -1,8 +1,8 @@
 ¿Quien salva a Casiopea? Juan, Edu, Pepe
 Condiciones:
-Perseo es heroe
-Perseo tiene el favor de Ariadna
-Perseo tiene el enojo de Minos
+Garen es heroe
+Garen tiene el favor de Ariadna
+Garen tiene el enojo de Minos
 Edu tiene el favor de Hermes
 Edu tiene el favor de Atenea
 Edu tiene Anillo de Invisibilidad

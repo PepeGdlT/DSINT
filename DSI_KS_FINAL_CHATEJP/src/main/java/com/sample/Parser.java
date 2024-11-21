@@ -101,7 +101,11 @@ public class Parser {
 		}
 	}
 	private void parseCondition(String condition) {
-		if (condition.contains("tiene el favor de")) {
+		if(condition.contains("es heroe")) {
+			String[] parts = condition.split("es heroe");
+			String nombre = parts[0].trim();
+			kSession.insert(new Heroe(nombre));
+		}  else if (condition.contains("tiene el favor de")) {
 			String[] parts = condition.split("tiene el favor de");
 			Personaje favorecido = getPersonajeByName(parts[0].trim());
 			Personaje sujeto = getPersonajeByName(parts[1].trim());

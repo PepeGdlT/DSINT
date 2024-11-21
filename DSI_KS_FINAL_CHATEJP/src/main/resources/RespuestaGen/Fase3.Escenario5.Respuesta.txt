@@ -1,29 +1,40 @@
-No, no ha alcanzado el objetivo debido a: 
+Si, ha alcanzado el objetivo debido a: 
+Perseo es heroe en este mito.
 Teseo es heroe en este mito.
-Teseo obtiene Hilo de Ariadna debido al favor de Ariadna.
-Ceto ha sido apresado por Poseidon.
-Teseo ha sido apresado por Minos.
-Andromeda queda presa debido a que Ceto esta libre y la captura.
-Andromeda ha sido apresado por Ceto.
-Teseo consigue derrotar al Minotauro gracias a Espada de Teseo.
-Minotauro ha muerto a manos de Teseo.
-Teseo ha obtenido Cabeza de Minotauro.
-Teseo ha obtenido Piel del minotauro.
-Teseo ha obtenido Cuerno del Minotauro.
-Teseo escapa del laberinto con el Hilo de Ariadna.
-Teseo fue liberado gracias a Ariadna.
-Perseo ha sido rescatado.
-Dedalo ha sido apresado por Minos.
-Icaro ha sido apresado por Minos.
-Dedalo encuentra casualmente cera de abeja y plumas en el laberinto.
-Dedalo fabrica las alas a partir de cera y plumas.
-Icaro ha obtenido las Alas de cera y pluma.
-Dedalo ha obtenido las Alas de cera y pluma.
-Perseo ha obtenido las Alas de cera y pluma.
-Perseo escapa del laberinto usando Alas de cera y pluma.
-Dedalo escapa del laberinto usando Alas de cera y pluma.
-Dedalo fue liberado gracias a Dedalo.
-Icaro escapa del laberinto usando Alas de cera y pluma.
-Icaro fue liberado gracias a Icaro.
-Icaro decide no seguir los consejos de su padre y vuela demasiado cerca del sol, las Alas de cera se derriten e Icaro cae y muere.
-Tras la muerte de Icaro, �Perseo casualmente encuentra sus alas y se las queda.
+Teseo obtiene el poderoso Hilo de Ariadna, concedido por Ariadna en reconocimiento de su valor y coraje.
+Perseo recibe el legendario Espada Indestructible como un regalo de Hefesto, un símbolo de confianza y destino compartido.
+Perseo obtiene el poderoso Bridas de Oro, concedido por Hefesto en reconocimiento de su valor y coraje.
+Perseo recibe el legendario Hoz de Acero como un regalo de Hermes, un símbolo de confianza y destino compartido.
+Perseo recibe el legendario Escudo de Bronce como un regalo de Atenea, un símbolo de confianza y destino compartido.
+Perseo obtiene el poderoso Casco de Hades, concedido por Hades en reconocimiento de su valor y coraje.
+Ceto fue arrastrado por las corrientes eternas hacia las profundidades del océano, donde Poseidon gobierna.
+Perseo fue llevado a los insondables recovecos del laberinto, un lugar donde la esperanza se desvanece y los susurros de Minos resuenan como ecos de condena.
+Teseo fue llevado a los insondables recovecos del laberinto, un lugar donde la esperanza se desvanece y los susurros de Minos resuenan como ecos de condena.
+Perseo recibe el favor divino de Hefesto, quien forja un Escudo Espejo de poder ancestral, transformando el humilde Escudo de Bronce en una reliquia capaz de reflejar la esencia misma de la batalla.
+Ceto, libre y imparable, captura a Andromeda, llevándola a su prisión sin piedad.
+Andromeda fue encadenado a las mohosas rocas, donde las olas rugían con furia, mientras Ceto reclamaba su sacrificio con un grito surgido del abismo.
+Perseo, con el poder de Hoz de Acero, finalmente derrota al temido Minotauro, rompiendo su feroz resistencia y sellando su destino en el laberinto.
+Minotauro encontró su fin a manos de Perseo, un destino que selló con su último aliento.
+Perseo despoja a Minotauro del Cabeza de Minotauro, llevándose su bien más preciado.
+Teseo ha roto las cadenas del laberinto, despojando al Minotauro de su dominio y escapando con el Hilo de Ariadna, como un héroe marcado por el destino.
+Teseo finalmente fue liberado de su prision, un acto valiente que solo Ariadna pudo realizar, desafiando al destino y a su captor.
+Teseo ha llegado en el último suspiro para liberar a Perseo de las garras del apresador.
+Perseo finalmente fue liberado de su prision, un acto valiente que solo Teseo pudo realizar, desafiando al destino y a su captor.
+Dedalo fue llevado a los insondables recovecos del laberinto, un lugar donde la esperanza se desvanece y los susurros de Minos resuenan como ecos de condena.
+Icaro fue llevado a los insondables recovecos del laberinto, un lugar donde la esperanza se desvanece y los susurros de Minos resuenan como ecos de condena.
+Gracias al favor de Hefesto y la poderosa piel del Minotauro, se confecciona una Totebag mágica para Perseo, un bolso resistente y encantado que albergará las temibles cabezas de Medusa en su peligrosa travesía.
+Perseo, bendecido por los dioses Hermes y Atenea, se adentra en los misterios del mundo y, guiado por su favor divino, localiza a las temibles Grayas, cuyas visiones solo los elegidos pueden alcanzar.
+Perseo, utilizando el poder de la invisibilidad, se desliza entre las sombras y arrebata el ojo a las Grayas, desafiando el destino mismo.
+Perseo, bajo el amparo de Hermes y Atenea, recibe el poder divino para rastrear a las Grayas, las custodias del destino, que solo los dioses pueden revelar.
+Perseo es bendecido por las Ninfas, quienes le entregan las míticas Sandalias Aladas, un regalo divino que le permitirá surcar los cielos y desafiar el viento en su persecución de Medusa.
+Perseo recibe el Zurrón Mágico de las Ninfas, un artefacto encantado que guarda secretos infinitos y poderes que desafían el tiempo y el espacio.
+Perseo evita a las temibles Gorgonas, utilizando su invisibilidad para atravesar su mirada mortal y adentrarse en la cueva con un paso silencioso y decidido.
+Perseo se enfrenta a Medusa, y con la protección de Escudo Espejo y el poder letal de Espada Indestructible, termina con la amenaza que representaba, decapitando a la temida criatura.
+Perseo encierra la cabeza de Medusa, el terrible trofeo, dentro de Zurron Magico, el único objeto capaz de contener su poder mortal.
+Perseo se eleva por los cielos, escapando del abismo de oscuridad donde perecieron tantos, gracias al mágico vuelo proporcionado por Sandalias Aladas.
+Medusa fue derrotado por Perseo, quien demostró su fuerza con un golpe devastador.
+Perseo no ha dejado escapar el Cabeza de Medusa de Medusa, apropiándose de su pertenencia con avaricia.
+Perseo, con valentía inquebrantable y el poder de la Cabeza de Medusa, derrota a Ceto, convirtiéndola en una estatua de piedra que jamás volverá a sembrar terror.
+Ceto fue derrotado por Perseo, quien demostró su fuerza con un golpe devastador.
+Perseo ha reclamado Cabeza de Ceto de las manos de Ceto, como trofeo de su victoria.
+Perseo ha llegado en el último suspiro para liberar a Andromeda de las garras del apresador.

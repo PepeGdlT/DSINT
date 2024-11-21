@@ -1,77 +1,65 @@
-No, no ha alcanzado el objetivo debido a: 
-Perseo es heroe en este mito.
-Perseo obtiene Hilo de Ariadna debido al favor de Ariadna.
-Pepe obtiene Espada Indestructible debido al favor de Hefesto.
-Pepe obtiene Bridas de Oro debido al favor de Hefesto.
-Edu obtiene Hoz de Acero debido al favor de Hermes.
-Edu obtiene Escudo de Bronce debido al favor de Atenea.
-Juan obtiene Flecha de Apolo debido al favor de Apolo.
-Casiopea ha sido apresado por Ceto.
-Ceto ha sido apresado por Poseidon.
-Juan ha sido apresado por Minos.
-Pepe ha sido apresado por Minos.
-Perseo ha sido apresado por Minos.
+Si, ha alcanzado el objetivo debido a: 
+Garen es bendecido con Hilo de Ariadna, un presente otorgado por Ariadna, quien cree firmemente en su misión.
+Pepe recibe el legendario Espada Indestructible como un regalo de Hefesto, un símbolo de confianza y destino compartido.
+Pepe recibe el legendario Bridas de Oro como un regalo de Hefesto, un símbolo de confianza y destino compartido.
+Edu es bendecido con Hoz de Acero, un presente otorgado por Hermes, quien cree firmemente en su misión.
+Edu es bendecido con Escudo de Bronce, un presente otorgado por Atenea, quien cree firmemente en su misión.
+Juan recibe el legendario Flecha de Apolo como un regalo de Apolo, un símbolo de confianza y destino compartido.
+Casiopea fue encadenado a las mohosas rocas, donde las olas rugían con furia, mientras Ceto reclamaba su sacrificio con un grito surgido del abismo.
+Ceto fue arrastrado por las corrientes eternas hacia las profundidades del océano, donde Poseidon gobierna.
+Juan fue llevado a los insondables recovecos del laberinto, un lugar donde la esperanza se desvanece y los susurros de Minos resuenan como ecos de condena.
+Pepe fue llevado a los insondables recovecos del laberinto, un lugar donde la esperanza se desvanece y los susurros de Minos resuenan como ecos de condena.
+Garen fue llevado a los insondables recovecos del laberinto, un lugar donde la esperanza se desvanece y los susurros de Minos resuenan como ecos de condena.
 Pepe y Juan, se cruzan en el laberinto y luchan a muerte por su conflicto de intereses.
 Juan gana la batalla tras un epico enfrentamiento.
-Pepe ha muerto a manos de Juan.
-Juan ha obtenido Bridas de Oro.
-Juan ha obtenido Espada Indestructible.
-Juan ha obtenido Espejo de Mano.
-Pepe no ha conseguido su objetivo. Fin de su historia.
-Edu localiza a las Grayas debido a los favores de Hermes y Atenea.
-Edu roba el ojo a las Grayas.
-Edu localiza a las Ninfas y a Medusa tras chantajear a las Grayas.
-Edu recibe de las Ninfas las Sandalias Aladas.
-Edu recibe de las Ninfas el Zurron Magico.
-Edu evita a las Gorgonas y entra a la cueva gracias a tener Anillo de Invisibilidad.
-Edu petrificado por Medusa debido a no tener un objeto que refleje.
-Edu ha muerto a manos de Medusa.
-Medusa ha obtenido Escudo de Bronce.
-Medusa ha obtenido Hoz de Acero.
-Medusa ha obtenido Anillo de Invisibilidad.
-Medusa ha obtenido Zurron Magico.
-Medusa ha obtenido Sandalias Aladas.
-Edu no ha conseguido su objetivo. Fin de su historia.
-Andromeda queda presa debido a que Ceto esta libre y la captura.
-Andromeda ha sido apresado por Ceto.
-Juan consigue derrotar al Minotauro gracias a Espada Indestructible.
-Minotauro ha muerto a manos de Juan.
-Juan ha obtenido Cabeza de Minotauro.
-Juan ha obtenido Piel del minotauro.
-Juan ha obtenido Cuerno del Minotauro.
-Perseo escapa del laberinto con el Hilo de Ariadna.
-Perseo fue liberado gracias a Ariadna.
-Juan ha sido rescatado.
-Juan fue liberado gracias a Perseo.
-Dedalo ha sido apresado por Minos.
-Icaro ha sido apresado por Minos.
-Gracias al favor de Hefesto y a la piel de Minotauro Hefesto manufactura una Totebag de piel de Minotauro para Juan.
-Dedalo encuentra casualmente cera de abeja y plumas en el laberinto.
-Dedalo fabrica las alas a partir de cera y plumas.
-Icaro ha obtenido las Alas de cera y pluma.
-Dedalo ha obtenido las Alas de cera y pluma.
-Dedalo escapa del laberinto usando Alas de cera y pluma.
-Dedalo fue liberado gracias a Dedalo.
-Icaro escapa del laberinto usando Alas de cera y pluma.
-Icaro fue liberado gracias a Icaro.
-Icaro decide no seguir los consejos de su padre y vuela demasiado cerca del sol, las Alas de cera se derriten e Icaro cae y muere.
-Tras la muerte de Icaro, Juan casualmente encuentra sus alas y se las queda.
-Juan vuela hasta El Oraculo de Delfos y entrega la flecha a cambio de obtener la localizacion de Medusa
-Juan mata a Medusa debido a tener Espejo de Mano y Cuerno del Minotauro.
-Juan guarda la peligrosa cabeza de Medusa en Totebag de piel de minotauro.
-Juan sale del lugar volando gracias a Alas de cera y pluma.
-Medusa ha muerto a manos de Juan.
-Juan ha obtenido Cabeza de Medusa.
-Juan ha obtenido Sandalias Aladas.
-Juan ha obtenido Zurron Magico.
-Juan ha obtenido Anillo de Invisibilidad.
-Juan ha obtenido Hoz de Acero.
-Juan ha obtenido Escudo de Bronce.
-Juan obtiene el Escudo Espejo gracias al favor de Hefesto, que pule el Escudo de Bronce.
-Juan derrota a Ceto usando la Cabeza de Medusa.
-Ceto ha muerto a manos de Juan.
-Juan ha obtenido Cabeza de Ceto.
-Andromeda ha sido rescatado.
-Casiopea ha sido rescatado.
-Casiopea fue liberado gracias a Juan.
-Andromeda fue liberado gracias a Juan.
+Pepe cayó en un combate épico contra Juan, cuya habilidad fue insuperable.
+Juan ha reclamado Bridas de Oro de las manos de Pepe, como trofeo de su victoria.
+Juan no ha dejado escapar el Espada Indestructible de Pepe, apropiándose de su pertenencia con avaricia.
+Juan despoja a Pepe del Espejo de Mano, llevándose su bien más preciado.
+El destino no favoreció a Pepe. Su camino ha llegado a un trágico final, y su objetivo quedará inconcluso para siempre.
+Edu, bendecido por los dioses Hermes y Atenea, se adentra en los misterios del mundo y, guiado por su favor divino, localiza a las temibles Grayas, cuyas visiones solo los elegidos pueden alcanzar.
+Edu, utilizando el poder de la invisibilidad, se desliza entre las sombras y arrebata el ojo a las Grayas, desafiando el destino mismo.
+Edu, bajo el amparo de Hermes y Atenea, recibe el poder divino para rastrear a las Grayas, las custodias del destino, que solo los dioses pueden revelar.
+Edu es bendecido por las Ninfas, quienes le entregan las míticas Sandalias Aladas, un regalo divino que le permitirá surcar los cielos y desafiar el viento en su persecución de Medusa.
+Edu recibe el Zurrón Mágico de las Ninfas, un artefacto encantado que guarda secretos infinitos y poderes que desafían el tiempo y el espacio.
+Edu evita a las temibles Gorgonas, utilizando su invisibilidad para atravesar su mirada mortal y adentrarse en la cueva con un paso silencioso y decidido.
+Edu cae víctima del poder mortal de Medusa, incapaz de resistir su mirada petrificadora, pues no posee el objeto reflectante necesario para reflejar su terrible poder.
+En un último intento por defenderse, Edu sucumbe al abrazo de piedra de Medusa, quien lo convierte en una estatua eterna, su destino sellado por su propia imprudencia.
+Edu encontró su trágico final, convertido en piedra eterna bajo la mirada maldita de Medusa, cuyo poder petrifica hasta el alma más valiente.
+Medusa despoja a Edu del Escudo de Bronce, llevándose su bien más preciado.
+El destino no favoreció a Edu. Su camino ha llegado a un trágico final, y su objetivo quedará inconcluso para siempre.
+Ceto, libre y imparable, captura a Andromeda, llevándola a su prisión sin piedad.
+Andromeda fue encadenado a las mohosas rocas, donde las olas rugían con furia, mientras Ceto reclamaba su sacrificio con un grito surgido del abismo.
+Juan, con el poder de Espada Indestructible, finalmente derrota al temido Minotauro, rompiendo su feroz resistencia y sellando su destino en el laberinto.
+Minotauro encontró su fin a manos de Juan, un destino que selló con su último aliento.
+Juan no ha dejado escapar el Cabeza de Minotauro de Minotauro, apropiándose de su pertenencia con avaricia.
+Juan despoja a Minotauro del Piel del minotauro, llevándose su bien más preciado.
+Garen ha roto las cadenas del laberinto, despojando al Minotauro de su dominio y escapando con el Hilo de Ariadna, como un héroe marcado por el destino.
+Garen finalmente fue liberado de su prision, un acto valiente que solo Ariadna pudo realizar, desafiando al destino y a su captor.
+El valiente Garen ha liberado a Juan de las manos del apresador.
+Juan finalmente fue liberado de su prision, un acto valiente que solo Garen pudo realizar, desafiando al destino y a su captor.
+Dedalo fue llevado a los insondables recovecos del laberinto, un lugar donde la esperanza se desvanece y los susurros de Minos resuenan como ecos de condena.
+Icaro fue llevado a los insondables recovecos del laberinto, un lugar donde la esperanza se desvanece y los susurros de Minos resuenan como ecos de condena.
+Gracias al favor de Hefesto y la poderosa piel del Minotauro, se confecciona una Totebag mágica para Juan, un bolso resistente y encantado que albergará las temibles cabezas de Medusa en su peligrosa travesía.
+En medio de su cautiverio en el laberinto, Dedalo descubre un suministro divino de cera de abeja y plumas, un destello de esperanza en la oscuridad.
+Con destreza divina, Dedalo transforma la cera y las plumas en alas que desafiarán los cielos, regalando libertad a todos los apresados.
+Icaro ahora posee las alas de cera y plumas, un símbolo de su libertad recién adquirida.
+Dedalo ahora posee las alas de cera y plumas, un símbolo de su libertad recién adquirida.
+Dedalo escapa del laberinto, desafiando sus confines y volando hacia la libertad con la ayuda de Alas de cera y pluma, dejando atrás la prisión que lo encerraba.
+Dedalo finalmente fue liberado de su prision, un acto valiente que solo Dedalo pudo realizar, desafiando al destino y a su captor.
+Icaro escapa del laberinto, desafiando sus confines y volando hacia la libertad con la ayuda de Alas de cera y pluma, dejando atrás la prisión que lo encerraba.
+Icaro finalmente fue liberado de su prision, un acto valiente que solo Icaro pudo realizar, desafiando al destino y a su captor.
+Icaro, desoyendo las advertencias de su padre, asciende hacia el cielo con sus alas de cera y plumas, desafiando los límites humanos, solo para ver cómo el sol derrite su esperanza, haciendo que caiga al vacío, llevando consigo su destino trágico.
+Juan, tras el trágico destino de Icaro, se topa con las alas de cera y plumas caídas, como un símbolo del sacrificio, y decide tomar su legado, llevándolas como su propio estandarte.
+Juan surca los cielos con alas de destino, llegando al Oráculo de Delfos. Allí, con el poder divino de Apolo y la flecha sagrada en mano, recibe la revelación que lo guiará hacia la temible Medusa, como un elegido del mismo sol.
+Juan se enfrenta a Medusa, y con la protección de Espejo de Mano y el poder letal de Cuerno del Minotauro, termina con la amenaza que representaba, decapitando a la temida criatura.
+Juan encierra la cabeza de Medusa, el terrible trofeo, dentro de Totebag de piel de minotauro, el único objeto capaz de contener su poder mortal.
+Juan se eleva por los cielos, escapando del abismo de oscuridad donde perecieron tantos, gracias al mágico vuelo proporcionado por Alas de cera y pluma.
+Medusa encontró su fin a manos de Juan, un destino que selló con su último aliento.
+Juan despoja a Medusa del Cabeza de Medusa, llevándose su bien más preciado.
+Juan recibe el favor divino de Hefesto, quien forja un Escudo Espejo de poder ancestral, transformando el humilde Escudo de Bronce en una reliquia capaz de reflejar la esencia misma de la batalla.
+Juan, con valentía inquebrantable y el poder de la Cabeza de Medusa, derrota a Ceto, convirtiéndola en una estatua de piedra que jamás volverá a sembrar terror.
+Ceto cayó en un combate épico contra Juan, cuya habilidad fue insuperable.
+Juan ha reclamado Cabeza de Ceto de las manos de Ceto, como trofeo de su victoria.
+Juan ha salvado a Andromeda de su destino fatal, derrotando al cruel apresador.
+El valiente Juan ha liberado a Casiopea de las manos del apresador.

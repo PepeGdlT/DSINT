@@ -5,25 +5,25 @@ import main.java.dsin.Personaje.Personaje;
 public class TieneEnojoCon extends Accion{
     
 
-	private Personaje enojado;
+	private Personaje afectado;
     
 
 	
-    public TieneEnojoCon(Personaje sujeto, Personaje enojado) {
+    public TieneEnojoCon(Personaje sujeto, Personaje afectado) {
 		super(sujeto);
-		this.enojado = enojado;
+		this.afectado = afectado;
 	}
 
 
-    // Método para obtener el afectado
-    public Personaje getEnojado() {
-        return enojado;
+    // Mï¿½todo para obtener el afectado
+    public Personaje getAfectado() {
+        return afectado;
     }
 
 	@Override
     public String toString() {
         return super.toString() + " TieneEnojoCon{" +
-                "afectado=" + enojado +
+                "afectado=" + afectado +
                 '}';
     }
 }
