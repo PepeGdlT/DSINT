@@ -23,7 +23,6 @@ public class DroolsTest {
         String carpetaEntrada = args[0];
         String carpetaSalida = args[1];
 
-        // Verificar si las carpetas existen
         File carpetaEntradaDir = new File(carpetaEntrada);
         File carpetaSalidaDir = new File(carpetaSalida);
 
@@ -33,24 +32,21 @@ public class DroolsTest {
         }
 
         if (!carpetaSalidaDir.exists()) {
-            carpetaSalidaDir.mkdirs(); // Crear la carpeta de salida si no existe
+            carpetaSalidaDir.mkdirs(); 
         }
 
         try {
-            // Inicializacion de la base de conocimiento
             KieServices ks = KieServices.Factory.get();
             KieContainer kContainer = ks.getKieClasspathContainer();
 
             
             
-            // Obtener todos los archivos de la carpeta de entrada
             File[] archivosEntrada = carpetaEntradaDir.listFiles((dir, name) -> name.endsWith(".txt"));
             if (archivosEntrada == null || archivosEntrada.length == 0) {
                 System.err.println("No se encontraron archivos .txt en la carpeta de entrada.");
                 return;
             }
 
-            // Procesar cada archivo de entrada
             for (File archivoEntrada : archivosEntrada) {
                 System.out.println("Procesando archivo: " + archivoEntrada.getName());
 
@@ -88,18 +84,7 @@ public class DroolsTest {
                 
                 // Ejecutar reglas despues de insertar hechos
                 kSession.fireAllRules();
-                
-                //DEBUG
-                /*
-                if (archivoEntrada.getName().equals("Fase3.Escenario5.txt")) {
-                	
-                	for (Object fact : kSession.getObjects()) {
-                	    System.out.println(fact);
-                	}
-                	
-                	//System.out.println(mensajes);
-                }
-                */
+
 				
 
                 String respuesta = String.join("\n", mensajes);

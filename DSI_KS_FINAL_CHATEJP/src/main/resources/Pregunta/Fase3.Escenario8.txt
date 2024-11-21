@@ -1,0 +1,18 @@
+¿Quien salva a Casiopea? Juan, Edu, Pepe
+Condiciones:
+Perseo es heroe
+Perseo tiene el favor de Ariadna
+Perseo tiene el enojo de Minos
+Edu tiene el favor de Hermes
+Edu tiene el favor de Atenea
+Edu tiene Anillo de Invisibilidad
+Pepe tiene Espejo de Mano
+Juan tiene el enojo de Minos
+Pepe tiene el enojo de Minos
+Juan tiene el favor de Apolo
+Pepe tiene el favor de Hefesto
+Juan tiene el favor de Hefesto
+Minotauro tiene favor de Hades
+Casiopea tiene el enojo de Poseidon
+Ceto apresa Casiopea
+

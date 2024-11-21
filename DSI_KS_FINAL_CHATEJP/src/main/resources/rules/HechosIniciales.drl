@@ -189,5 +189,25 @@ agenda-group "MITO2"
 then
 	insert(new Dios(Constantes.APOLO));
 	insert(new Semidios(Constantes.HERCULES));
+	insert(new Dios(Constantes.ZEUS));
 end
 
+
+rule "0.01.4 Creacion de Objetos Principales  EXTRA"
+agenda-group "MITO2"
+then
+    insert(new Objeto(Constantes.FLECHA_APOLO, Constantes.CAPACIDAD_MATAR));
+
+end
+
+rule "0.01.5 Relaciones Iniciales de Posesion EXTRA"
+agenda-group "MITO2"
+when
+    $apolo : Dios(nombre == Constantes.APOLO)
+    $zeus : Dios(nombre == Constantes.ZEUS)
+    $hercules : Semidios(nombre == Constantes.HERCULES)
+    
+    $flecha : Objeto(nombre == Constantes.FLECHA_APOLO)   
+then
+    insert(new Poseer($apolo, $flecha));  
+end

@@ -73,11 +73,12 @@ public class Constantes {
     // Nombres de personajes principales
     public static final String APOLO = "Apolo";
     public static final String HERCULES = "Hercules";
+    public static final String ZEUS = "Zeus";
     
     // Nombres de objetos especiales
     public static final String PIEL_MINOTAURO ="Piel del minotauro";
     public static final String TOTE_MINOTAURO = "Totebag de piel de minotauro";
-    
+    public static final String FLECHA_APOLO = "Flecha de Apolo";
 
 }
 

@@ -175,37 +175,62 @@ public class Parser {
 
 		    kSession.insert(heroe);
 		    kSession.insert(new TieneObjetivos(heroe));
-		}	else if (pregunta.contains("¿Quien salva a Andromeda?")) {
-		    // Eliminar el texto inicial de la pregunta y obtener los nombres de los héroes
-		    pregunta = pregunta.replace("¿Quien salva a Andromeda? ", "");
-		    String[] parts = pregunta.split(",");
+		}	else if (pregunta.contains("¿Quien salva a")) {
+		    
+			if(pregunta.contains("obtiene las tres cabezas")){
+				pregunta = pregunta.replace("¿Quien salva a ", "");
+				pregunta = pregunta.replace("y obtiene las tres cabezas", "");
+				
+				String[] preg = pregunta.split("\\?");
+				
+				Personaje salvado = getPersonajeByName(preg[0].trim());
+			    Objeto cabezaMedusa = getObjetoByName("Cabeza de Medusa");
+			    Objeto cabezaMinotauro = getObjetoByName("Cabeza de Minotauro");
+			    Objeto cabezaCeto = getObjetoByName("Cabeza de Ceto");
+				
+				
+				String[] parts = preg[1].split(",");
+				
+			    List<Heroe> heroes = new ArrayList<>();
+			    for (String nombreHeroe : parts) {
+			        heroes.add(new Heroe(nombreHeroe.trim()));
+			    }
+			    
+			    
+			    for (Heroe heroe : heroes) {
+			        kSession.insert(heroe);
+			        kSession.insert(new Objetivo(heroe, salvado));
+			        kSession.insert(new Objetivo(heroe, cabezaMedusa));
+			        kSession.insert(new Objetivo(heroe, cabezaMinotauro));
+			        kSession.insert(new Objetivo(heroe, cabezaCeto));
+			        kSession.insert (new TieneObjetivos(heroe));
+			    }
+			}
+			else {
+				
+				pregunta = pregunta.replace("¿Quien salva a ", "");
 
-		    Personaje andromeda = getPersonajeByName("Andromeda");
-		    Objeto cabezaMedusa = getObjetoByName("Cabeza de Medusa");
-		    Objeto cabezaMinotauro = getObjetoByName("Cabeza de Minotauro");
-		    Objeto cabezaCeto = getObjetoByName("Cabeza de Ceto");
+				String[] preg = pregunta.split("\\?");
 
-		    List<Heroe> heroes = new ArrayList<>();
-		    for (String nombreHeroe : parts) {
-		        heroes.add(new Heroe(nombreHeroe.trim()));
-		    }
+				Personaje salvado = getPersonajeByName(preg[0].trim());
+				
+				
+				String[] parts = preg[1].split(",");
 
-		    for (Heroe heroe : heroes) {
-		        kSession.insert(heroe);
-		        kSession.insert(new Objetivo(heroe, andromeda));
-		        kSession.insert(new Objetivo(heroe, cabezaMedusa));
-		        kSession.insert(new Objetivo(heroe, cabezaMinotauro));
-		        kSession.insert(new Objetivo(heroe, cabezaCeto));
-		        kSession.insert (new TieneObjetivos(heroe));
-		    }
+
+
+			    List<Heroe> heroes = new ArrayList<>();
+			    for (String nombreHeroe : parts) {
+			        heroes.add(new Heroe(nombreHeroe.trim()));
+			    }
+
+			    for (Heroe heroe : heroes) {
+			        kSession.insert(heroe);
+			        kSession.insert(new Objetivo(heroe, salvado));
+			        kSession.insert (new TieneObjetivos(heroe));
+			    }
+			}
 		}
-
-
-
-
-
-
-
 	}
 
 

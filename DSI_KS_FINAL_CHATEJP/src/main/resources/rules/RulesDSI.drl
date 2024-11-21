@@ -13,28 +13,9 @@ import rules.Constantes;
 global List<String> mensajes;
 
 
-// REGLAS GENERALES---------------------------------------------------------------------------------------------------------------------
-	
-	//CAMBIOS: 
-		/*
-		-cambiado ALAS_ICARO_DEDALO por ALAS_PLUMA_CERA
-		-cambios en las reglas de escapar del laberiento
-		*/
-	//TODO 
-		/*
-		-Cambiar mensajes  
-		-comprobar funcionamiento de reglas de icaro y dedalo - DONE
-		*/
-	//NEW
-		/*
-		-2.3
-		*/
-
-//LOS ESTADOS Y ACCIONES DEBEN IR CON INSTANCIAS DE PERSONAJES
-
 
 // REGLAS PARA ACCIONES GENERALES
-//
+
 
 rule "0.0 Convertir a heroe"
 salience 2
@@ -186,12 +167,13 @@ end
 
 
 rule "0.8.1 Apresado muere, irrescatable"
-salience 2
+salience 4
 when
 	$apresador : Personaje();
 	$apresado : Personaje();
+	Muerto( afectado == $apresado )
 	$apresar : Apresar( sujeto == $apresador, apresado == $apresado )
-	$muertoApresado : Muerto( afectado == $apresado )
+
 then
 	retract($apresar);
 end
@@ -281,18 +263,21 @@ when
 then
 	retract($poseePiel)
 	insert (new Poseer($h, $tote));
-	mensajes.add("Gracias al favor de hefesto y a la piel de Minotauro hefesto manufactura una Totebag de piel de Minotauro para "+ $h.getNombre() + ".");
+	mensajes.add("Gracias al favor de Hefesto y a la piel de Minotauro Hefesto manufactura una Totebag de piel de Minotauro para "+ $h.getNombre() + ".");
 end
 
-rule "3.1 Si heroe tiene favor de apolo puede usar el oraculo de delfos para localizar a medusa"
+rule "3.1 Si heroe tiene favor de apolo puede ir a El Oraculo de Delfos para localizar a medusa"
 when 
 	$h : Heroe()
-	$apolo : Dios(nombre==Constantes.APOLO)
-	favorApolo : FavoreceA(sujeto==$apolo, favorecido==$h)
+	$flecha: Objeto( nombre == Constantes.FLECHA_APOLO )
+	$poseeFlecha : Poseer(sujeto == $h, poseido == $flecha)
 	$medusa : Criatura(nombre==Constantes.MEDUSA)
+	Poseer (sujeto == $h, capacidadDe == Constantes.CAPACIDAD_VUELO)
 	not Preso(afectado==$h)
+	not Localizar( sujeto == $h, persLocalizado == $medusa )
 then
-	mensajes.add($h.getNombre() + " localiza a Medusa tras asistir al Oraculo de Delfos teniendo el favor de Apolo.");
+	mensajes.add($h.getNombre() + " vuela hasta El Oraculo de Delfos y entrega la flecha a cambio de obtener la localizacion de Medusa");
+	insert(new Quitar($h,$flecha));
 	insert(new Localizar($h, $medusa));
 end
 
@@ -378,7 +363,7 @@ when
     $grayas : Dios(nombre == Constantes.GRAYAS)
     FavoreceA(sujeto == $hermes, favorecido == $heroe)
     FavoreceA(sujeto == $atenea, favorecido == $heroe)
-    
+    not Preso( afectado == $heroe )
 then
     mensajes.add($heroe.getNombre() + " localiza a las Grayas debido a los favores de Hermes y Atenea.");
     insert(new Localizar($heroe, $grayas));
@@ -597,7 +582,7 @@ end
 
 
 
-rule "2.3 Muerte del minotauro"
+rule "2.3.1 Muerte del minotauro"
 when 
 	$h : Heroe()
 	$minotauro : Criatura( nombre == Constantes.MINOTAURO)
@@ -609,6 +594,20 @@ then
 	mensajes.add($h.getNombre() + " consigue derrotar al Minotauro gracias a " + $objeto.getNombreObjeto() + ".");
 	insert(new Asesinar($h, $minotauro));
 end
+
+rule "2.3.2 Muerte del heroe por el minotauro"
+when 
+	$h : Heroe()
+	$minotauro : Criatura( nombre == Constantes.MINOTAURO)
+	not Poseer(sujeto == $h, capacidadDe == Constantes.CAPACIDAD_MATAR)
+	Apresar(apresado==$h)
+	Preso(afectado == $h) 
+	not Muerto(afectado == $minotauro)
+then
+	//mensajes.add($h.getNombre());
+	insert(new Asesinar($minotauro,$h));
+end
+
 
 rule "2.4.1 Dedalo obtiene la cera y las plumas tras ser apresado en el laberinto"
 when

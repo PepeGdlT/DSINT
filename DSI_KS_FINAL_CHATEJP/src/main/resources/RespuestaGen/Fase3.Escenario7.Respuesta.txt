@@ -1,4 +1,5 @@
-Si, ha alcanzado el objetivo debido a: 
+No, no ha alcanzado el objetivo debido a: 
+Juan obtiene Flecha de Apolo debido al favor de Apolo.
 Juan obtiene Hilo de Ariadna debido al favor de Ariadna.
 Edu obtiene Espada Indestructible debido al favor de Hefesto.
 Edu obtiene Bridas de Oro debido al favor de Hefesto.
@@ -13,6 +14,7 @@ Juan y Edu, se cruzan en el laberinto y luchan a muerte por su conflicto de inte
 Edu gana la batalla tras un epico enfrentamiento.
 Juan ha muerto a manos de Edu.
 Edu ha obtenido Hilo de Ariadna.
+Edu ha obtenido Flecha de Apolo.
 Juan no ha conseguido su objetivo. Fin de su historia.
 Edu y Pepe, se cruzan en el laberinto y luchan a muerte por su conflicto de intereses.
 Pepe gana la batalla tras un epico enfrentamiento.
@@ -20,30 +22,29 @@ Edu ha muerto a manos de Pepe.
 Pepe ha obtenido Casco de Hades.
 Pepe ha obtenido Bridas de Oro.
 Pepe ha obtenido Espada Indestructible.
+Pepe ha obtenido Flecha de Apolo.
 Pepe ha obtenido Hilo de Ariadna.
 Edu no ha conseguido su objetivo. Fin de su historia.
 Pepe obtiene el Escudo Espejo gracias al favor de Hefesto, que pule el Escudo de Bronce.
-Pepe localiza a las Grayas debido a los favores de Hermes y Atenea.
-Pepe roba el ojo a las Grayas.
-Pepe localiza a las Ninfas y a Medusa tras chantajear a las Grayas.
-Pepe recibe de las Ninfas las Sandalias Aladas.
-Pepe recibe de las Ninfas el Zurron Magico.
 Andromeda queda presa debido a que Ceto esta libre y la captura.
 Andromeda ha sido apresado por Ceto.
-Pepe consigue derrotar al Minotauro gracias a Espada Indestructible.
+Pepe consigue derrotar al Minotauro gracias a Flecha de Apolo.
 Minotauro ha muerto a manos de Pepe.
 Pepe ha obtenido Cabeza de Minotauro.
 Pepe ha obtenido Piel del minotauro.
 Pepe ha obtenido Cuerno del Minotauro.
 Pepe escapa del laberinto con el Hilo de Ariadna.
 Pepe fue liberado gracias a Ariadna.
-Juan ha sido rescatado.
-Edu ha sido rescatado.
 Dedalo ha sido apresado por Minos.
 Icaro ha sido apresado por Minos.
-Gracias al favor de hefesto y a la piel de Minotauro hefesto manufactura una Totebag de piel de Minotauro para Pepe.
+Gracias al favor de Hefesto y a la piel de Minotauro Hefesto manufactura una Totebag de piel de Minotauro para Pepe.
+Pepe localiza a las Grayas debido a los favores de Hermes y Atenea.
+Pepe roba el ojo a las Grayas.
+Pepe localiza a las Ninfas y a Medusa tras chantajear a las Grayas.
+Pepe recibe de las Ninfas las Sandalias Aladas.
+Pepe recibe de las Ninfas el Zurron Magico.
 Pepe evita a las Gorgonas y entra a la cueva gracias a tener Casco de Hades.
-Pepe mata a Medusa debido a tener Escudo Espejo y Cuerno del Minotauro.
+Pepe mata a Medusa debido a tener Escudo Espejo y Hoz de Acero.
 Pepe guarda la peligrosa cabeza de Medusa en Zurron Magico.
 Pepe sale del lugar volando gracias a Sandalias Aladas.
 Medusa ha muerto a manos de Pepe.
@@ -52,3 +53,14 @@ Pepe derrota a Ceto usando la Cabeza de Medusa.
 Ceto ha muerto a manos de Pepe.
 Pepe ha obtenido Cabeza de Ceto.
 Andromeda ha sido rescatado.
+Andromeda fue liberado gracias a Pepe.
+Dedalo encuentra casualmente cera de abeja y plumas en el laberinto.
+Dedalo fabrica las alas a partir de cera y plumas.
+Icaro ha obtenido las Alas de cera y pluma.
+Dedalo ha obtenido las Alas de cera y pluma.
+Dedalo escapa del laberinto usando Alas de cera y pluma.
+Dedalo fue liberado gracias a Dedalo.
+Icaro escapa del laberinto usando Alas de cera y pluma.
+Icaro fue liberado gracias a Icaro.
+Icaro decide no seguir los consejos de su padre y vuela demasiado cerca del sol, las Alas de cera se derriten e Icaro cae y muere.
+Tras la muerte de Icaro, Pepe casualmente encuentra sus alas y se las queda.

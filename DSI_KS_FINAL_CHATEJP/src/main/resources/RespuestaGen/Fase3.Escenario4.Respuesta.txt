@@ -1,45 +1,6 @@
-Si, ha alcanzado el objetivo debido a: 
-Perseo es heroe en este mito.
-Perseo obtiene Espada Indestructible debido al favor de Hefesto.
-Perseo obtiene Bridas de Oro debido al favor de Hefesto.
-Perseo obtiene Escudo de Bronce debido al favor de Atenea.
-Perseo obtiene Casco de Hades debido al favor de Hades.
+No, no ha alcanzado el objetivo debido a: 
 Ceto ha sido apresado por Poseidon.
-Perseo ha sido apresado por Minos.
 Ceto queda libre debido al enojo de Poseidon hacia Casiopea.
 Ceto fue liberado gracias a Poseidon.
-Perseo asalta a Ariadna y roba su hilo magico siendo invisible gracias a el Casco de Hades.
-Perseo obtiene el Escudo Espejo gracias al favor de Hefesto, que pule el Escudo de Bronce.
 Andromeda queda presa debido a que Ceto esta libre y la captura.
 Andromeda ha sido apresado por Ceto.
-Perseo consigue derrotar al Minotauro gracias a Espada Indestructible.
-Minotauro ha muerto a manos de Perseo.
-Perseo ha obtenido Cabeza de Minotauro.
-Perseo ha obtenido Piel del minotauro.
-Perseo ha obtenido Cuerno del Minotauro.
-Perseo escapa del laberinto con el Hilo de Ariadna.
-Perseo fue liberado gracias a Ariadna.
-Dedalo ha sido apresado por Minos.
-Icaro ha sido apresado por Minos.
-Gracias al favor de hefesto y a la piel de Minotauro hefesto manufactura una Totebag de piel de Minotauro para Perseo.
-Perseo localiza a Medusa tras asistir al Oraculo de Delfos teniendo el favor de Apolo.
-Perseo evita a las Gorgonas y entra a la cueva gracias a tener Casco de Hades.
-Dedalo encuentra casualmente cera de abeja y plumas en el laberinto.
-Dedalo fabrica las alas a partir de cera y plumas.
-Icaro ha obtenido las Alas de cera y pluma.
-Dedalo ha obtenido las Alas de cera y pluma.
-Dedalo escapa del laberinto usando Alas de cera y pluma.
-Dedalo fue liberado gracias a Dedalo.
-Icaro escapa del laberinto usando Alas de cera y pluma.
-Icaro fue liberado gracias a Icaro.
-Icaro decide no seguir los consejos de su padre y vuela demasiado cerca del sol, las Alas de cera se derriten e Icaro cae y muere.
-Tras la muerte de Icaro, Perseo casualmente encuentra sus alas y se las queda.
-Perseo mata a Medusa debido a tener Escudo Espejo y Espada Indestructible.
-Perseo guarda la peligrosa cabeza de Medusa en Totebag de piel de minotauro.
-Perseo sale del lugar volando gracias a Alas de cera y pluma.
-Medusa ha muerto a manos de Perseo.
-Perseo ha obtenido Cabeza de Medusa.
-Perseo derrota a Ceto usando la Cabeza de Medusa.
-Ceto ha muerto a manos de Perseo.
-Perseo ha obtenido Cabeza de Ceto.
-Andromeda ha sido rescatado.
