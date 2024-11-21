@@ -1,0 +1,16 @@
+¿Quien salva a Andromeda y obtiene las tres cabezas? Pepe, Edu, Juan
+Condiciones:
+Edu tiene el favor de Apolo
+Edu tiene el favor de Hefesto
+Edu tiene el enojo de Minos
+Edu tiene el favor de Hades
+Juan tiene el favor de Ariadna
+Juan tiene el favor de Apolo
+Juan tiene el enojo de Minos
+Pepe tiene el favor de Hermes
+Pepe tiene el favor de Atenea
+Edu tiene el favor de Hades
+Pepe tiene el favor de Hefesto
+Pepe tiene el enojo de Minos
+Casiopea tiene el enojo de Poseidon
+

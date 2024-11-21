@@ -169,10 +169,10 @@ public class Parser {
 		    Objeto objeto = getObjetoByName(capacidadoObjeto);
 		    
 		    if (objeto == null) {
-		        System.out.println("	No se encontró un objeto llamado '" + capacidadoObjeto + "'. Asumiendo que es una capacidad.");
+		        //System.out.println("	No se encontró un objeto llamado '" + capacidadoObjeto + "'. Asumiendo que es una capacidad.");
 		        kSession.insert(new Objetivo(heroe, capacidadoObjeto));
 		    } else {
-		        System.out.println("	Se encontró el objeto: " + objeto.getNombre());
+		        //System.out.println("	Se encontró el objeto: " + objeto.getNombre());
 		        kSession.insert(new Objetivo(heroe, objeto));
 		    }
 

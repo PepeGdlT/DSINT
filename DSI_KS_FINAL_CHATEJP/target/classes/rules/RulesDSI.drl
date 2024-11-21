@@ -1,0 +1,921 @@
+package rules;
+
+// Importacion de clases
+import java.util.List;
+import main.java.dsin.Objeto.*;
+import main.java.dsin.Accion.*;
+import main.java.dsin.Personaje.*;
+import main.java.dsin.Estado.*;
+import main.java.dsin.Comprobacion.*;
+import rules.Constantes;
+
+import java.util.Random;
+
+// Variable global para mensajes de salida
+global List<String> mensajes;
+
+
+
+// REGLAS PARA ACCIONES GENERALES
+
+
+rule "0.0 Convertir a heroe"
+salience 2
+when
+	$h : Heroe()
+	$p : Personaje(nombre == $h.getNombre(), this != $h)
+	$favores : List() from collect (FavoreceA(favorecido == $p))
+	$enojos : List() from collect (TieneEnojoCon(afectado == $p))
+	$posesiones : List() from collect (Poseer(sujeto == $p))
+then
+	mensajes.add($h.getNombre() + " es heroe en este mito.");
+	for(FavoreceA favor : (List<FavoreceA>) $favores){
+		insert(new FavoreceA(favor.getSujeto(), $h));
+		retract(favor);
+	}
+	
+	for(TieneEnojoCon enojo : (List<TieneEnojoCon>) $enojos){
+		insert(new TieneEnojoCon(enojo.getSujeto(), $h));
+		retract(enojo);
+	}
+	
+	for(Poseer posesion : (List<Poseer>) $posesiones){
+		insert(new Poseer($h, posesion.getPoseido()));
+		retract(posesion);
+	}
+	
+	retract($p)
+end
+
+rule "0.1 Quitar Objeto"
+salience 2
+when
+    $s : Personaje()
+    $o : Objeto()
+    $posee : Poseer(sujeto == $s, poseido == $o)
+    $quita : Quitar(sujeto == $s, quitado == $o)
+then
+    retract($posee);
+    retract($quita);
+end
+
+rule "0.2 Personaje asesina a otro" 
+salience 2
+when 
+	$sujeto : Personaje()
+	$asesinado : Personaje()
+	$asesina : Asesinar(sujeto == $sujeto, asesinado == $asesinado)
+	
+then 
+ 	switch ($sujeto.getNombre()) {
+        case Constantes.MEDUSA:
+        	mensajes.add($asesinado.getNombre() + " encontró su trágico final, convertido en piedra eterna bajo la mirada maldita de " + $sujeto.getNombre() + ", cuyo poder petrifica hasta el alma más valiente.");
+            break;
+
+        case Constantes.MINOTAURO:
+        	mensajes.add($asesinado.getNombre() + " fue brutalmente desgarrado y aplastado bajo la fuerza implacable de los cuernos del " + $sujeto.getNombre() + ", dejando un rastro de sangre en el laberinto.");
+            break;
+
+        default:
+	        Random random = new Random();
+	        int opcion = random.nextInt(3);
+			switch (opcion) {
+	            case 0:
+	                mensajes.add($asesinado.getNombre() + " fue derrotado por " + $sujeto.getNombre() + ", quien demostró su fuerza con un golpe devastador.");
+	                opcion++;
+	                break;
+	
+	            case 1:
+	                mensajes.add($asesinado.getNombre() + " cayó en un combate épico contra " + $sujeto.getNombre() + ", cuya habilidad fue insuperable.");
+	                opcion++;
+	                break;
+	
+	            case 2:
+	                mensajes.add($asesinado.getNombre() + " encontró su fin a manos de " + $sujeto.getNombre() + ", un destino que selló con su último aliento.");
+	                opcion++;
+	                break;
+	        }            
+     	break;
+    }
+	insert(new Muerto($asesinado));
+	insert (new Lootear($sujeto, $asesinado));
+end
+
+
+rule "0.3 Tiene el favor de..."
+salience 2
+when
+    $heroe : Heroe()
+    $personaje : Personaje()
+    $objeto : Objeto()
+    Poseer(sujeto == $personaje, poseido == $objeto)
+    FavoreceA(sujeto == $personaje, favorecido == $heroe)
+then
+	Random random = new Random();
+	int opcion = random.nextInt(3);
+	switch (opcion) {
+	    case 0:
+	        mensajes.add($heroe.getNombre() + " recibe el legendario " + $objeto.getNombre() + " como un regalo de " + $personaje.getNombre() + ", un símbolo de confianza y destino compartido.");
+			
+	        break;
+	
+	    case 1:
+	        mensajes.add($heroe.getNombre() + " obtiene el poderoso " + $objeto.getNombre() + ", concedido por " + $personaje.getNombre() + " en reconocimiento de su valor y coraje.");
+	        
+	        break;
+	
+	    case 2:
+	        mensajes.add($heroe.getNombre() + " es bendecido con " + $objeto.getNombre() + ", un presente otorgado por " + $personaje.getNombre() + ", quien cree firmemente en su misión.");
+	        
+	        break;
+	}    
+	//retract($poseePersonaje);
+    insert(new Quitar($personaje,$objeto));
+    insert(new Poseer($heroe, $objeto));
+    
+end
+
+
+rule "0.4 Heroe muere"
+salience 2
+when
+	$sujeto : Heroe()
+	$muerto : Muerto(afectado == $sujeto)
+then
+	Random random = new Random();
+	int opcion = random.nextInt(3); // Genera un número entre 0 y 2
+	
+	switch (opcion) {
+	    case 0:
+	        mensajes.add($sujeto.getNombre() + " ha fallado en su misión, y con ello, su nombre se perderá en las sombras del olvido. Así termina su historia.");
+	        opcion++;
+	        break;
+	
+	    case 1:
+	        mensajes.add("El destino no favoreció a " + $sujeto.getNombre() + ". Su camino ha llegado a un trágico final, y su objetivo quedará inconcluso para siempre.");
+	        opcion++;
+	        break;
+	
+	    case 2:
+	        mensajes.add("El sueño de " + $sujeto.getNombre() + " se ha desmoronado. La última página de su historia está escrita, marcada por la derrota.");
+	        opcion++;
+	        break;
+	}	
+	retract($sujeto);		
+end
+
+
+rule "0.5.1 Liberar personaje"
+salience 2
+when 
+	$libertador : Personaje()
+	$liberado : Personaje()
+	$liberar : Liberar(sujeto == $libertador, liberado == $liberado)
+	
+	$preso : Preso(afectado==$liberado)
+	$apresado : Apresar(apresado==$liberado)
+	not Muerto(afectado==$liberado)
+then 
+ switch ($apresado.getSujeto().getNombre()) { // Obtener el apresador del evento
+        case Constantes.MEDUSA:
+        mensajes.add($liberado.getNombre() + " logro escapar del oscuro dominio de la Cueva de " + $apresado.getSujeto().getNombre() + ", donde las sombras y el terror se entrelazan con el peligro de la petrificacion eterna.");
+            break;
+
+        case Constantes.POSEIDON:
+		if ($liberado.getNombre().equals(Constantes.CETO)) {
+            mensajes.add("Ceto, criatura temida de los mares, quedo libre cuando la ira de Poseidon cayo sobre Casiopea, quebrando las cadenas que lo mantenían prisionero.");
+        } else {
+            mensajes.add($liberado.getNombre() + " emergio de las profundidades abismales donde habia sido atrapado por " + $apresado.getSujeto().getNombre() + ", surgiendo triunfante entre las olas que bramaban en señal de libertad.");
+        }
+            break;
+
+        case Constantes.MINOTAURO:
+        	mensajes.add($liberado.getNombre() + " logro escapar de los interminables corredores del laberinto, donde el aliento del " + $apresado.getSujeto().getNombre() + " siempre parece estar a la vuelta de la esquina. Todo gracias al heroismo de " + $libertador.getNombre() + ".");
+            break;
+
+        default:
+        	mensajes.add($liberado.getNombre() + " finalmente fue liberado de su prision, un acto valiente que solo " + $libertador.getNombre() + " pudo realizar, desafiando al destino y a su captor.");
+            break;
+    }
+	retract($preso);
+	retract($apresado);
+	retract($liberar);
+	insert(new Libre($liberado));
+end
+
+
+
+rule "0.6.1 Apresar personaje"
+salience 2
+when
+	$apresado : Personaje()
+	$apresador : Personaje()
+	Apresar(sujeto == $apresador, apresado ==$apresado)
+	$libre : Libre(afectado==$apresado)
+	not Preso(afectado == $apresado)
+then
+switch ($apresador.getNombre()) {
+        case Constantes.MEDUSA:
+        mensajes.add($apresado.getNombre() + " fue atrapado en la cueva oscura, donde las sombras serpentean como los cabellos malditos de " + $apresador.getNombre() + ".");
+            break;
+
+        case Constantes.CETO:
+        mensajes.add($apresado.getNombre() + " fue encadenado a las mohosas rocas, donde las olas rugían con furia, mientras " + $apresador.getNombre() + " reclamaba su sacrificio con un grito surgido del abismo.");
+            break;
+
+        case Constantes.MINOS:
+        mensajes.add($apresado.getNombre() + " fue llevado a los insondables recovecos del laberinto, un lugar donde la esperanza se desvanece y los susurros de " + $apresador.getNombre() + " resuenan como ecos de condena.");
+            break;
+            
+        case Constantes.POSEIDON:
+        mensajes.add($apresado.getNombre() + " fue arrastrado por las corrientes eternas hacia las profundidades del océano, donde " + $apresador.getNombre() + " gobierna.");
+            break;
+            
+        default:
+        mensajes.add($apresado.getNombre() + " fue apresado por " + $apresador.getNombre() + ", atrapado en un destino que pocos pueden desafiar y menos aún sobrevivir.");
+            break;
+    }
+
+	retract($libre);
+	insert(new Preso($apresado));
+end 
+
+
+
+rule "0.7.1 Lootear personaje"
+salience 3
+when 	
+	$sujeto : Personaje()
+	$looteado : Personaje()
+	$loot : Lootear(sujeto == $sujeto, looteado == $looteado)
+	$muertoPosee : List() from collect (Poseer(sujeto == $looteado))
+then
+
+    Random random = new Random();
+    int opcion = random.nextInt(3);
+    
+	for(Poseer posesion : (List<Poseer>) $muertoPosee){
+		 switch (opcion) {
+		            case 0:
+		                mensajes.add($sujeto.getNombre() + " ha reclamado " + posesion.getNombreObjeto() + " de las manos de " + $looteado.getNombre() + ", como trofeo de su victoria.");
+		                opcion++;
+		                break;
+		
+		            case 1:
+		                mensajes.add($sujeto.getNombre() + " no ha dejado escapar el " + posesion.getNombreObjeto() + " de " + $looteado.getNombre() + ", apropiándose de su pertenencia con avaricia.");
+		                opcion++;
+		                break;
+		
+		            case 2:
+		                mensajes.add($sujeto.getNombre() + " despoja a " + $looteado.getNombre() + " del " + posesion.getNombreObjeto() + ", llevándose su bien más preciado.");
+		                opcion++;
+		                break;
+		        }		
+		insert(new Poseer($sujeto, posesion.getPoseido()));
+		retract(posesion);
+	}
+	retract($loot);
+end
+
+rule "0.8 Rescatar a los apresador por "
+salience 2
+when
+	$perDerrotado: Personaje()
+	$heroe : Personaje()
+	$rescatar : RescatarDe(sujeto==$heroe, apresador==$perDerrotado)
+	$rescatados : List() from collect(Apresar(sujeto==$perDerrotado))
+then
+	Random random = new Random();
+    int opcion = random.nextInt(3);
+
+	for(Apresar a : (List<Apresar>) $rescatados){
+		switch (opcion) {
+			case 0:
+				mensajes.add($heroe.getNombre() + " ha llegado en el último suspiro para liberar a " + a.getApresado().getNombre() + " de las garras del apresador.");
+				opcion++;
+				break;
+		
+			case 1:
+				mensajes.add($heroe.getNombre() + " ha salvado a " + a.getApresado().getNombre() + " de su destino fatal, derrotando al cruel apresador.");
+				opcion++;
+				break;
+		
+			case 2:
+				mensajes.add("El valiente " + $heroe.getNombre() + " ha liberado a " + a.getApresado().getNombre() + " de las manos del apresador.");
+				opcion++;
+				break;
+		}
+		insert(new Liberar($heroe, a.getApresado()));
+	}
+	retract($rescatar)
+end
+
+
+rule "0.8.1 Apresado muere, irrescatable"
+salience 4
+when
+	$apresador : Personaje();
+	$apresado : Personaje();
+	Muerto( afectado == $apresado )
+	$apresar : Apresar( sujeto == $apresador, apresado == $apresado )
+
+then
+	retract($apresar);
+end
+
+// REGLAS SEMIESPECIFICA ---------------------------------------------------------------------------------------------------------------------
+
+
+rule "2.1.1.1 Heroe escapa del laberinto con el hilo tras matar al minotauro"
+when
+	//acoplados metido en hechos iniciales para que no de problemas
+	//se crea esa variable para utilizarla mientras haya gente presa por minos
+	//y haya que liberarlos porque el heroe tiene el hilo de Ariadna
+	
+	$h : Heroe()
+	$minos :  Humano(nombre == Constantes.MINOS)
+	$icaro : Humano(nombre == Constantes.ICARO)
+	$dedalo : Humano(nombre == Constantes.DEDALO)
+	$ariadna : Humano(nombre == Constantes.ARIADNA)
+	$hPreso: Apresar(sujeto  == $minos, apresado == $h)
+	$minotauro : Criatura( nombre ==  Constantes.MINOTAURO)
+	$hiloAriadna : Objeto(nombre == Constantes.HILO_ARIADNA)
+	Poseer(sujeto == $h, poseido == $hiloAriadna)
+	Muerto(afectado==$minotauro)
+then
+mensajes.add($h.getNombre() + " ha roto las cadenas del laberinto, despojando al Minotauro de su dominio y escapando con el Hilo de Ariadna, como un héroe marcado por el destino.");
+	insert (new TieneEnojoCon($minos, $icaro));
+	insert (new TieneEnojoCon($minos, $dedalo));
+	insert(new Liberar($ariadna, $h));
+	insert(new RescatarDe($h,$minos));
+end
+
+
+rule "2.1.2 Heroe escapa del laberinto con vuelo tras matar al minotauro"
+when
+	$h : Heroe()
+	$minos :  Humano( nombre ==  Constantes.MINOS  )
+	$icaro : Humano( nombre ==  Constantes.ICARO  )
+	$dedalo : Humano( nombre ==  Constantes.DEDALO  )
+	Apresar(sujeto == $minos, apresado == $h)
+	$minotauro : Criatura( nombre ==  Constantes.MINOTAURO)
+	$objvuelo : Poseer(sujeto == $h, capacidadDe == Constantes.CAPACIDAD_VUELO)
+	Muerto(afectado==$minotauro)
+then
+	mensajes.add($h.getNombre() + " vuela hacia la libertad, surcando los cielos con su " + $objvuelo.getNombreObjeto() +  " tras haber derrotado al Minotauro, dejando atrás el laberinto de la desesperación.");
+	insert (new TieneEnojoCon( $minos, $icaro));
+	insert (new TieneEnojoCon( $minos, $dedalo));
+	insert(new Liberar($h, $h));
+
+end
+
+
+rule "2.2 Enojo de Minos, apresa en el laberinto"
+salience 1
+when
+	$p : Personaje()
+	$minos : Humano(nombre == Constantes.MINOS)
+	TieneEnojoCon(sujeto == $minos, afectado == $p)
+	not Muerto(afectado == $p)
+then
+	//mensajes.add($p.getNombre() + " ha sido apresado en el laberinto de Minos");
+	insert(new Apresar($minos, $p));
+end
+
+rule "2.3 Robar hilo de Ariadna por invisibilidad"
+when
+	$h : Heroe()
+	$ariadna : Humano(nombre == Constantes.ARIADNA)
+	$minos : Humano(nombre == Constantes.MINOS)
+	$hilo : Objeto(nombre == Constantes.HILO_ARIADNA)
+	Poseer(sujeto==$ariadna, poseido==$hilo)
+	$poseeInv : Poseer(sujeto==$h, capacidadDe == Constantes.CAPACIDAD_INVISIBILIDAD)
+	Apresar(sujeto==$minos, apresado==$h) 
+then
+	mensajes.add($h.getNombre() + " se desliza en las sombras, invisible como un fantasma, y asalta a Ariadna, robando su hilo mágico con la astucia de un ladrón inmortal.");
+	insert(new Quitar($ariadna,$hilo));
+	insert(new Poseer($h, $hilo));
+	//retract($poseeHilo);
+end
+
+rule "2.7 Si heroe tiene piel de minotauro y favor de hefesto construye rinionera de piel minotauro"	
+when
+	$h : Heroe()
+	$pielMin : Objeto(nombre == Constantes.PIEL_MINOTAURO)
+	Poseer(sujeto==$h, poseido==$pielMin)
+	$hefesto : Dios(nombre == Constantes.HEFESTO)
+	FavoreceA(sujeto==$hefesto, favorecido==$h)
+	$tote : Objeto(nombre == Constantes.TOTE_MINOTAURO)
+then
+	//retract($poseePiel)
+	insert(new Quitar($h,$pielMin));
+	retract($pielMin);
+	insert (new Poseer($h, $tote));
+	mensajes.add("Gracias al favor de Hefesto y la poderosa piel del Minotauro, se confecciona una Totebag mágica para " + $h.getNombre() + ", un bolso resistente y encantado que albergará las temibles cabezas de Medusa en su peligrosa travesía.");
+end
+
+rule "3.1 Si heroe tiene favor de apolo puede ir a El Oraculo de Delfos para localizar a medusa"
+when 
+	$h : Heroe()
+	$flecha: Objeto( nombre == Constantes.FLECHA_APOLO )
+	$poseeFlecha : Poseer(sujeto == $h, poseido == $flecha)
+	$medusa : Criatura(nombre==Constantes.MEDUSA)
+	Poseer (sujeto == $h, capacidadDe == Constantes.CAPACIDAD_VUELO)
+	not Preso(afectado==$h)
+	not Localizar( sujeto == $h, persLocalizado == $medusa )
+then
+	mensajes.add($h.getNombre() + " surca los cielos con alas de destino, llegando al Oráculo de Delfos. Allí, con el poder divino de Apolo y la flecha sagrada en mano, recibe la revelación que lo guiará hacia la temible Medusa, como un elegido del mismo sol.");
+	insert(new Quitar($h,$flecha));
+	insert(new Localizar($h, $medusa));
+end
+
+rule "3.2 Heroes se baten en duelo tras localizar al mismo personaje"
+when
+	$h1: Heroe()
+	$h2: Heroe(this != $h1)
+	TieneObjetivos(sujeto == $h1)
+	TieneObjetivos(sujeto == $h2)
+	$per : Personaje()
+	Localizar(sujeto == $h1, persLocalizado == $per)
+	Localizar(sujeto == $h2, persLocalizado == $per)
+	not Muerto(afectado == $h1)
+	not Muerto(afectado == $h2)
+	not Preso(afectado == $h1)
+	not Preso(afectado == $h2)
+then
+	mensajes.add($h1.getNombre() + " y " + $h2.getNombre() + ", dos destinos forjados en la misma búsqueda, se encuentran en el campo de batalla, sus mortales habilidades cruzándose por el mismo objetivo: " + $per.getNombre() + ". El duelo será legendario, solo uno puede prevalecer.");
+	mensajes.add($h1.getNombre() + " emerge como el vencedor, su nombre grabado en la historia tras una batalla titánica que resonará a través de los siglos.");
+	insert(new Asesinar($h1,$h2));
+end
+
+rule "3.3 Heroes se baten en duelo en el laberinto"
+when
+	$h1: Heroe()
+	$h2: Heroe(this != $h1)
+	$minos : Humano(nombre == Constantes.MINOS)
+	TieneObjetivos(sujeto == $h1)
+	TieneObjetivos(sujeto == $h2)
+	$per : Personaje()
+	Apresar(sujeto == $minos, apresado == $h1)
+	Apresar(sujeto == $minos, apresado == $h2)
+	not Muerto(afectado == $h1)
+	not Muerto(afectado == $h2)
+then
+	mensajes.add($h1.getNombre() + " y " + $h2.getNombre() + ", se cruzan en el laberinto y luchan a muerte por su conflicto de intereses.");
+	mensajes.add($h2.getNombre() + " gana la batalla tras un epico enfrentamiento.");
+	insert(new Asesinar($h2,$h1));
+end
+
+
+
+
+
+// REGLAS ESPECIFICAS ---------------------------------------------------------------------------------------------------------------------
+
+rule "1.2.1 Enojo de Poseidon hacia Casiopea"
+salience 1
+when
+    $poseidon : Dios(nombre == Constantes.POSEIDON)
+    $casiopea : Humano(nombre == Constantes.CASIOPEA)
+    $ceto : Criatura(nombre == Constantes.CETO)
+    $cetoPreso : Preso(afectado == $ceto) 
+    TieneEnojoCon(sujeto == $poseidon, afectado == $casiopea)
+    not Libre(afectado == $ceto)
+then
+    //mensajes.add("Ceto queda libre debido al enojo de Poseidon hacia Casiopea.");
+    insert(new Liberar($poseidon, $ceto));
+end
+
+rule "1.2.3 Obtiene Capacidad de Reflexion con Escudo Espejo"
+when
+    $heroe : Heroe()
+    $hefesto : Dios(nombre == Constantes.HEFESTO)
+    $escudoBronce : Objeto(nombre == Constantes.ESCUDO_DE_BRONCE)
+    Poseer(sujeto == $heroe, poseido == $escudoBronce)
+    FavoreceA(sujeto == $hefesto, favorecido == $heroe)
+    $escudoEspejo : Objeto(nombre == Constantes.ESCUDO_ESPEJO)
+then
+	mensajes.add($heroe.getNombre() + " recibe el favor divino de Hefesto, quien forja un Escudo Espejo de poder ancestral, transformando el humilde Escudo de Bronce en una reliquia capaz de reflejar la esencia misma de la batalla.");
+ 	insert(new Quitar($heroe ,$escudoBronce));
+ 	retract($escudoBronce);
+    insert(new Poseer($heroe ,$escudoEspejo));   
+end
+
+
+rule "1.2.4 Localizacion de las Grayas por favores de Hermes y Atenea"
+when
+    $heroe : Heroe()
+    $hermes : Dios(nombre == Constantes.HERMES)
+    $atenea : Dios(nombre == Constantes.ATENEA)
+    $grayas : Dios(nombre == Constantes.GRAYAS)
+    FavoreceA(sujeto == $hermes, favorecido == $heroe)
+    FavoreceA(sujeto == $atenea, favorecido == $heroe)
+    not Preso( afectado == $heroe )
+then
+	mensajes.add($heroe.getNombre() + ", bendecido por los dioses Hermes y Atenea, se adentra en los misterios del mundo y, guiado por su favor divino, localiza a las temibles Grayas, cuyas visiones solo los elegidos pueden alcanzar.");
+    insert(new Localizar($heroe, $grayas));
+end
+
+
+
+rule "1.2.5 Chantaje a las grayas para localizar a las ninfas y medusa"
+when
+    $heroe : Heroe()
+    $grayas : Dios(nombre == Constantes.GRAYAS)
+    $gorgonas : Criatura(nombre == Constantes.GORGONAS)
+    $ojoGrayas : Objeto(nombre == Constantes.OJO_DE_GRAYAS)
+    Poseer(sujeto == $heroe, poseido == $ojoGrayas )
+    $ninfas : Semidios(nombre == Constantes.LAS_NINFAS)   	
+    $medusa : Criatura(nombre == Constantes.MEDUSA)
+	then
+	mensajes.add($heroe.getNombre() + ", bajo el amparo de Hermes y Atenea, recibe el poder divino para rastrear a las Grayas, las custodias del destino, que solo los dioses pueden revelar.");
+    //retract($poseeOjo);
+    insert(new Quitar($heroe ,$ojoGrayas));
+    insert(new Localizar($heroe, $ninfas));
+    insert(new Localizar($heroe, $medusa));
+end
+
+
+rule "1.2.6 Robar ojo grayas"
+when
+	$heroe : Heroe()
+	$grayas : Dios(nombre == Constantes.GRAYAS)
+	Localizar(sujeto == $heroe, persLocalizado == $grayas)
+    $ojoGrayas : Objeto(nombre == Constantes.OJO_DE_GRAYAS)
+    $poseeOjo : Poseer(sujeto == $grayas, poseido == $ojoGrayas )
+    Poseer(sujeto == $heroe, capacidadDe  == Constantes.CAPACIDAD_INVISIBILIDAD)
+then
+	mensajes.add($heroe.getNombre() + ", utilizando el poder de la invisibilidad, se desliza entre las sombras y arrebata el ojo a las Grayas, desafiando el destino mismo.");
+	//retract($poseeOjo);
+	insert(new Quitar($grayas ,$ojoGrayas));
+	insert(new Poseer($heroe, $ojoGrayas));
+end
+	
+    
+
+
+rule "1.2.7.1 Obtencion Sandalias Aladas tras localizar Ninfas"
+when
+    $heroe : Heroe()
+    $ninfas : Semidios(nombre == Constantes.LAS_NINFAS)
+   	$medusa : Criatura(nombre == Constantes.MEDUSA)
+    $sandaliasAladas : Objeto(nombre == Constantes.SANDALIAS_ALADAS)
+    Poseer(sujeto == $ninfas, poseido == $sandaliasAladas)
+    Localizar(sujeto == $heroe, persLocalizado == $ninfas )
+    not Muerto(afectado == $medusa)
+then
+mensajes.add($heroe.getNombre() + " es bendecido por las Ninfas, quienes le entregan las míticas Sandalias Aladas, un regalo divino que le permitirá surcar los cielos y desafiar el viento en su persecución de Medusa.");
+    //retract($poseeNinfasS);
+	insert(new Quitar($ninfas ,$sandaliasAladas));  
+    insert(new Poseer($heroe, $sandaliasAladas));
+end
+
+
+
+rule "1.2.7.2 Obtencion Zurron Magico tras localizar Ninfas"
+when
+    $heroe : Heroe()
+    $ninfas : Semidios(nombre == Constantes.LAS_NINFAS)
+   	$medusa : Criatura(nombre == Constantes.MEDUSA)
+    $zurronMagico : Objeto(nombre == Constantes.ZURRON_MAGICO)
+    $poseeNinfasZ : Poseer(sujeto == $ninfas, poseido == $zurronMagico)
+    Localizar(sujeto == $heroe, persLocalizado == $ninfas )
+    not Muerto(afectado == $medusa)
+    
+then
+	mensajes.add($heroe.getNombre() + " recibe el Zurrón Mágico de las Ninfas, un artefacto encantado que guarda secretos infinitos y poderes que desafían el tiempo y el espacio.");
+    //retract($poseeNinfasZ);
+	insert(new Quitar($ninfas ,$zurronMagico)); 
+    insert(new Poseer($heroe, $zurronMagico));
+end
+
+
+//SUPERAR O MORIR, GORGONAS
+rule "1.2.8 Heroe evita  a las gorgonas"
+when
+	    $heroe : Heroe()
+	    $g : Criatura(nombre == Constantes.GORGONAS)
+	    $medusa : Criatura(nombre == Constantes.MEDUSA)
+	    Localizar(sujeto==$heroe , persLocalizado==$medusa)
+	 
+	    $obj1 : Poseer(sujeto == $heroe, capacidadDe   == Constantes.CAPACIDAD_INVISIBILIDAD)
+	    not Muerto(afectado == $g)
+	    not Preso(afectado==$heroe)
+then
+	mensajes.add($heroe.getNombre() + " evita a las temibles Gorgonas, utilizando su invisibilidad para atravesar su mirada mortal y adentrarse en la cueva con un paso silencioso y decidido.");
+		insert(new Muerto($g)); //Las ponemos en muerto aunque tecnicamenete no lo esten para evitar que se vuelva a disparar esta regla
+		
+end
+
+rule "1.2.9 Heroe no evita  a las gorgonas"
+when
+	    $heroe : Heroe()
+	    $g : Criatura(nombre == Constantes.GORGONAS)
+	   	$medusa : Criatura(nombre == Constantes.MEDUSA)
+	    Localizar(sujeto==$heroe , persLocalizado==$medusa)
+	 
+	    not Poseer(sujeto == $heroe, capacidadDe   == Constantes.CAPACIDAD_INVISIBILIDAD)
+	    not Muerto(afectado == $g)
+	    Libre(afectado==$heroe)
+then
+	mensajes.add($heroe.getNombre() + " no logra evitar la mirada petrificante de las Gorgonas, cayendo ante su poder debido a la falta de un artefacto que lo haga invisible.");
+		insert(new Muerto($heroe)); 
+end
+
+
+//SUPERAR O MORIR, MEDUSA
+rule "1.2.10.1 Heroe mata a Medusa"
+when
+    $heroe : Heroe()
+    $m : Criatura(nombre == Constantes.MEDUSA)
+    $g : Criatura(nombre == Constantes.GORGONAS)
+    Muerto(afectado == $g)			//Tiene que haberlas superado para llegar a medusa
+    Localizar(sujeto==$heroe, persLocalizado==$m)
+    $vuelo : Poseer(sujeto == $heroe, capacidadDe == Constantes.CAPACIDAD_VUELO)
+    $obj3 : Poseer(sujeto == $heroe, capacidadDe == Constantes.CAPACIDAD_REFLEXION)
+    $obj4 : Poseer(sujeto == $heroe, capacidadDe   == Constantes.CAPACIDAD_MATAR)
+    $obj5 : Poseer(sujeto == $heroe, capacidadDe   == Constantes.CAPACIDAD_GUARDAR_CABEZA_MEDUSA)
+    not Muerto(afectado == $m)
+
+then
+	mensajes.add($heroe.getNombre() + " se enfrenta a Medusa, y con la protección de " + $obj3.getNombreObjeto() + " y el poder letal de " + $obj4.getNombreObjeto() + ", termina con la amenaza que representaba, decapitando a la temida criatura.");
+	mensajes.add($heroe.getNombre() + " encierra la cabeza de Medusa, el terrible trofeo, dentro de " + $obj5.getNombreObjeto() + ", el único objeto capaz de contener su poder mortal.");
+	mensajes.add($heroe.getNombre() + " se eleva por los cielos, escapando del abismo de oscuridad donde perecieron tantos, gracias al mágico vuelo proporcionado por " + $vuelo.getNombreObjeto() + ".");
+
+    insert(new Asesinar($heroe, $m));
+    insert(new RescatarDe($heroe, $m));
+    
+end
+
+rule "1.2.10.2 Lo mata medusa debido a que no tiene objeto reflexion"
+when
+	$heroe : Heroe()
+	$medusa : Criatura(nombre == Constantes.MEDUSA)
+	$g : Criatura(nombre == Constantes.GORGONAS)
+	Muerto(afectado == $g)
+	Localizar(sujeto==$heroe, persLocalizado==$medusa)
+    not Poseer(sujeto == $heroe, capacidadDe == Constantes.CAPACIDAD_REFLEXION)
+    not Muerto(afectado==$medusa)
+then
+
+	mensajes.add($heroe.getNombre() + " cae víctima del poder mortal de Medusa, incapaz de resistir su mirada petrificadora, pues no posee el objeto reflectante necesario para reflejar su terrible poder.");
+	mensajes.add("En un último intento por defenderse, " + $heroe.getNombre() + " sucumbe al abrazo de piedra de Medusa, quien lo convierte en una estatua eterna, su destino sellado por su propia imprudencia.");
+	insert(new Asesinar($medusa,$heroe));
+end
+
+rule "1.2.10.3 Lo mata medusa debido a que no tiene objeto matar"
+when
+	$heroe : Heroe()
+	$medusa : Criatura(nombre == Constantes.MEDUSA)
+	$g : Criatura(nombre == Constantes.GORGONAS)
+	Muerto(afectado == $g)			
+	Localizar(sujeto==$heroe, persLocalizado==$medusa)
+    not Poseer(sujeto == $heroe, capacidadDe == Constantes.CAPACIDAD_MATAR)
+    not Muerto(afectado==$medusa)
+then
+	mensajes.add($heroe.getNombre() + " se enfrenta a Medusa, pero su intento de derrotarla se ve frustrado, ya que carece del artefacto necesario para poner fin a su vida.");
+	mensajes.add("A pesar de su coraje, " + $heroe.getNombre() + " es impotente ante la mirada de la criatura, y su destino se sella cuando Medusa lo convierte en una víctima más de su maldición mortal.");
+	insert(new Asesinar($medusa,$heroe));
+
+end
+
+
+rule "1.2.10.4 Muere debido a que no tiene objeto para contener cabeza medusa"
+when
+	$heroe : Heroe()
+	$medusa : Criatura(nombre == Constantes.MEDUSA)
+	$asesinar: Asesinar(sujeto==$heroe, asesinado==$medusa)
+	$medusaMuerta : Muerto(afectado == $medusa)
+    not Poseer(sujeto == $heroe, capacidadDe == Constantes.CAPACIDAD_GUARDAR_CABEZA_MEDUSA)
+then
+	mensajes.add($heroe.getNombre() + " mata a Medusa en un acto de valentía, pero su triunfo se convierte en tragedia, pues no posee un artilugio que contenga la poderosa cabeza de la criatura.");
+	mensajes.add("El héroe, sin poder almacenar el poder letal de Medusa, sucumbe ante su propia imprudencia, y la mirada petrificante de la Gorgona lo condena a la muerte.");
+	insert(new Asesinar($medusa, $heroe));
+end
+
+rule "1.2.10.5 No puede volver a casa tras matar a Medusa"
+when
+	$heroe : Heroe()
+	$medusa : Criatura(nombre == Constantes.MEDUSA)
+	$asesinar: Asesinar(sujeto==$heroe, asesinado==$medusa)
+	$medusaMuerta : Muerto(afectado == $medusa)
+    not Poseer(sujeto == $heroe, poseido.capacidadDe == Constantes.CAPACIDAD_VUELO)
+then
+	mensajes.add($heroe.getNombre() + " logró derrotar a la temible Medusa, pero su victoria fue efímera. Sin la capacidad de volar, se vio atrapado en un mundo ajeno, sin esperanza de regresar a casa.");
+	mensajes.add("Aislado y sin rumbo, el héroe sucumbió a la desesperación, y lentamente la muerte por inanición se apoderó de él, su triunfo sobre Medusa marcado por una tragedia insondable.");
+	insert(new Muerto($heroe));
+end
+
+
+rule "1.2.11.1 Andromeda capturada por Ceto"
+when
+    $andromeda : Humano(nombre == Constantes.ANDROMEDA)
+    $ceto : Criatura(nombre == Constantes.CETO)
+    $andromedaLibre : Libre(afectado == $andromeda)
+	$cetoLibre : Libre(afectado == $ceto)
+	not Muerto( afectado ==  $ceto )
+	not Preso ( afectado == $andromeda)
+then
+	mensajes.add("Ceto, libre y imparable, captura a Andromeda, llevándola a su prisión sin piedad.");
+    insert (new Apresar($ceto, $andromeda));
+end
+
+
+rule "1.2.11.2 Derrotar Ceto con obj de petrificacion"
+when
+    $heroe : Heroe()
+    $ceto : Criatura(nombre == Constantes.CETO)
+    $objPetrificar : Poseer(sujeto == $heroe, capacidadDe== Constantes.CAPACIDAD_PETRIFICACION)
+    not Muerto(afectado == $ceto )
+then
+	mensajes.add($heroe.getNombre() + ", con valentía inquebrantable y el poder de la " + $objPetrificar.getNombreObjeto() + ", derrota a Ceto, convirtiéndola en una estatua de piedra que jamás volverá a sembrar terror.");
+	insert(new Asesinar($heroe, $ceto));
+	insert(new RescatarDe($heroe, $ceto));
+end
+
+
+
+
+rule "2.3.1 Muerte del minotauro"
+when 
+	$h : Heroe()
+	$minotauro : Criatura( nombre == Constantes.MINOTAURO)
+	$objeto : Poseer(sujeto == $h, capacidadDe == Constantes.CAPACIDAD_MATAR)
+	Apresar(apresado==$h)
+	Preso(afectado == $h) 
+	not Muerto(afectado == $minotauro)
+then
+	mensajes.add($h.getNombre() + ", con el poder de " + $objeto.getNombreObjeto() + ", finalmente derrota al temido Minotauro, rompiendo su feroz resistencia y sellando su destino en el laberinto.");
+	insert(new Asesinar($h, $minotauro));
+end
+
+rule "2.3.2 Muerte del heroe por el minotauro"
+when 
+	$h : Heroe()
+	$minotauro : Criatura( nombre == Constantes.MINOTAURO)
+	not Poseer(sujeto == $h, capacidadDe == Constantes.CAPACIDAD_MATAR)
+	Apresar(apresado==$h)
+	Preso(afectado == $h) 
+	not Muerto(afectado == $minotauro)
+then
+	//mensajes.add($h.getNombre());
+	insert(new Asesinar($minotauro,$h));
+end
+
+
+rule "2.4.1 Dedalo obtiene la cera y las plumas tras ser apresado en el laberinto"
+when
+	$dedalo : Humano(nombre == Constantes.DEDALO)
+	$minos : Humano(nombre == Constantes.MINOS)
+	Apresar(sujeto == $minos, apresado == $dedalo)
+	$cera : Objeto(nombre == Constantes.CERA_ABEJA)
+	$plumas : Objeto(nombre == Constantes.PLUMAS)
+then
+	mensajes.add("En medio de su cautiverio en el laberinto, Dedalo descubre un suministro divino de cera de abeja y plumas, un destello de esperanza en la oscuridad.");
+	insert (new Poseer($dedalo,$plumas));
+    insert (new Poseer($dedalo,$cera));
+end
+
+rule "2.4.2 Dedalo fabrica las alas para el y los demas apresados"
+when
+	$dedalo : Humano(nombre == Constantes.DEDALO)
+	$minos : Humano(nombre == Constantes.MINOS)
+	$cera : Objeto(nombre == Constantes.CERA_ABEJA)
+	$plumas : Objeto(nombre == Constantes.PLUMAS)
+	Apresar(sujeto == $minos, apresado == $dedalo)
+	Poseer(sujeto == $dedalo, poseido == $plumas)
+    Poseer(sujeto == $dedalo, poseido == $cera)
+    $apresados : List() from collect(Apresar(sujeto==$minos))
+    $alas : Objeto(nombre == Constantes.ALAS_CERA_PLUMAS)
+then
+	mensajes.add("Con destreza divina, Dedalo transforma la cera y las plumas en alas que desafiarán los cielos, regalando libertad a todos los apresados.");
+	for(Apresar a : (List<Apresar>) $apresados){
+    	mensajes.add(a.getApresado().getNombre() + " ahora posee las alas de cera y plumas, un símbolo de su libertad recién adquirida.");
+		insert(new Poseer(a.getApresado(), $alas));
+	}
+end
+
+//Podra huir cualquier personaje que tenga la capacidad de vuelo, este en el laberinto (apresado por minos) y no este muerto
+rule "2.5.1 Personaje escapa del laberinto si tiene capacidad de vuelo"
+when
+	$per : Personaje()
+	$minos : Humano(nombre == Constantes.MINOS)
+	$puedeVolar : Poseer(sujeto==$per, poseido.capacidadDe==Constantes.CAPACIDAD_VUELO)
+	Apresar(sujeto==$minos, apresado==$per)
+	not Muerto(afectado==$per)
+then
+	mensajes.add($per.getNombre() + " escapa del laberinto, desafiando sus confines y volando hacia la libertad con la ayuda de " + $puedeVolar.getNombreObjeto() + ", dejando atrás la prisión que lo encerraba.");
+	insert(new Liberar($per, $per));
+end
+
+rule "2.5.2 Icaro muere al intentar escapar con las alas de cera y pluma"
+when
+	$icaro : Humano(nombre==Constantes.ICARO)
+	$alas : Objeto(nombre == Constantes.ALAS_CERA_PLUMAS)
+	Poseer(sujeto == $icaro, poseido == $alas)
+	Libre(afectado==$icaro)
+	not Muerto(afectado==$icaro)
+then
+	mensajes.add("Icaro, desoyendo las advertencias de su padre, asciende hacia el cielo con sus alas de cera y plumas, desafiando los límites humanos, solo para ver cómo el sol derrite su esperanza, haciendo que caiga al vacío, llevando consigo su destino trágico.");
+	insert(new Muerto($icaro));
+end
+
+rule "2.6 Heroe encuentra las alas de icaro"
+when 
+	$icaro : Humano(nombre==Constantes.ICARO)
+	$alas : Objeto(nombre == Constantes.ALAS_CERA_PLUMAS)
+	Poseer(sujeto == $icaro, poseido == $alas)
+	Libre(afectado==$icaro)
+	Muerto(afectado==$icaro)
+	$h : Heroe()
+then
+	mensajes.add($h.getNombre() + ", tras el trágico destino de Icaro, se topa con las alas de cera y plumas caídas, como un símbolo del sacrificio, y decide tomar su legado, llevándolas como su propio estandarte.");
+	//retract($alasIcaro);
+	insert(new Quitar($icaro ,$alas)); 
+	insert(new Poseer($h, $alas));
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+rule "Fin Liberacion"
+salience 3
+when 
+	$p1 : Personaje ()
+	$p2 : Personaje ()
+	Liberar(sujeto == $p1, liberado == $p2)
+	$obj : Objetivo(sujeto == $p1, afectado == $p2)
+then
+	retract($obj);
+end
+
+rule "Fin Poseer"
+salience 3
+when 
+	$p : Personaje ()
+	$o : Objeto ()
+	Poseer(sujeto == $p, poseido == $o)
+	$obj : Objetivo(sujeto == $p, objeto == $o)
+then
+	retract($obj);
+end
+
+rule "Fin Capacidad"
+salience 3
+when 
+    $p : Personaje()
+    $o : Objeto()
+    $obj : Objetivo(sujeto == $p, capacidadDe == $o.getCapacidadDe())
+    Poseer(sujeto == $p, poseido == $o)
+then
+    retract($obj);
+end
+
+
+
+
+rule "FIN EJECUCION REGLAS"
+salience 100
+when
+	$h : Heroe()
+	TieneObjetivos(sujeto == $h)
+	//si no le quedan objetivos por cumplir se lanza
+	not Objetivo(sujeto == $h)
+then
+	mensajes.add("STOP");
+end
+
+
+
+
+
+query "getPoseer" (Heroe heroe, Objeto objeto)
+    $p : Poseer(sujeto == heroe, poseido == objeto)
+  
+end
+
+query "getLiberar" (Personaje libertador, Personaje liberado )
+    $l : Liberar(sujeto == libertador, liberado == liberado)
+end
+
+
+
+
+
+query "getPersonajeByName" (String name)
+    $p : Personaje( nombre == name )
+end
+
+query "getObjetoByName" (String name)
+    $o : Objeto( nombre == name )
+end
